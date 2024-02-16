@@ -1,0 +1,88 @@
+{
+    "_id": "hhighcliffai_browse_list",
+    "urls_to_browse": [
+      {
+        "_id": 1,
+        "url": "https://www.writersdigest.com/",
+        "description": "Writer's Digest is a website dedicated to providing resources, tips, and advice for writers of all levels.",
+        "usefulness_description": "This website offers articles, workshops, and forums covering various aspects of writing, including craft techniques, publishing advice, and industry insights.",
+        "category": "Writing Resources",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 2,
+        "url": "https://www.goodreads.com/",
+        "description": "Goodreads is a social cataloging website that allows individuals to search and freely share reviews and recommendations of books.",
+        "usefulness_description": "Goodreads provides a platform to discover new books, track reading progress, and join book clubs and discussions. It can help with finding inspiration, exploring different genres, and connecting with other readers and authors.",
+        "category": "Reading & Inspiration",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 3,
+        "url": "https://www.theguardian.com/books",
+        "description": "The Guardian Books section offers news, reviews, and interviews related to literature and the publishing industry.",
+        "usefulness_description": "This section covers a wide range of topics, including book reviews, author interviews, literary awards, and industry trends. It can provide valuable insights into current literary discussions and emerging trends.",
+        "category": "Literary News & Trends",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 4,
+        "url": "https://www.masterclass.com/",
+        "description": "MasterClass offers online courses taught by experts in various fields, including writing, filmmaking, and music.",
+        "usefulness_description": "The writing courses on MasterClass are taught by renowned authors such as Margaret Atwood, Neil Gaiman, and Joyce Carol Oates. These courses can provide valuable lessons, techniques, and inspiration for writers looking to hone their craft.",
+        "category": "Online Learning",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 5,
+        "url": "https://www.biography.com/writer/edgar-allan-poe",
+        "description": "Biography.com features a profile of Edgar Allan Poe, a renowned writer known for his macabre and Gothic tales.",
+        "usefulness_description": "Exploring the life and works of Edgar Allan Poe can provide insights into the genres of horror and Gothic literature. Writers interested in these genres may find inspiration in Poe's themes, writing style, and innovative storytelling techniques.",
+        "category": "Writing Inspiration",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 6,
+        "url": "https://www.poetryfoundation.org/",
+        "description": "The Poetry Foundation website features a vast collection of poems, articles, and resources related to poetry.",
+        "usefulness_description": "This website offers a comprehensive archive of poems from various poets and eras, as well as articles, essays, and interviews about poetry. It can serve as a source of inspiration and education for poets and poetry enthusiasts.",
+        "category": "Poetry",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 7,
+        "url": "https://www.reddit.com/r/writing/",
+        "description": "The Writing subreddit is a community for writers to share their work, discuss craft techniques, and seek feedback and advice.",
+        "usefulness_description": "This subreddit provides a platform for writers to engage with a supportive community, share their writing, participate in discussions about writing-related topics, and seek feedback on their work. It can be a valuable resource for networking, learning, and receiving constructive criticism.",
+        "category": "Community & Feedback",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 8,
+        "url": "https://www.britannica.com/",
+        "description": "Encyclopedia Britannica is a trusted source of information on a wide range of topics, including literature, history, science, and the arts.",
+        "usefulness_description": "This online encyclopedia offers authoritative articles written by experts in their respective fields. It can be a valuable resource for research, fact-checking, and gaining in-depth knowledge on various subjects.",
+        "category": "Research & Reference",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 9,
+        "url": "https://www.nytimes.com/section/books",
+        "description": "The New York Times Books section features book reviews, bestseller lists, author interviews, and literary news.",
+        "usefulness_description": "This section covers a wide range of literary topics, including book reviews, author profiles, and literary criticism. It can provide valuable insights into current literary trends, notable book releases, and author interviews.",
+        "category": "Literary News & Trends",
+        "review_status": "Pending"
+      },
+      {
+        "_id": 10,
+        "url": "https://www.penguinrandomhouse.com/",
+        "description": "Penguin Random House is one of the world's largest trade book publishers, offering a wide range of fiction and nonfiction titles.",
+        "usefulness_description": "The Penguin Random House website features information about their latest book releases, author events, and publishing news. It can be a valuable resource for discovering new books, exploring different genres, and staying updated on the publishing industry.",
+        "category": "Reading & Inspiration",
+        "review_status": "Pending"
+      }
+    ],
+    "categories": ["Writing Resources", "Reading & Inspiration", "Literary News & Trends", "Online Learning", "Community & Feedback", "Poetry", "Research & Reference", "Writing Inspiration"],
+    "review_statuses": ["Pending", "Reviewed", "Not Suitable"]
+  }
+  

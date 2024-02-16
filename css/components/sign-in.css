@@ -1,0 +1,9 @@
+.form-signin .form-control, .form-signin .btn {
+    width: 100%; /* Ensures full width for both inputs and button */
+    max-width: 330px; /* Adjust as needed to match your form width */
+    margin: auto; /* Centers the elements when not taking up the full container width */
+}
+
+.form-signin .btn {
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}

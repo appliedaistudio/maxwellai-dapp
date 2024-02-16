@@ -1,0 +1,33 @@
+.ai-chat-button {
+    background-color: var(--accent-color); /* Using accent color to ensure the button stands out on a neutral background */
+    color: var(--light-color); /* Assuming light color provides good contrast against the accent color */
+    border: none;
+    border-radius: 50%;
+    width: 40px; 
+    height: 40px; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adding a shadow for better visibility and depth */
+    cursor: pointer;
+    z-index: 1000; 
+    position: relative;
+}
+
+.ai-chat-button::before {
+    content: '\f4ad'; /* FontAwesome 'robot' icon */
+    font-family: 'Font Awesome 5 Free'; 
+    font-weight: 900; 
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Additional styling for interaction states could improve user experience */
+.ai-chat-button:hover,
+.ai-chat-button:focus {
+    background-color: var(--secondary-accent-color); /* Change background color on hover/focus to secondary accent color for visual feedback */
+    color: var(--neutral-color); /* Switch text/icon color to neutral color for contrast */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for a refined user experience */
+}
+
+/* Ensure you have the correct FontAwesome version and icon code */

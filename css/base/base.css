@@ -1,0 +1,51 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    color: var(--font-color); /* Use the font color variable */
+}
+
+/* Standard table styling */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: var(--light-color); /* Use light color variable for table background */
+}
+
+/* Table headers with a distinct background color */
+.table thead th {
+    background-color: var(--neutral-color); /* Use neutral color variable for table header background */
+    color: var(--light-color); /* White text color, already aligned with the light color variable */
+    border-bottom: 2px solid darken(var(--neutral-color), 10%); /* Use a darker variant of the neutral color for the border. Note: CSS doesn't support darken() natively; consider a pre-processor like SASS or a different approach for dynamic darkening */
+    padding: 0.75rem;
+    text-align: left;
+}
+
+/* Table cells styling */
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6; /* Consider creating a variable for border colors if reused */
+}
+
+/* Table row styling for hover effect */
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, .05); /* Consider turning this into a variable if the color is reused or for theming purposes */
+}
+
+/* Zebra-striping for table rows */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .05); /* Similar to the hover effect, consider a variable here */
+}
+
+/* Customizations like border radius */
+.table th:first-child,
+.table td:first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.table th:last-child,
+.table td:last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}

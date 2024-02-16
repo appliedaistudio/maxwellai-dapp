@@ -1,0 +1,74 @@
+{
+    "_id": "notifications",
+    "definitions": {
+      "priorities": ["low", "medium", "high"],
+      "statuses": ["pending", "sent", "resolved"]
+    },
+    "notifications": [
+      {
+        "id": "3",
+        "topic": "Digital Environment Update",
+        "body": "Preparing for brainstorming in 5 mins. Muting distractions, launching mind-mapping tool.",
+        "priority": "medium",
+        "created_at": "2024-02-17T10:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "4",
+        "topic": "Digital Environment Update",
+        "body": "Getting ready for coding session. Closing non-coding apps, opening IDE.",
+        "priority": "medium",
+        "created_at": "2024-02-18T14:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "1",
+        "topic": "Digital Environment Update",
+        "body": "Environment update in 5 mins for 3:00 PM meeting. Muting messaging, social media, video streaming.",
+        "priority": "medium",
+        "created_at": "2024-02-15T09:55:00Z",
+        "status": "sent"
+      },
+      {
+        "id": "2",
+        "topic": "Digital Environment Update",
+        "body": "Update in 5 mins for writing session. Closing social media, entertainment, news. Opening writing software.",
+        "priority": "medium",
+        "created_at": "2024-02-16T13:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "5",
+        "topic": "Digital Environment Update",
+        "body": "Prepping for research in 5 mins. Closing distractions, launching browser.",
+        "priority": "medium",
+        "created_at": "2024-02-19T09:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "6",
+        "topic": "Digital Environment Update",
+        "body": "Environment update in 5 mins for 2:00 PM call. Muting non-work apps, opening conferencing tool.",
+        "priority": "medium",
+        "created_at": "2024-02-20T12:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "7",
+        "topic": "Digital Environment Update",
+        "body": "Prepping for design session. Closing unnecessary apps, launching design software.",
+        "priority": "medium",
+        "created_at": "2024-02-21T11:55:00Z",
+        "status": "pending"
+      },
+      {
+        "id": "8",
+        "topic": "Digital Environment Update",
+        "body": "Environment update in 5 mins for study session. Closing distractions, opening study materials.",
+        "priority": "medium",
+        "created_at": "2024-02-22T15:55:00Z",
+        "status": "pending"
+      }
+    ]
+  }
+  

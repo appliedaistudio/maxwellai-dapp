@@ -1,0 +1,32 @@
+.menu-group .menu-button {
+    font-family: inherit;
+    color: var(--font-color);
+    border-color: var(--neutral-color);
+    border: none; /* Set border to none for menu buttons */
+}
+
+.menu-group .menu-button:hover {
+    background-color: var(--accent-color);
+}
+
+.control-button, .form-signin .btn {
+    font-family: inherit;
+    color: var(--light-color); /* Use white or light color for text for contrast */
+    background-color: var(--neutral-color); /* Assuming this is your neutral background color */
+    border: 2px solid var(--accent-color); /* Provides definition and contrast */
+    padding: 0.375rem 0.75rem; /* Adjusted for visual balance */
+    font-size: 1rem; /* Ensures readability */
+    line-height: 1.5; /* Comfortable line height */
+    border-radius: 0.25rem; /* Soften edges */
+    margin: 0.3em; /* Maintains spacing */
+}
+
+.control-button:hover, .form-signin .btn:hover {
+    color: var(--neutral-color); /* Revert text color for contrast on hover */
+    background-color: var(--accent-color); /* Ensure noticeable change on hover */
+    border-color: var(--light-color); /* Lighten border on hover for differentiation */
+}
+
+.control-button i {
+    color: inherit; /* Icon color inherits from the button text color */
+}

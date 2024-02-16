@@ -1,0 +1,114 @@
+{
+    "_id": "hhighcliffai_browse_feedback",
+    "browse_feedback": [
+      {
+        "_id": 1,
+        "time": "2024-02-15 09:30 AM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I've reviewed the Writer's Digest website from the browse list."},
+          {"speaker": "AI", "text": "Great! What did you think about it?"},
+          {"speaker": "User", "text": "It's quite comprehensive, with a lot of useful articles and tips for writers."},
+          {"speaker": "AI", "text": "That sounds promising. Do you think it's suitable for your needs?"},
+          {"speaker": "User", "text": "Yes, definitely. I found some helpful resources that I plan to explore further."},
+          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed and useful. Anything else you'd like to discuss about the browse list?"},
+          {"speaker": "User", "text": "Not at the moment. I'll continue reviewing the other links."},
+          {"speaker": "AI", "text": "Alright. Let me know if you need further assistance or have any feedback."},
+          {"speaker": "User", "text": "Will do. Thanks!"}
+        ],
+        "takeaway": {
+          "general": "User found Writer's Digest useful. Marked as reviewed and useful."
+        }
+      },
+      {
+        "_id": 2,
+        "time": "2024-02-20 03:15 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I've looked into the Goodreads website from the browse list."},
+          {"speaker": "AI", "text": "What are your thoughts on it?"},
+          {"speaker": "User", "text": "Goodreads is amazing! I've already discovered several books that I want to add to my reading list."},
+          {"speaker": "AI", "text": "That's great to hear. Do you find it relevant to your writing goals?"},
+          {"speaker": "User", "text": "Absolutely. It helps me explore different genres and learn from other authors' works."},
+          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed and useful. Anything else you'd like to share about the browse list?"},
+          {"speaker": "User", "text": "No, that's all for now. I'll continue exploring the other links."},
+          {"speaker": "AI", "text": "Alright. Let me know if you have any further feedback or need assistance."},
+          {"speaker": "User", "text": "Sure thing. Thanks!"}
+        ],
+        "takeaway": {
+          "general": "User found Goodreads useful. Marked as reviewed and useful."
+        }
+      },
+      {
+        "_id": 3,
+        "time": "2024-02-25 11:00 AM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I've checked out the MasterClass website from the browse list."},
+          {"speaker": "AI", "text": "How did you find it?"},
+          {"speaker": "User", "text": "MasterClass offers some intriguing writing courses taught by renowned authors."},
+          {"speaker": "AI", "text": "Sounds promising. Do you think it's worth exploring further?"},
+          {"speaker": "User", "text": "Definitely. I'm particularly interested in the course by Margaret Atwood."},
+          {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Anything else on your mind regarding the browse list?"},
+          {"speaker": "User", "text": "No, I'm good for now. I'll keep reviewing the rest of the links."},
+          {"speaker": "AI", "text": "Okay. Feel free to reach out if you need assistance or have feedback."},
+          {"speaker": "User", "text": "Thanks. Will do!"}
+        ],
+        "takeaway": {
+          "general": "User found MasterClass intriguing, especially the course by Margaret Atwood. Marked as reviewed."
+        }
+      },
+      {
+        "_id": 4,
+        "time": "2024-03-05 02:30 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I've explored the Biography.com page on Edgar Allan Poe."},
+          {"speaker": "AI", "text": "Interesting choice. What did you think?"},
+          {"speaker": "User", "text": "Learning about Poe's life and works was fascinating. It gave me insights into Gothic literature."},
+          {"speaker": "AI", "text": "That's great! Do you think it will influence your writing in any way?"},
+          {"speaker": "User", "text": "Absolutely. It's inspiring to see how Poe's experiences shaped his writing style."},
+          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed. Anything else you'd like to discuss?"},
+          {"speaker": "User", "text": "No, that covers it for now. I'll continue with the other links."},
+          {"speaker": "AI", "text": "Alright. Let me know if you need further assistance."},
+          {"speaker": "User", "text": "Thanks. Bye!"}
+        ],
+        "takeaway": {
+          "general": "User found the Biography.com page on Edgar Allan Poe inspiring. Marked as reviewed."
+        }
+      },
+      {
+        "_id": 5,
+        "time": "2024-03-10 04:00 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I've reviewed the Poetry Foundation website."},
+          {"speaker": "AI", "text": "What are your thoughts on it?"},
+          {"speaker": "User", "text": "The Poetry Foundation has an extensive collection of poems and resources. It's a goldmine for poetry enthusiasts."},
+          {"speaker": "AI", "text": "That sounds valuable. Do you think it will help with your writing?"},
+          {"speaker": "User", "text": "Definitely. It provides inspiration and exposes me to different poetic styles and techniques."},
+          {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Let me know if you have any more feedback."},
+          {"speaker": "User", "text": "Will do. Thanks!"}
+        ],
+        "takeaway": {
+          "general": "User found the Poetry Foundation website valuable for inspiration. Marked as reviewed."
+        }
+      }
+    ]
+  }
+  

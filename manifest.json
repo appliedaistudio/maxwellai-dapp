@@ -1,0 +1,21 @@
+{
+    "short_name": "App",
+    "name": "My Progressive Web App",
+    "icons": [
+      {
+        "src": "./icon/lowres.webp",
+        "sizes": "48x48",
+        "type": "image/webp"
+      },
+      {
+        "src": "./favicon.ico",
+        "sizes": "32x32",
+        "type": "image/x-icon"
+      }
+    ],
+    "start_url": "./index.html",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#000000"
+  }

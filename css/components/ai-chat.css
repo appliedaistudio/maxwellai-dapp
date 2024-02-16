@@ -1,0 +1,40 @@
+/* Updated ai-chat.css incorporating color variables from variables.css */
+.chat-window {
+    border: 1px solid var(--accent-color);
+}
+
+.chat-window .chat-body {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.chat-message-input {
+    resize: none;
+}
+
+.chat-conversation-btn {
+    background-color: var(--light-color);
+    border: 1px solid var(--accent-color);
+}
+
+.chat-conversation-btn:hover,
+.chat-conversation-btn.active {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
+    font-weight: bold;
+}
+
+.chat-header,
+.chat-voice-btn,
+.chat-send-btn {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
+}
+
+.chat-suggested-messages button {
+    cursor: pointer;
+}
+
+.chat-input-group button {
+    border: none;
+}

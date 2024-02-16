@@ -1,0 +1,54 @@
+{
+    "_id": "hello_world_menu",
+    "options": [
+        {
+            "_id": "Menu 1",
+            "name": "Menu 1",
+            "tooltip": "Explore Menu 1 options",
+            "items": [
+                {
+                    "name": "Dropdown Option 1.1",
+                    "tooltip": "Perform action 1.1"
+                },
+                {
+                    "name": "Dropdown Option 1.2",
+                    "tooltip": "Perform action 1.2"
+                }
+            ]
+        },
+        {
+            "_id": "Menu 2",
+            "name": "Menu 2",
+            "tooltip": "Explore Menu 2 options",
+            "items": [
+                {
+                    "name": "Dropdown Option 2.1",
+                    "tooltip": "Perform action 2.1"
+                },
+                {
+                    "name": "Dropdown Option 2.2",
+                    "tooltip": "Perform action 2.2"
+                }
+            ]
+        },
+        {
+            "_id": "User",
+            "name": "User",
+            "tooltip": "Access user options",
+            "items": [
+                {
+                    "name": "Add User",
+                    "tooltip": "Add a new user"
+                },
+                {
+                    "name": "User Info",
+                    "tooltip": "View your user information"
+                },
+                {
+                    "name": "Logout",
+                    "tooltip": "Sign out of your account"
+                }
+            ]
+        }
+    ]
+}

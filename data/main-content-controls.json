@@ -1,0 +1,23 @@
+{
+    "_id": "hello_world_controls",
+    "icons": [
+      {
+        "_id": "icon1",
+        "name": "icon1",
+        "iconClass": "fa fa-plus",
+        "tooltip": "Add Item"
+      },
+      {
+        "_id": "icon2",
+        "name": "icon2",
+        "iconClass": "fa fa-trash",
+        "tooltip": "Delete Item"
+      },
+      {
+        "_id": "icon3",
+        "name": "icon3",
+        "iconClass": "fa fa-edit",
+        "tooltip": "Edit Item"
+      }
+    ]
+  }

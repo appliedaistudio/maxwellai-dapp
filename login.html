@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA manifest file -->
+    <link rel="manifest" href="./manifest.json">
+
+    <title>Hello World App</title>
+
+    <!-- Library stylesheets-->
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./lib/fontawesome/css/all.min.css">
+    
+    <!-- Custom stylesheets. This should be linked after the library style sheets-->
+    <link rel="stylesheet" href="./css/base/variables.css">
+    <link rel="stylesheet" href="./css/base/base.css">
+    <link rel="stylesheet" href="./css/base/typography.css">
+    <link rel="stylesheet" href="./css/layout/layout.css">
+    <link rel="stylesheet" href="./css/components/buttons.css">
+    <link rel="stylesheet" href="./css/components/menu.css">
+    <link rel="stylesheet" href="./css/components/controls.css">
+    <link rel="stylesheet" href="./css/components/sign-in.css">
+    <link rel="stylesheet" href="./css/utils/responsive.css">
+
+    <!-- Add bcryptjs library for global availability -->
+    <script src="./lib/bcrypt/js/bcrypt.min.js"></script>
+</head>
+<body class="text-center">
+    <div id="app-container" class="d-flex flex-column align-items-center justify-content-center vh-100">
+        <div id="app-content" class="bg-dark text-white p-4 rounded-lg">
+            <nav id="menu-container" class="mb-3 mb-md-4 mb-lg-5" aria-label="Main Navigation">
+                <!-- Navigation content goes here -->
+            </nav>
+            <h1 id="app-title">Please sign in</h1>
+            <div id="main-content">
+                <!-- Begin login form -->
+                <form id="loginForm" class="form-signin">
+                    <div class="mb-3">
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Username" required autofocus tabindex="1" aria-describedby="username-tooltip">
+                        <div id="username-tooltip" class="form-text">Please enter your username (e.g., john_doe).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Password" required tabindex="2" aria-describedby="password-tooltip">
+                        <div id="password-tooltip" class="form-text">Please enter your password.</div>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block control-button" type="submit" tabindex="3" aria-label="Sign in Button" title="Click to sign in">Sign in</button>
+                </form>
+                <!-- End login form -->
+            </div>
+            <div id="main-content-controls"></div>
+        </div>
+    </div>
+    
+    <!-- Unsuccessful Login Modal -->
+    <div class="modal fade" id="unsuccessfulLoginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Login Unsuccessful</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Your login attempt was unsuccessful. Please check your username and password, and try again.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- External libraries. These should be loaded before the custom scripts.-->
+    <script src="./lib/pouchdb/pouchdb.min.js"></script>
+    <script src="./lib/vibrant/vibrant.min.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Inline script to directly run updateThemeColorsBasedOnImage when the DOM is ready -->
+    <script type="module">
+        import { updateThemeColorsBasedOnImage } from './js/ui/ui-color-extractor.js';
+        import config from './js/dapp-config.js';
+  
+        document.addEventListener('DOMContentLoaded', () => {
+            updateThemeColorsBasedOnImage(config.backgroundImage);
+        });
+    </script>
+
+   <!-- Script for handling form submission, login, and modal display -->
+    <script type="module">
+        import { loginUser } from './js/ui/ui-auth.js';
+        import config from './js/dapp-config.js';
+        import { updateThemeColorsBasedOnImage } from './js/ui/ui-color-extractor.js';
+        
+        const localDb = new PouchDB(config.localDbName);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateThemeColorsBasedOnImage(config.backgroundImage);
+
+            // Define the function that shows the unsuccessful login modal
+            function showUnsuccessfulLoginModal() {
+                // Using Bootstrap's modal method to show the modal
+                const loginModal = new bootstrap.Modal(document.getElementById('unsuccessfulLoginModal'));
+                loginModal.show();
+            }
+
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Check and set the 'lastVisitedPage' session variable if necessary
+                if (!sessionStorage.getItem('lastVisitedPage')) {
+                    sessionStorage.setItem('lastVisitedPage', config.homePage);
+                }
+
+                // Call the exported login function from ui-auth.js module
+                const result = await loginUser(localDb, username, password);
+                if (!result.success) {
+                    // Show the unsuccessful login modal if login didn't succeed
+                    showUnsuccessfulLoginModal();
+                } else {
+                    // Redirect to home page or handle successful login
+                    window.location.href = sessionStorage.getItem('lastVisitedPage') || './index.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
