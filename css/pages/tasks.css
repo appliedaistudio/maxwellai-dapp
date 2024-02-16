@@ -1,0 +1,45 @@
+.card-header button {
+    color: var(--neutral-color);
+    font-weight: bold;
+    text-align: left;
+}
+
+.card-header {
+    background-color: var(--neutral-color-bg); /* Using neutral color background */
+}
+
+.card-body p {
+    color: var(--font-color); /* Using global font color */
+    margin-bottom: 0.5rem; /* Keeping a fixed margin for simplicity */
+}
+
+.badge-secondary {
+    background-color: var(--accent-color);
+    color: var(--light-color); /* Ensuring text on badges is high contrast and readable */
+    margin-left: 10px; /* Providing spacing for visual separation */
+}
+
+.card {
+    margin-bottom: 1rem; /* Consistent spacing between cards */
+}
+
+.accordion-button {
+    background-color: var(--neutral-color); /* Styling for accordion buttons if used */
+    color: var(--light-color);
+}
+
+.accordion-item {
+    border-color: var(--secondary-accent-color); /* Accenting borders of accordion items */
+}
+
+/* Ensuring collapsed accordion content is well styled */
+.accordion-button.collapsed {
+    background-color: var(--neutral-color-bg);
+    color: var(--light-color);
+}
+
+/* Adjusting hover and focus styles for better usability */
+.accordion-button:not(.collapsed):hover,
+.accordion-button:not(.collapsed):focus {
+    background-color: lighten(var(--neutral-color-bg), 5%);
+}

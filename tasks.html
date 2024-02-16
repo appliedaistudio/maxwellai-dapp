@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character set and viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Linking to manifest file and setting title -->
+    <link rel="manifest" href="./manifest.json">
+    <title>Hello World App</title>
+    
+    <!-- Linking to external CSS libraries -->
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./lib/fontawesome/css/all.min.css">
+    
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" href="./css/base/variables.css">
+    <link rel="stylesheet" href="./css/base/base.css">
+    <link rel="stylesheet" href="./css/base/typography.css">
+    <link rel="stylesheet" href="./css/layout/layout.css">
+    <link rel="stylesheet" href="./css/components/buttons.css">
+    <link rel="stylesheet" href="./css/components/menu.css">
+    <link rel="stylesheet" href="./css/components/controls.css">
+    <link rel="stylesheet" href="./css/components/ai-chat-button.css">
+    <link rel="stylesheet" href="./css/components/ai-chat.css">
+    <link rel="stylesheet" href="./css/utils/responsive.css">
+    <link rel="stylesheet" href="./css/pages/tasks.css">
+
+    <!-- Script for password encryption -->
+    <script src="./lib/bcrypt/js/bcrypt.min.js"></script>
+
+    <!-- External library for PouchDB. This must be done before the messaging script that uses PouchDB -->
+    <script src="./lib/pouchdb/pouchdb.min.js"></script>
+
+</head>
+<body class="text-center">
+
+    <!-- Registering the service worker -->
+    <script type="module">
+        import config from './js/dapp-config.js';
+  
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+              console.log('Service Worker registration successful with scope:', registration.scope);
+  
+              // Ensuring service worker is controlling the page before sending a message.
+              if (navigator.serviceWorker.controller) {
+                // Sending a message to the service worker with the interval value.
+                navigator.serviceWorker.controller.postMessage({
+                  type: 'SET_INTERVAL',
+                  interval: config.notificationCheckInterval,
+                });
+              } else {
+                navigator.serviceWorker.ready.then((registration) => {
+                  registration.active.postMessage({
+                    type: 'SET_INTERVAL',
+                    interval: config.notificationCheckInterval,
+                  });
+                });
+              }
+            }).catch(function(error) {
+              console.log('Service Worker registration failed:', error);
+            });
+          });
+        }
+    </script>
+
+    <!-- Script for requesting notification permission -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Checking if Notification API is available
+            if ('Notification' in window) {
+                // Checking if permission is granted or denied
+                if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                    // Requesting permission from the user
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            console.log("Notification permission granted.");
+                            // Now you can use the Notification API to send notifications
+                        }
+                    });
+                }
+            } else {
+                console.log("This browser does not support desktop notification");
+            }
+        });
+    </script>
+
+    <!-- Script for adding an event listener to receive messages from the service worker-->
+    <script type="module">
+        
+        import config from './js/dapp-config.js';
+    
+        // Initialize PouchDB
+        const db = new PouchDB(config.localDbName);
+    
+        // Listen for message from service worker
+        navigator.serviceWorker.addEventListener('message', async event => {
+            if (event.data && event.data.type === 'REQUEST_NOTIFICATION_BODY') {
+                try {
+                    // Fetch the document 'notifications' including the current _rev value
+                    const response = await db.get('notifications');
+                    // Extracting the first pending notification
+                    const notification = response.notifications.find(n => n.status === "pending");
+                    if (notification) {
+                        // Respond to the service worker with the latest notification body
+                        if (navigator.serviceWorker.controller) {
+                            navigator.serviceWorker.controller.postMessage({
+                                type: 'NOTIFICATION_BODY_RESPONSE',
+                                body: notification.body
+                            });
+                        }
+                        // Update the notification status as 'sent'
+                        notification.status = "sent";
+                        try {
+                            // Attempt to update the document with the new status
+                            await db.put(response);
+                        } catch (updateError) {
+                            // If there's a conflict error, fetch the latest document and retry the update
+                            if (updateError.name === 'conflict') {
+                                const latestResponse = await db.get('notifications');
+                                // Use the _rev value from the latest fetched document
+                                response._rev = latestResponse._rev;
+                                await db.put(response);
+                            } else {
+                                throw updateError; // For any other errors, rethrow them
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error fetching or updating notification from PouchDB:', err);
+                }
+            }
+        });
+    </script>
+    
+    <!-- App container -->
+    <nav aria-label="Main Navigation" id="main-navigation">
+        <div id="app-container" class="d-flex flex-column align-items-center justify-content-center vh-100">
+            <div id="app-content" class="bg-dark text-white p-4 rounded-lg">
+                <!-- Menu container -->
+                <div id="menu-container" class="mb-3 mb-md-4 mb-lg-5"></div>
+                <!-- App title -->
+                <h1 id="app-title">Hello World</h1>
+                <!-- Main content -->
+                <div id="main-content">
+                    <p>Here's a short message in the main content area.</p>
+                    <!-- Button to open chat modal -->
+                    <button class="ai-chat-button" data-bs-toggle="modal" data-bs-target="#chatModal" title="Open AI Chat"></button>
+                </div>
+                <!-- Main content controls -->
+                <div id="main-content-controls"></div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Chat modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: var(--neutral-color); color: var(--light-color);">
+                    <h5 class="modal-title" id="chatModalLabel">AI Chat</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Chat conversations list -->
+                        <div class="col-md-4 chat-conversations-list" style="border-right: 1px solid var(--accent-color);">
+                            <button class="chat-conversation-btn w-100 my-1" onclick="switchConversation(1)" title="Switch to Conversation 1">Conversation 1</button>
+                            <button class="chat-conversation-btn w-100 my-1" onclick="switchConversation(2)" title="Switch to Conversation 2">Conversation 2</button>
+                        </div>
+                        <!-- Chat window -->
+                        <div class="col-md-8">
+                            <div class="card chat-window" id="chat-window" style="border: 1px solid var(--accent-color);">
+                                <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" style="background-color: var(--neutral-color); color: var(--light-color);">
+                                    <p class="mb-0 fw-bold">Selected Conversation</p>
+                                </div>
+                                <div class="card-body chat-body">
+                                    
+                                </div>
+                                <!-- Chat input group -->
+                                <div class="input-group chat-input-group mb-3">
+                                    <button class="chat-voice-btn" onclick="startVoiceToText()" title="Start Voice Input">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                    <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here..." style="background-color: var(--light-color); color: var(--dark-color); border-top: none; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+                                    <button class="chat-send-btn" onclick="sendMessage()" title="Send Message">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Default and suggested responses -->
+                                <div class="chat-suggested-messages">
+                                    <!-- Default responses -->
+                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Hello!')" title="Send 'Hello!'">Hello!</button>
+                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Can you help me?')" title="Send 'Can you help me?'">Can you help me?</button>
+                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Thank you!')" title="Send 'Thank you!'">Thank you!</button>
+                                    <!-- Suggested responses -->
+                                    <!-- These will be dynamically loaded -->
+                                </div>
+
+                                <!-- Dropdown for selecting different responses -->
+                                <div class="dropdown mt-3">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="responseDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: var(--neutral-color); color: var(--light-color); width: 100%;">
+                                        Choose a Different Response
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="responseDropdown">
+                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('greetings')">Greetings</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('questions')">Questions</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('appreciation')">Appreciation</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to load suggestions based on selected category
+        function loadSuggestions(category) {
+            // You need to implement logic to fetch suggestions based on the selected category
+            // For now, let's assume we have predefined sets of suggestions for different categories
+            var suggestions = {
+                'greetings': ["Hello!", "Hi!", "Good morning!"],
+                'questions': ["How can I help you?", "What do you need assistance with?", "Do you have any questions?"],
+                'appreciation': ["Thank you!", "I appreciate your help.", "That's very helpful."]
+            };
+
+            var newSuggestions = suggestions[category];
+
+            // Clear existing suggestions
+            var suggestionsContainer = document.querySelector('.chat-suggested-messages');
+            suggestionsContainer.innerHTML = '';
+
+            // Add new suggestions
+            newSuggestions.forEach(function(suggestion) {
+                var button = document.createElement('button');
+                button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
+                button.textContent = suggestion;
+                button.setAttribute('onclick', "sendMessage('" + suggestion + "')");
+                button.setAttribute('title', "Send '" + suggestion + "'");
+                suggestionsContainer.appendChild(button);
+            });
+        }
+    </script>
+
+
+    
+    <!-- External libraries and scripts -->
+    <script src="./lib/vibrant/vibrant.min.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        // Importing functions and configurations
+        import { updateThemeColorsBasedOnImage } from './js/ui/ui-color-extractor.js';
+        import config from './js/dapp-config.js';
+        
+        // Updating theme colors based on image
+        document.addEventListener('DOMContentLoaded', () => {
+                    updateThemeColorsBasedOnImage(config.backgroundImage);
+        });
+    </script>
+    <!-- Scripts for UI authentication and main application logic -->
+    <script type="module" src="./js/ui/ui-auth.js"></script>
+    <script type="module" src="./js/tasks.js"></script>
+
+    <!-- JavaScript functions -->
+    <script>
+        // Function to send a message
+        function sendMessage(messageText = null) {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageText || messageInput.value;
+            console.log("Message sent:", message);
+            messageInput.value = '';
+        }
+
+        // Function to start voice-to-text
+        function startVoiceToText() {
+            console.log("Voice-to-text entry started");
+        }
+
+        // Function to switch conversation
+        function switchConversation(conversationId) {
+            document.querySelectorAll('.chat-conversation-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.querySelector(`.chat-conversation-btn:nth-child(${conversationId * 2 - 1})`);
+            if (activeBtn) activeBtn.classList.add('active');
+            const chatWindowHeader = document.querySelector('.chat-window .card-header p');
+            chatWindowHeader.innerText = `Selected Conversation: ${conversationId}`;
+            const chatBody = document.querySelector('.chat-window .card-body');
+            chatBody.innerHTML = `<p>Loading conversation ${conversationId}…</p>`;
+        }
+    </script>
+</body>
+</html>
