@@ -104,13 +104,15 @@ const createTaskTable = (tasks) => {
 
         // Create target completion date cell
         const completionDateCell = document.createElement('td');
-        completionDateCell.textContent = task.target_date_and_time_completion;
+        const completionDate = new Date(task.target_date_and_time_completion);
+        const formattedCompletionDate = completionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+        completionDateCell.textContent = formattedCompletionDate;
         row.appendChild(completionDateCell);
 
         // Create AI chat button cell
         const aiChatCell = document.createElement('td');
         const aiChatButton = document.createElement('button');
-        aiChatButton.textContent = 'AI Chat';
+        aiChatButton.textContent = 'AI';
         aiChatButton.className = 'btn btn-primary';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatCell.appendChild(aiChatButton);
@@ -206,7 +208,7 @@ const adjustPageSize = () => {
     } else if (window.innerWidth < 992) {
         PAGE_SIZE = 5; // Medium screens like tablets
     } else {
-        PAGE_SIZE = 6; // Large screens like computers
+        PAGE_SIZE = 5; // Large screens like computers
     }
 
     loadTasks();
