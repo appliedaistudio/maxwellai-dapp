@@ -45,16 +45,18 @@ const renderFeedItems = (items, page, pageSize) => {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4';
 
-    paginatedItems.forEach(item => {
+    paginatedItems.forEach((item, index) => {
         const colDiv = document.createElement('div');
         colDiv.className = 'col';
         
         const card = document.createElement('div');
         card.className = 'card h-100';
+        card.id = `card-${startIndex + index + 1}`; // Unique ID for each card
 
         const cardLink = document.createElement('a');
         cardLink.href = item.url;
         cardLink.target = '_blank'; // Open link in a new window
+        cardLink.title = item.description; // Tooltip for the card
 
         const thumbnail = document.createElement('img');
         thumbnail.src = item.thumbnail_url;
@@ -85,6 +87,7 @@ const renderFeedItems = (items, page, pageSize) => {
         const reviewBadge = document.createElement('span');
         reviewBadge.className = 'badge bg-primary';
         reviewBadge.textContent = item.review_status;
+        reviewBadge.title = 'Review Status'; // Tooltip for the status badge
         cardFooter.appendChild(reviewBadge);
 
         const aiChatButton = document.createElement('button');
@@ -106,7 +109,6 @@ const renderFeedItems = (items, page, pageSize) => {
     renderPagination(items.length, page, pageSize);
 };
 
-
 const renderPagination = (totalItems, currentPage, pageSize) => {
     const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -122,13 +124,17 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
     nav.setAttribute('aria-label', 'Page navigation');
     const ul = document.createElement('ul');
     ul.className = 'pagination';
+    ul.id = 'pagination-list'; // Unique ID for the pagination list
 
     const prevLi = document.createElement('li');
     prevLi.className = 'page-item';
+    prevLi.id = 'prev-page-item'; // Unique ID for the previous page item
     const prevLink = document.createElement('a');
     prevLink.className = 'page-link';
     prevLink.href = '#';
     prevLink.textContent = 'Previous';
+    prevLink.title = 'Go to Previous Page'; // Tooltip for previous page button
+    prevLink.id = 'prev-page-link'; // Unique ID for the previous page link
     prevLink.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
@@ -141,10 +147,13 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
     for (let i = 1; i <= totalPages; i++) {
         const li = document.createElement('li');
         li.className = 'page-item';
+        li.id = `page-item-${i}`; // Unique ID for each page item
         const link = document.createElement('a');
         link.className = 'page-link';
         link.href = '#';
         link.textContent = i;
+        link.title = `Go to Page ${i}`; // Tooltip for each page button
+        link.id = `page-link-${i}`; // Unique ID for each page link
         link.addEventListener('click', (event) => {
             currentPage = parseInt(event.target.textContent);
             displayFeedData(currentPage, pageSize);
@@ -155,10 +164,13 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
 
     const nextLi = document.createElement('li');
     nextLi.className = 'page-item';
+    nextLi.id = 'next-page-item'; // Unique ID for the next page item
     const nextLink = document.createElement('a');
     nextLink.className = 'page-link';
     nextLink.href = '#';
     nextLink.textContent = 'Next';
+    nextLink.title = 'Go to Next Page'; // Tooltip for next page button
+    nextLink.id = 'next-page-link'; // Unique ID for the next page link
     nextLink.addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage++;
