@@ -65,7 +65,7 @@ const createTaskTable = (tasks) => {
 
     // Create table header
     const headerRow = document.createElement('tr');
-    const headers = ['Priority', 'Category', 'Description', 'AI Chat']; // Table headers
+    const headers = ['Priority', 'Category', 'Description', 'Target Completion Date', 'AI Chat']; // Table headers
     headers.forEach(headerText => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
@@ -80,14 +80,12 @@ const createTaskTable = (tasks) => {
     tasks.forEach(task => {
         const row = document.createElement('tr');
 
-        // Create priority icon cell
+        // Create priority badge cell
         const priorityCell = document.createElement('td');
-        const priorityIcon = document.createElement('img');
-        priorityIcon.src = `priority-${task.priority}.png`; // Assuming priority images are named as priority-<priority>.png
-        priorityIcon.alt = `Priority: ${task.priority}`;
-        priorityIcon.setAttribute('aria-label', `Priority: ${task.priority}`);
-        priorityIcon.className = 'priority-icon';
-        priorityCell.appendChild(priorityIcon);
+        const priorityBadge = document.createElement('span');
+        priorityBadge.textContent = task.priority;
+        priorityBadge.className = 'badge bg-primary';
+        priorityCell.appendChild(priorityBadge);
         row.appendChild(priorityCell);
 
         // Create category cell
@@ -103,6 +101,11 @@ const createTaskTable = (tasks) => {
         taskDescription.textContent = task.description;
         descriptionCell.appendChild(taskDescription);
         row.appendChild(descriptionCell);
+
+        // Create target completion date cell
+        const completionDateCell = document.createElement('td');
+        completionDateCell.textContent = task.target_date_and_time_completion;
+        row.appendChild(completionDateCell);
 
         // Create AI chat button cell
         const aiChatCell = document.createElement('td');
@@ -191,7 +194,6 @@ const renderPagination = (totalTasks) => {
         document.getElementById('main-content').insertAdjacentElement('afterend', paginationContainer);
     }
 };
-
 
 const paginate = (array, currentPage, pageSize) => {
     const startIndex = (currentPage - 1) * pageSize;
