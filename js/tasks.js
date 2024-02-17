@@ -132,6 +132,8 @@ const createTaskTable = (tasks) => {
         aiChatButton.className = 'btn btn-primary ai-chat-button'; // Added class for styling
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
+        aiChatButton.setAttribute('data-bs-toggle', 'modal');
+        aiChatButton.setAttribute('data-bs-target', '#chatModal');
         aiChatButton.id = `ai-chat-button-${index + 1}`; // Unique ID for each AI chat button cell
         aiChatCell.appendChild(aiChatButton);
         row.appendChild(aiChatCell);
