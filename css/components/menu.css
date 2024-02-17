@@ -5,14 +5,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
 }
 
-.dropdown-item {
+.menu-dropdown-item {
     font-size: inherit;
     color: var(--neutral-color); /* Ensure text color contrasts well against white */
     background-color: #fff; /* Dropdown item background matches the menu background */
     border-bottom: 1px solid var(--accent-color); /* Separates the items visually */
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
+.menu-dropdown-item:hover, .menu-dropdown-item:focus {
     color: #fff; /* Text color for hovered or focused items */
     background-color: var(--neutral-color); /* Ensure a strong contrast for visibility */
 }

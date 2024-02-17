@@ -35,10 +35,10 @@ export function loadMenu(db, menuId) {
                     </button>
                     <div class="dropdown-menu" aria-labelledby="${optionId}">`;
 
-            // Use class 'dropdown-item' for each item styling, including tooltip (title) directly from data
+            // Use class 'menu-dropdown-item' specifically for menu items, including tooltip (title) directly from data
             option.items.forEach((item, itemIndex) => {
                 const itemId = `${optionId}-item-${itemIndex}`;
-                menuHtml += `<a id="${itemId}" class="dropdown-item" href="#" data-option="${item.name}" title="${item.tooltip}">${item.name}</a>`; // Use tooltip from data, provide unique id
+                menuHtml += `<a id="${itemId}" class="dropdown-item menu-dropdown-item" href="#" data-option="${item.name}" title="${item.tooltip}">${item.name}</a>`; // Use tooltip from data, provide unique id
             });
 
             menuHtml += '</div></div>';
@@ -47,9 +47,9 @@ export function loadMenu(db, menuId) {
         menuHtml += '</nav>';
         document.getElementById('menu-container').innerHTML = menuHtml;
 
-        // Add click event listeners to all dropdown items after rendering to the DOM
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
+        // Add click event listeners to menu dropdown items after rendering to the DOM
+        const menuDropdownItems = document.querySelectorAll('.menu-dropdown-item');
+        menuDropdownItems.forEach(item => {
             item.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent default anchor behavior
                 const optionName = this.getAttribute('data-option');
