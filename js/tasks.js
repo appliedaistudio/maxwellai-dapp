@@ -11,13 +11,15 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
+let currentPage = 1; // Define currentPage globally
+
 document.addEventListener('DOMContentLoaded', () => {
     isLoggedIn(localDb).then(loggedIn => {
         if (!loggedIn) {
             window.location.replace('./login.html');
         } else {
             console.log('User is logged in. Initializing DB and UI components...');
-            // Proceed with initializing other parts of the database
+            // Proceed with initializing other parts of the database and UI components
             initializeAllDataBaseParts();
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
@@ -29,15 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const initializeAllDataBaseParts = () => {
-    // Initializing different parts of the database as per provided initialization functions
     initializeUsers(localDb);
     initializeMenu(localDb);
     initializeMainContent(localDb);
     initializeNotifications(localDb);
 };
 
-const PAGE_SIZE = 5; // Number of tasks per page
-let currentPage = 1;
+let PAGE_SIZE = 5; // Number of tasks per page
 
 const loadTasks = async () => {
     try {
@@ -53,52 +53,72 @@ const renderTasks = (tasks) => {
     tasksContainer.innerHTML = ''; // Clear existing content
 
     const paginatedTasks = paginate(tasks, currentPage, PAGE_SIZE);
-
-    const accordionDiv = document.createElement('div');
-    accordionDiv.id = 'tasksAccordion';
-    accordionDiv.className = 'accordion';
-
-    paginatedTasks.forEach((task, index) => {
-        const cardDiv = document.createElement('div');
-        cardDiv.className = 'card';
-
-        const cardHeaderDiv = document.createElement('div');
-        cardHeaderDiv.className = 'card-header';
-        cardHeaderDiv.id = `heading-${index}`;
-
-        const headerLink = document.createElement('button');
-        headerLink.className = 'btn btn-link btn-block text-left';
-        headerLink.setAttribute('data-toggle', 'collapse');
-        headerLink.setAttribute('data-target', `#collapse-${index}`);
-        headerLink.setAttribute('aria-expanded', 'true');
-        headerLink.setAttribute('aria-controls', `collapse-${index}`);
-        headerLink.innerHTML = `${task.category}: ${task.description} <span class="badge badge-secondary">${task.priority}</span>`;
-
-        cardHeaderDiv.appendChild(headerLink);
-
-        const collapseDiv = document.createElement('div');
-        collapseDiv.id = `collapse-${index}`;
-        collapseDiv.className = 'collapse';
-        collapseDiv.setAttribute('aria-labelledby', `heading-${index}`);
-        collapseDiv.setAttribute('data-parent', '#tasksAccordion');
-
-        const cardBodyDiv = document.createElement('div');
-        cardBodyDiv.className = 'card-body';
-        cardBodyDiv.innerHTML = `
-            <p>Status: ${task.status}</p>
-            <p>Start: ${task.date_and_time_start}</p>
-            <p>Completion Target: ${task.target_date_and_time_completion}</p>
-        `;
-
-        collapseDiv.appendChild(cardBodyDiv);
-        cardDiv.appendChild(cardHeaderDiv);
-        cardDiv.appendChild(collapseDiv);
-        accordionDiv.appendChild(cardDiv);
-    });
-
-    tasksContainer.appendChild(accordionDiv);
+    const table = createTaskTable(paginatedTasks);
+    tasksContainer.appendChild(table);
 
     renderPagination(tasks.length);
+};
+
+const createTaskTable = (tasks) => {
+    const table = document.createElement('table');
+    table.className = 'table';
+
+    // Create table header
+    const headerRow = document.createElement('tr');
+    const headers = ['Priority', 'Category', 'Description', 'AI Chat']; // Table headers
+    headers.forEach(headerText => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+    });
+    const header = document.createElement('thead');
+    header.appendChild(headerRow);
+    table.appendChild(header);
+
+    // Create table body
+    const body = document.createElement('tbody');
+    tasks.forEach(task => {
+        const row = document.createElement('tr');
+
+        // Create priority icon cell
+        const priorityCell = document.createElement('td');
+        const priorityIcon = document.createElement('img');
+        priorityIcon.src = `priority-${task.priority}.png`; // Assuming priority images are named as priority-<priority>.png
+        priorityIcon.alt = `Priority: ${task.priority}`;
+        priorityIcon.setAttribute('aria-label', `Priority: ${task.priority}`);
+        priorityIcon.className = 'priority-icon';
+        priorityCell.appendChild(priorityIcon);
+        row.appendChild(priorityCell);
+
+        // Create category cell
+        const categoryCell = document.createElement('td');
+        const categoryTitle = document.createElement('h5');
+        categoryTitle.textContent = task.category;
+        categoryCell.appendChild(categoryTitle);
+        row.appendChild(categoryCell);
+
+        // Create description cell
+        const descriptionCell = document.createElement('td');
+        const taskDescription = document.createElement('p');
+        taskDescription.textContent = task.description;
+        descriptionCell.appendChild(taskDescription);
+        row.appendChild(descriptionCell);
+
+        // Create AI chat button cell
+        const aiChatCell = document.createElement('td');
+        const aiChatButton = document.createElement('button');
+        aiChatButton.textContent = 'AI Chat';
+        aiChatButton.className = 'btn btn-primary';
+        aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
+        aiChatCell.appendChild(aiChatButton);
+        row.appendChild(aiChatCell);
+
+        // Append row to table body
+        body.appendChild(row);
+    });
+    table.appendChild(body);
+
+    return table;
 };
 
 const renderPagination = (totalTasks) => {
@@ -123,6 +143,7 @@ const renderPagination = (totalTasks) => {
         prevLink.className = 'page-link';
         prevLink.href = '#';
         prevLink.innerHTML = 'Previous';
+        prevLink.setAttribute('aria-label', 'Go to Previous Page');
         prevLink.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -140,6 +161,7 @@ const renderPagination = (totalTasks) => {
             link.className = 'page-link';
             link.href = '#';
             link.innerHTML = i;
+            link.setAttribute('aria-label', `Go to Page ${i}`);
             link.addEventListener('click', (event) => {
                 currentPage = parseInt(event.target.innerHTML);
                 loadTasks();
@@ -155,6 +177,7 @@ const renderPagination = (totalTasks) => {
         nextLink.className = 'page-link';
         nextLink.href = '#';
         nextLink.innerHTML = 'Next';
+        nextLink.setAttribute('aria-label', 'Go to Next Page');
         nextLink.addEventListener('click', () => {
             if (currentPage < totalPages) {
                 currentPage++;
@@ -169,7 +192,23 @@ const renderPagination = (totalTasks) => {
     }
 };
 
+
 const paginate = (array, currentPage, pageSize) => {
     const startIndex = (currentPage - 1) * pageSize;
     return array.slice(startIndex, startIndex + pageSize);
 };
+
+const adjustPageSize = () => {
+    if (window.innerWidth < 768) {
+        PAGE_SIZE = 3; // Small screens like phones
+    } else if (window.innerWidth < 992) {
+        PAGE_SIZE = 5; // Medium screens like tablets
+    } else {
+        PAGE_SIZE = 6; // Large screens like computers
+    }
+
+    loadTasks();
+};
+
+adjustPageSize();
+window.addEventListener('resize', adjustPageSize);
