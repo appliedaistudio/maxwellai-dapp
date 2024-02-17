@@ -62,14 +62,16 @@ const renderTasks = (tasks) => {
 const createTaskTable = (tasks) => {
     const table = document.createElement('table');
     table.className = 'table';
+    table.id = 'task-table'; // Unique ID for the table
 
     // Create table header
     const headerRow = document.createElement('tr');
     const headers = ['Priority', 'Category', 'Description', 'Target Completion Date', 'AI Chat']; // Table headers
-    headers.forEach(headerText => {
+    headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
         headerCell.setAttribute('title', `Click to sort ${headerText.toLowerCase()} column`);
+        headerCell.id = `header-${index + 1}`; // Unique ID for each header cell
         headerRow.appendChild(headerCell);
     });
     const header = document.createElement('thead');
@@ -78,8 +80,9 @@ const createTaskTable = (tasks) => {
 
     // Create table body
     const body = document.createElement('tbody');
-    tasks.forEach(task => {
+    tasks.forEach((task, index) => {
         const row = document.createElement('tr');
+        row.id = `row-${index + 1}`; // Unique ID for each row
 
         // Create priority badge cell
         const priorityCell = document.createElement('td');
@@ -88,6 +91,7 @@ const createTaskTable = (tasks) => {
         priorityBadge.className = 'badge bg-primary';
         priorityBadge.setAttribute('title', 'Priority');
         priorityCell.appendChild(priorityBadge);
+        priorityCell.id = `priority-cell-${index + 1}`; // Unique ID for each priority cell
         row.appendChild(priorityCell);
 
         // Create category cell
@@ -96,6 +100,7 @@ const createTaskTable = (tasks) => {
         categoryTitle.textContent = task.category;
         categoryCell.appendChild(categoryTitle);
         categoryCell.setAttribute('title', 'Category');
+        categoryCell.id = `category-cell-${index + 1}`; // Unique ID for each category cell
         row.appendChild(categoryCell);
 
         // Create description cell
@@ -104,6 +109,7 @@ const createTaskTable = (tasks) => {
         taskDescription.textContent = task.description;
         descriptionCell.appendChild(taskDescription);
         descriptionCell.setAttribute('title', 'Description');
+        descriptionCell.id = `description-cell-${index + 1}`; // Unique ID for each description cell
         row.appendChild(descriptionCell);
 
         // Create target completion date cell
@@ -112,6 +118,7 @@ const createTaskTable = (tasks) => {
         const formattedCompletionDate = completionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
         completionDateCell.textContent = formattedCompletionDate;
         completionDateCell.setAttribute('title', 'Target Completion Date');
+        completionDateCell.id = `completion-date-cell-${index + 1}`; // Unique ID for each completion date cell
         row.appendChild(completionDateCell);
 
         // Create AI chat button cell
@@ -121,6 +128,7 @@ const createTaskTable = (tasks) => {
         aiChatButton.className = 'btn btn-primary';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
+        aiChatButton.id = `ai-chat-button-${index + 1}`; // Unique ID for each AI chat button cell
         aiChatCell.appendChild(aiChatButton);
         row.appendChild(aiChatCell);
 
@@ -132,7 +140,6 @@ const createTaskTable = (tasks) => {
     return table;
 };
 
-
 const renderPagination = (totalTasks) => {
     let paginationContainer = document.getElementById('pagination-container');
     if (!paginationContainer) {
@@ -141,25 +148,30 @@ const renderPagination = (totalTasks) => {
     } else {
         paginationContainer.innerHTML = ''; // Clear existing pagination
     }
+    paginationContainer.id = 'pagination-container'; // Unique ID for the pagination container
 
     const totalPages = Math.ceil(totalTasks / PAGE_SIZE);
 
     if (totalPages > 1) {
         const nav = document.createElement('nav');
         nav.setAttribute('aria-label', 'Task Pagination');
+        nav.id = 'pagination-navigation'; // Unique ID for the pagination navigation
 
         const ul = document.createElement('ul');
         ul.className = 'pagination';
+        ul.id = 'pagination-list'; // Unique ID for the pagination list
 
         // Previous button
         const prevLi = document.createElement('li');
         prevLi.className = 'page-item';
+        prevLi.id = 'prev-page-item'; // Unique ID for the previous page item
         const prevLink = document.createElement('a');
         prevLink.className = 'page-link';
         prevLink.href = '#';
         prevLink.innerHTML = 'Previous';
         prevLink.title = 'Go to Previous Page'; // Tooltip
         prevLink.setAttribute('aria-label', 'Go to Previous Page');
+        prevLink.id = 'prev-page-link'; // Unique ID for the previous page link
         prevLink.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -173,6 +185,7 @@ const renderPagination = (totalTasks) => {
         for (let i = 1; i <= totalPages; i++) {
             const li = document.createElement('li');
             li.className = 'page-item';
+            li.id = `page-item-${i}`; // Unique ID for each page item
             const link = document.createElement('a');
             link.className = 'page-link';
             link.href = '#';
@@ -189,6 +202,7 @@ const renderPagination = (totalTasks) => {
         // Next button
         const nextLi = document.createElement('li');
         nextLi.className = 'page-item';
+        nextLi.id = 'next-page-item'; // Unique ID for the next page item
         const nextLink = document.createElement('a');
         nextLink.className = 'page-link';
         nextLink.href = '#';
@@ -209,7 +223,6 @@ const renderPagination = (totalTasks) => {
         document.getElementById('main-content').insertAdjacentElement('afterend', paginationContainer);
     }
 };
-
 
 
 const paginate = (array, currentPage, pageSize) => {
