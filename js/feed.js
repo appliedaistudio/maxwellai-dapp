@@ -4,6 +4,9 @@ import { isLoggedIn } from './ui/ui-auth.js';
 import { loadMenu } from './ui/ui-menu.js';
 import { loadMainContentControls } from './ui/ui-controls.js';
 
+// Global variables for pagination
+let currentPage = 1;
+const itemsPerPage = 4; // Number of feed items per page
 
 // Construct the full remote database URL with credentials for authentication
 const remoteDbUrl = `https://${encodeURIComponent(config.remoteDbUsername)}:${encodeURIComponent(config.remoteDbPassword)}@${config.remoteDbBase}`;
@@ -43,13 +46,18 @@ function syncDatabases() {
 // Call the sync function to start the process when the app starts
 //syncDatabases();
 
-// Fetch and display feed data function
-function displayFeedData(localDb) {
+// Fetch and display feed data function with pagination
+function displayFeedData(localDb, page) {
     localDb.get('maxwell_ai_feed').then((doc) => {
         const mainContent = document.getElementById('main-content');
+        // Calculate the subset of items for the current page
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = doc.urls_to_browse.slice(start, end);
+        
+        // Generate HTML for feed items on the current page
         let cardsHtml = '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
-
-        doc.urls_to_browse.forEach((item) => {
+        pageItems.forEach((item) => {
             cardsHtml += `
                 <div class="col">
                     <div class="card h-100">
@@ -66,11 +74,42 @@ function displayFeedData(localDb) {
                 </div>
             `;
         });
-
         cardsHtml += '</div>';
+        
+        // Add pagination controls
+        const totalItems = doc.urls_to_browse.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        cardsHtml += generatePaginationControls(currentPage, totalPages);
+        
         mainContent.innerHTML = cardsHtml;
+        
+        // Add click listeners to pagination buttons
+        addPaginationListeners(localDb);
     }).catch((err) => {
         console.error('Error loading feed data:', err);
+    });
+}
+
+// Function to generate pagination controls
+function generatePaginationControls(currentPage, totalPages) {
+    let controlsHtml = '<nav aria-label="Page navigation example"><ul class="pagination justify-content-center">';
+    for (let i = 1; i <= totalPages; i++) {
+        controlsHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+    }
+    controlsHtml += '</ul></nav>';
+    return controlsHtml;
+}
+
+// Function to add click listeners to pagination buttons
+function addPaginationListeners(localDb) {
+    const paginationLinks = document.querySelectorAll('.pagination a.page-link');
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            displayFeedData(localDb, page);
+        });
     });
 }
 
@@ -85,9 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('A user is currently logged in.');
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
-
-            // Call the function to display feed data
-            displayFeedData(localDb);
+            // Call the function to display feed data with pagination
+            displayFeedData(localDb, currentPage);
         }
     }).catch(err => {
         console.error('Error while checking if user is logged in:', err);
