@@ -69,6 +69,7 @@ const createTaskTable = (tasks) => {
     headers.forEach(headerText => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
+        headerCell.setAttribute('title', `Click to sort ${headerText.toLowerCase()} column`);
         headerRow.appendChild(headerCell);
     });
     const header = document.createElement('thead');
@@ -85,6 +86,7 @@ const createTaskTable = (tasks) => {
         const priorityBadge = document.createElement('span');
         priorityBadge.textContent = task.priority;
         priorityBadge.className = 'badge bg-primary';
+        priorityBadge.setAttribute('title', 'Priority');
         priorityCell.appendChild(priorityBadge);
         row.appendChild(priorityCell);
 
@@ -93,6 +95,7 @@ const createTaskTable = (tasks) => {
         const categoryTitle = document.createElement('h5');
         categoryTitle.textContent = task.category;
         categoryCell.appendChild(categoryTitle);
+        categoryCell.setAttribute('title', 'Category');
         row.appendChild(categoryCell);
 
         // Create description cell
@@ -100,6 +103,7 @@ const createTaskTable = (tasks) => {
         const taskDescription = document.createElement('p');
         taskDescription.textContent = task.description;
         descriptionCell.appendChild(taskDescription);
+        descriptionCell.setAttribute('title', 'Description');
         row.appendChild(descriptionCell);
 
         // Create target completion date cell
@@ -107,6 +111,7 @@ const createTaskTable = (tasks) => {
         const completionDate = new Date(task.target_date_and_time_completion);
         const formattedCompletionDate = completionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
         completionDateCell.textContent = formattedCompletionDate;
+        completionDateCell.setAttribute('title', 'Target Completion Date');
         row.appendChild(completionDateCell);
 
         // Create AI chat button cell
@@ -115,6 +120,7 @@ const createTaskTable = (tasks) => {
         aiChatButton.textContent = 'AI';
         aiChatButton.className = 'btn btn-primary';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
+        aiChatButton.setAttribute('title', 'Initiate AI Chat');
         aiChatCell.appendChild(aiChatButton);
         row.appendChild(aiChatCell);
 
@@ -125,6 +131,7 @@ const createTaskTable = (tasks) => {
 
     return table;
 };
+
 
 const renderPagination = (totalTasks) => {
     let paginationContainer = document.getElementById('pagination-container');
@@ -138,6 +145,9 @@ const renderPagination = (totalTasks) => {
     const totalPages = Math.ceil(totalTasks / PAGE_SIZE);
 
     if (totalPages > 1) {
+        const nav = document.createElement('nav');
+        nav.setAttribute('aria-label', 'Task Pagination');
+
         const ul = document.createElement('ul');
         ul.className = 'pagination';
 
@@ -148,6 +158,7 @@ const renderPagination = (totalTasks) => {
         prevLink.className = 'page-link';
         prevLink.href = '#';
         prevLink.innerHTML = 'Previous';
+        prevLink.title = 'Go to Previous Page'; // Tooltip
         prevLink.setAttribute('aria-label', 'Go to Previous Page');
         prevLink.addEventListener('click', () => {
             if (currentPage > 1) {
@@ -166,7 +177,7 @@ const renderPagination = (totalTasks) => {
             link.className = 'page-link';
             link.href = '#';
             link.innerHTML = i;
-            link.setAttribute('aria-label', `Go to Page ${i}`);
+            link.title = `Go to Page ${i}`; // Tooltip
             link.addEventListener('click', (event) => {
                 currentPage = parseInt(event.target.innerHTML);
                 loadTasks();
@@ -182,6 +193,7 @@ const renderPagination = (totalTasks) => {
         nextLink.className = 'page-link';
         nextLink.href = '#';
         nextLink.innerHTML = 'Next';
+        nextLink.title = 'Go to Next Page'; // Tooltip
         nextLink.setAttribute('aria-label', 'Go to Next Page');
         nextLink.addEventListener('click', () => {
             if (currentPage < totalPages) {
@@ -192,10 +204,13 @@ const renderPagination = (totalTasks) => {
         nextLi.appendChild(nextLink);
         ul.appendChild(nextLi);
 
-        paginationContainer.appendChild(ul);
+        nav.appendChild(ul);
+        paginationContainer.appendChild(nav);
         document.getElementById('main-content').insertAdjacentElement('afterend', paginationContainer);
     }
 };
+
+
 
 const paginate = (array, currentPage, pageSize) => {
     const startIndex = (currentPage - 1) * pageSize;
