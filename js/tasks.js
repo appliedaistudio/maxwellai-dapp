@@ -61,7 +61,7 @@ const renderTasks = (tasks) => {
 
 const createTaskTable = (tasks) => {
     const table = document.createElement('table');
-    table.className = 'table';
+    table.className = 'table task-table'; // Added class for styling
     table.id = 'task-table'; // Unique ID for the table
 
     // Create table header
@@ -82,13 +82,14 @@ const createTaskTable = (tasks) => {
     const body = document.createElement('tbody');
     tasks.forEach((task, index) => {
         const row = document.createElement('tr');
+        row.className = 'task-row'; // Added class for styling
         row.id = `row-${index + 1}`; // Unique ID for each row
 
         // Create priority badge cell
         const priorityCell = document.createElement('td');
         const priorityBadge = document.createElement('span');
         priorityBadge.textContent = task.priority;
-        priorityBadge.className = 'badge bg-primary';
+        priorityBadge.className = 'badge bg-primary priority-badge'; // Added class for styling
         priorityBadge.setAttribute('title', 'Priority');
         priorityCell.appendChild(priorityBadge);
         priorityCell.id = `priority-cell-${index + 1}`; // Unique ID for each priority cell
@@ -100,6 +101,7 @@ const createTaskTable = (tasks) => {
         categoryTitle.textContent = task.category;
         categoryCell.appendChild(categoryTitle);
         categoryCell.setAttribute('title', 'Category');
+        categoryCell.className = 'category-cell'; // Added class for styling
         categoryCell.id = `category-cell-${index + 1}`; // Unique ID for each category cell
         row.appendChild(categoryCell);
 
@@ -109,6 +111,7 @@ const createTaskTable = (tasks) => {
         taskDescription.textContent = task.description;
         descriptionCell.appendChild(taskDescription);
         descriptionCell.setAttribute('title', 'Description');
+        descriptionCell.className = 'description-cell'; // Added class for styling
         descriptionCell.id = `description-cell-${index + 1}`; // Unique ID for each description cell
         row.appendChild(descriptionCell);
 
@@ -118,14 +121,15 @@ const createTaskTable = (tasks) => {
         const formattedCompletionDate = completionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
         completionDateCell.textContent = formattedCompletionDate;
         completionDateCell.setAttribute('title', 'Target Completion Date');
+        completionDateCell.className = 'completion-date-cell'; // Added class for styling
         completionDateCell.id = `completion-date-cell-${index + 1}`; // Unique ID for each completion date cell
         row.appendChild(completionDateCell);
 
         // Create AI chat button cell
         const aiChatCell = document.createElement('td');
         const aiChatButton = document.createElement('button');
-        aiChatButton.textContent = 'AI';
-        aiChatButton.className = 'btn btn-primary';
+        aiChatButton.textContent = '';
+        aiChatButton.className = 'btn btn-primary ai-chat-button'; // Added class for styling
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
         aiChatButton.id = `ai-chat-button-${index + 1}`; // Unique ID for each AI chat button cell
@@ -158,15 +162,15 @@ const renderPagination = (totalTasks) => {
         nav.id = 'pagination-navigation'; // Unique ID for the pagination navigation
 
         const ul = document.createElement('ul');
-        ul.className = 'pagination';
+        ul.className = 'pagination pagination-list'; // Added class for styling
         ul.id = 'pagination-list'; // Unique ID for the pagination list
 
         // Previous button
         const prevLi = document.createElement('li');
-        prevLi.className = 'page-item';
+        prevLi.className = 'page-item prev-page-item'; // Added class for styling
         prevLi.id = 'prev-page-item'; // Unique ID for the previous page item
         const prevLink = document.createElement('a');
-        prevLink.className = 'page-link';
+        prevLink.className = 'page-link prev-page-link'; // Added class for styling
         prevLink.href = '#';
         prevLink.innerHTML = 'Previous';
         prevLink.title = 'Go to Previous Page'; // Tooltip
@@ -184,10 +188,10 @@ const renderPagination = (totalTasks) => {
         // Page buttons
         for (let i = 1; i <= totalPages; i++) {
             const li = document.createElement('li');
-            li.className = 'page-item';
+            li.className = 'page-item'; // Added class for styling
             li.id = `page-item-${i}`; // Unique ID for each page item
             const link = document.createElement('a');
-            link.className = 'page-link';
+            link.className = 'page-link page-link-item'; // Added class for styling
             link.href = '#';
             link.innerHTML = i;
             link.title = `Go to Page ${i}`; // Tooltip
@@ -201,14 +205,15 @@ const renderPagination = (totalTasks) => {
 
         // Next button
         const nextLi = document.createElement('li');
-        nextLi.className = 'page-item';
+        nextLi.className = 'page-item next-page-item'; // Added class for styling
         nextLi.id = 'next-page-item'; // Unique ID for the next page item
         const nextLink = document.createElement('a');
-        nextLink.className = 'page-link';
+        nextLink.className = 'page-link next-page-link'; // Added class for styling
         nextLink.href = '#';
         nextLink.innerHTML = 'Next';
         nextLink.title = 'Go to Next Page'; // Tooltip
         nextLink.setAttribute('aria-label', 'Go to Next Page');
+        nextLink.id = 'next-page-link'; // Unique ID for the next page link
         nextLink.addEventListener('click', () => {
             if (currentPage < totalPages) {
                 currentPage++;
