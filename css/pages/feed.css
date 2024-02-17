@@ -1,0 +1,36 @@
+/* Custom styles for cards */
+.custom-card {
+    border: 1px solid #dee2e6; /* Add your desired border style */
+}
+
+.custom-card .card-link {
+    text-decoration: none; /* Remove default underline for links */
+}
+
+.custom-card .card-link:hover {
+    text-decoration: none; /* Remove underline on hover */
+}
+
+.custom-card .card-body {
+    padding: 1rem; /* Add padding to the card body */
+}
+
+.custom-card .card-footer {
+    padding: 0.5rem 1rem; /* Add padding to the card footer */
+}
+
+/* Custom styles for card columns */
+.custom-card-col {
+    margin-bottom: 1rem; /* Add margin between card columns */
+}
+
+/* Custom styles for review badge */
+.custom-review-badge {
+    font-size: 0.9rem; /* Adjust font size of the badge */
+}
+
+/* Custom styles for AI chat button */
+.custom-ai-chat-button {
+    font-size: 0.9rem; /* Adjust font size of the button */
+    margin-left: auto; /* Align button to the right within the card footer */
+}

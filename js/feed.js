@@ -47,16 +47,17 @@ const renderFeedItems = (items, page, pageSize) => {
 
     paginatedItems.forEach((item, index) => {
         const colDiv = document.createElement('div');
-        colDiv.className = 'col';
-        
+        colDiv.className = 'col custom-card-col'; // Added custom class
+
         const card = document.createElement('div');
-        card.className = 'card h-100';
+        card.className = 'card h-100 custom-card'; // Added custom class
         card.id = `card-${startIndex + index + 1}`; // Unique ID for each card
 
         const cardLink = document.createElement('a');
         cardLink.href = item.url;
         cardLink.target = '_blank'; // Open link in a new window
         cardLink.title = item.description; // Tooltip for the card
+        cardLink.className = 'card-link'; // Added custom class
 
         const thumbnail = document.createElement('img');
         thumbnail.src = item.thumbnail_url;
@@ -66,7 +67,7 @@ const renderFeedItems = (items, page, pageSize) => {
         cardLink.appendChild(thumbnail);
 
         const cardBody = document.createElement('div');
-        cardBody.className = 'card-body';
+        cardBody.className = 'card-body custom-card-body'; // Added custom class
 
         const categoryTitle = document.createElement('h5');
         categoryTitle.className = 'card-title';
@@ -82,16 +83,16 @@ const renderFeedItems = (items, page, pageSize) => {
         card.appendChild(cardBody);
 
         const cardFooter = document.createElement('div');
-        cardFooter.className = 'card-footer d-flex justify-content-between align-items-center';
+        cardFooter.className = 'card-footer d-flex justify-content-between align-items-center custom-card-footer'; // Added custom class
 
         const reviewBadge = document.createElement('span');
-        reviewBadge.className = 'badge bg-primary';
+        reviewBadge.className = 'badge bg-primary custom-review-badge'; // Added custom class
         reviewBadge.textContent = item.review_status;
         reviewBadge.title = 'Review Status'; // Tooltip for the status badge
         cardFooter.appendChild(reviewBadge);
 
         const aiChatButton = document.createElement('button');
-        aiChatButton.className = 'btn btn-primary ai-chat-button';
+        aiChatButton.className = 'btn btn-primary ai-chat-button custom-ai-chat-button'; // Added custom class
         aiChatButton.textContent = '';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
