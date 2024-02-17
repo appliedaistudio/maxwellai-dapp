@@ -80,12 +80,21 @@ const renderFeedItems = (items, page, pageSize) => {
         card.appendChild(cardBody);
 
         const cardFooter = document.createElement('div');
-        cardFooter.className = 'card-footer';
+        cardFooter.className = 'card-footer d-flex justify-content-between align-items-center';
 
         const reviewBadge = document.createElement('span');
         reviewBadge.className = 'badge bg-primary';
         reviewBadge.textContent = item.review_status;
         cardFooter.appendChild(reviewBadge);
+
+        const aiChatButton = document.createElement('button');
+        aiChatButton.className = 'btn btn-primary ai-chat-button';
+        aiChatButton.textContent = '';
+        aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
+        aiChatButton.setAttribute('title', 'Initiate AI Chat');
+        aiChatButton.setAttribute('data-bs-toggle', 'modal');
+        aiChatButton.setAttribute('data-bs-target', '#chatModal');
+        cardFooter.appendChild(aiChatButton);
 
         card.appendChild(cardFooter);
         colDiv.appendChild(card);
@@ -96,6 +105,7 @@ const renderFeedItems = (items, page, pageSize) => {
 
     renderPagination(items.length, page, pageSize);
 };
+
 
 const renderPagination = (totalItems, currentPage, pageSize) => {
     const totalPages = Math.ceil(totalItems / pageSize);
