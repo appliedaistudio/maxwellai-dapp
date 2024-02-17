@@ -48,19 +48,47 @@ const renderFeedItems = (items, page, pageSize) => {
     paginatedItems.forEach(item => {
         const colDiv = document.createElement('div');
         colDiv.className = 'col';
-        colDiv.innerHTML = `
-            <div class="card h-100">
-                <img src="${item.thumbnail_url}" class="card-img-top" alt="${item.category}">
-                <div class="card-body">
-                    <h5 class="card-title">${item.category}</h5>
-                    <p class="card-text">${item.description}</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">${item.usefulness_description}</small>
-                </div>
-                <a href="${item.url}" class="stretched-link"></a>
-            </div>
-        `;
+        
+        const card = document.createElement('div');
+        card.className = 'card h-100';
+
+        const cardLink = document.createElement('a');
+        cardLink.href = item.url;
+        cardLink.target = '_blank'; // Open link in a new window
+
+        const thumbnail = document.createElement('img');
+        thumbnail.src = item.thumbnail_url;
+        thumbnail.className = 'card-img-top';
+        thumbnail.alt = item.description;
+        thumbnail.title = item.description; // Tooltip for the thumbnail
+        cardLink.appendChild(thumbnail);
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+
+        const categoryTitle = document.createElement('h5');
+        categoryTitle.className = 'card-title';
+        categoryTitle.textContent = item.category;
+        cardBody.appendChild(categoryTitle);
+
+        const usefulnessDescription = document.createElement('p');
+        usefulnessDescription.className = 'card-text';
+        usefulnessDescription.textContent = item.usefulness_description;
+        cardBody.appendChild(usefulnessDescription);
+
+        card.appendChild(cardLink);
+        card.appendChild(cardBody);
+
+        const cardFooter = document.createElement('div');
+        cardFooter.className = 'card-footer';
+
+        const reviewBadge = document.createElement('span');
+        reviewBadge.className = 'badge bg-primary';
+        reviewBadge.textContent = item.review_status;
+        cardFooter.appendChild(reviewBadge);
+
+        card.appendChild(cardFooter);
+        colDiv.appendChild(card);
         rowDiv.appendChild(colDiv);
     });
 
