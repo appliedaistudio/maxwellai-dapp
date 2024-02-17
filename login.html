@@ -26,6 +26,9 @@
 
     <!-- Add bcryptjs library for global availability -->
     <script src="./lib/bcrypt/js/bcrypt.min.js"></script>
+
+    <!-- Script to initialize the local database. This must be done on every page before running any UI code -->
+    <script type="module" src="./js/db/db-init.js"></script>
 </head>
 <body class="text-center">
     <div id="app-container" class="d-flex flex-column align-items-center justify-content-center vh-100">

@@ -1,9 +1,5 @@
 import config from './dapp-config.js';
 
-import { initializeUsers } from './db/db-init-users.js';
-import { initializeMenu } from './db/db-init-menu.js';
-import { initializeMainContent } from './db/db-init-main-content-controls.js';
-import { initializeNotifications } from './db/db-init-notifications.js';
 import { isLoggedIn } from './ui/ui-auth.js';
 import { loadMenu } from './ui/ui-menu.js';
 import { loadMainContentControls } from './ui/ui-controls.js';
@@ -46,12 +42,6 @@ function syncDatabases() {
 
 // Call the sync function to start the process when the app starts
 //syncDatabases();
-
-// Initialize each part of the database
-initializeUsers(localDb);
-initializeMenu(localDb);
-initializeMainContent(localDb);
-initializeNotifications(localDb);
 
 // Listener for app startup logic
 document.addEventListener('DOMContentLoaded', () => {

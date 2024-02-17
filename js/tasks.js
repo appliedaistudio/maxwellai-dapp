@@ -1,9 +1,5 @@
-// Begin with the existing imports
 import config from './dapp-config.js';
-import { initializeUsers } from './db/db-init-users.js';
-import { initializeMenu } from './db/db-init-menu.js';
-import { initializeMainContent } from './db/db-init-main-content-controls.js';
-import { initializeNotifications } from './db/db-init-notifications.js';
+
 import { isLoggedIn } from './ui/ui-auth.js';
 import { loadMenu } from './ui/ui-menu.js';
 import { loadMainContentControls } from './ui/ui-controls.js';
@@ -19,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.replace('./login.html');
         } else {
             console.log('User is logged in. Initializing DB and UI components...');
-            // Proceed with initializing other parts of the database and UI components
-            initializeAllDataBaseParts();
+
+            // Proceed with initializing UI components
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
             loadTasks();
@@ -30,14 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const initializeAllDataBaseParts = () => {
-    initializeUsers(localDb);
-    initializeMenu(localDb);
-    initializeMainContent(localDb);
-    initializeNotifications(localDb);
-};
-
-let PAGE_SIZE = 5; // Number of tasks per page
+let PAGE_SIZE = 5; // Default number of tasks per page
 
 const loadTasks = async () => {
     try {

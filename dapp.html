@@ -31,6 +31,9 @@
     <!-- External library for PouchDB. This must be done before the messaging script that uses PouchDB -->
     <script src="./lib/pouchdb/pouchdb.min.js"></script>
 
+    <!-- Script to initialize the local database. This must be done on every page before running any UI code -->
+    <script type="module" src="./js/db/db-init.js"></script>
+
 </head>
 <body class="text-center">
 
