@@ -32,8 +32,21 @@ export function loadMainContentControls(db, controlsId) {
   });
 }
 
+const openChatModal = () => {
+  const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+  chatModal.show();
+};
+
 // Function called when an icon is clicked.
 function executeControlFunction(iconName) {
-  // Provides feedback on which icon was clicked.
-  alert(`Icon clicked: ${iconName}`);
+
+  const chatModal = document.getElementById('chatModal');
+  const modalTitle = chatModal.querySelector('.modal-title');
+  const modalBody = chatModal.querySelector('.modal-body');
+
+  // Set modal title and body.
+  // Note: This will replace any existing content in the title.
+  modalTitle.textContent = `Let's Chat About ${iconName}`;
+
+  openChatModal();
 }

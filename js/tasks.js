@@ -244,7 +244,7 @@ const openChatModal = (_id, category, description) => {
     console.log("Opening chat for task:", _id, category, description); // Example usage of the passed parameters
 
     // Here you can use the _id, category, and description to adjust the modal content or behavior.
-    // For demonstration purposes, let's set these as the modal's title or part of its body content.
+    // Let's set these as the modal's title or part of its body content.
     
     const chatModal = document.getElementById('chatModal');
     const modalTitle = chatModal.querySelector('.modal-title');
