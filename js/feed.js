@@ -204,10 +204,49 @@ const openChatModal = (_id, category, description) => {
     // Note: This will replace any existing content in the title.
     modalTitle.textContent = `Let's Chat About ${category}`;
 
+    // Load the existing chat conversation
+    loadChatConversation(_id);
+
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);
     chatModalInstance.show();
 };
+
+async function loadChatConversation(conversationId) {
+    try {
+        // Fetch the feed feedback data from PouchDB
+        const feedFeedbackData = await localDb.get('maxwellai_feed_feedback');
+        
+        // Find the conversation corresponding to the given ID
+        const conversation = feedFeedbackData.browse_feedback.find(feed => feed._id === conversationId);
+        
+        if (!conversation) {
+            console.error('Conversation not found.');
+            return;
+        }
+        
+        const chatWindow = document.getElementById('chat-body');
+        chatWindow.innerHTML = '';  // Clear existing messages
+
+        // Iterate over dialogue and format the messages
+        conversation.dialogue.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message.text;
+            
+            // Apply different classes based on the sender for styling
+            messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
+
+            // Add tooltip for each message
+            messageDiv.title = message.text;
+
+            chatWindow.appendChild(messageDiv);
+        });
+
+    } catch (error) {
+        console.error('Error loading conversation:', error);
+    }
+}
+
 
 // Event listener for changing page size
 window.addEventListener('resize', () => {
