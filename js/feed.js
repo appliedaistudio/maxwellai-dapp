@@ -231,21 +231,26 @@ async function loadChatConversation(conversationId) {
         // Iterate over dialogue and format the messages
         conversation.dialogue.forEach(message => {
             const messageDiv = document.createElement('div');
-            messageDiv.textContent = message.text;
+            messageDiv.textContent = `${message.speaker}: ${message.text}`;
             
-            // Apply different classes based on the sender for styling
+            // Apply different classes based on the speaker for styling
             messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
 
             // Add tooltip for each message
             messageDiv.title = message.text;
 
             chatWindow.appendChild(messageDiv);
+            chatWindow.appendChild(document.createElement('br')); // Add line break after each message
         });
 
+        // Show the modal if not already visible
+        // Implementation depends on how your modal is being handled
+        $('#chatModal').modal('show'); // Example for Bootstrap-based modal
     } catch (error) {
         console.error('Error loading conversation:', error);
     }
 }
+
 
 
 // Event listener for changing page size
