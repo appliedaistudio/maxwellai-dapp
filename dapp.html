@@ -169,10 +169,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- Chat conversations list -->
-                        <div class="col-md-4 chat-conversations-list" style="border-right: 1px solid var(--accent-color);">
-                            <button class="chat-conversation-btn w-100 my-1" onclick="switchConversation(1)" title="Switch to Conversation 1">Conversation 1</button>
-                            <button class="chat-conversation-btn w-100 my-1" onclick="switchConversation(2)" title="Switch to Conversation 2">Conversation 2</button>
+                        <!-- Key takeaway panel -->
+                        <div class="col-md-4" id="take-away-section">
+                            <h6 class="mb-2">Take Away</h6>
+                            <div id="take-away-content">
+                                <p>This is a sample take away content. It will be dynamically overwritten later.</p>
+                            </div>
                         </div>
                         <!-- Chat window -->
                         <div class="col-md-8">
@@ -284,19 +286,6 @@
         // Function to start voice-to-text
         function startVoiceToText() {
             console.log("Voice-to-text entry started");
-        }
-
-        // Function to switch conversation
-        function switchConversation(conversationId) {
-            document.querySelectorAll('.chat-conversation-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const activeBtn = document.querySelector(`.chat-conversation-btn:nth-child(${conversationId * 2 - 1})`);
-            if (activeBtn) activeBtn.classList.add('active');
-            const chatWindowHeader = document.querySelector('.chat-window .card-header p');
-            chatWindowHeader.innerText = `Selected Conversation: ${conversationId}`;
-            const chatBody = document.querySelector('.chat-window .card-body');
-            chatBody.innerHTML = `<p>Loading conversation ${conversationId}…</p>`;
         }
     </script>
 </body>
