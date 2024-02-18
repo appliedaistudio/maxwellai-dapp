@@ -3,31 +3,16 @@
     "options": [
         {
             "_id": "Menu 1",
-            "name": "Menu 1",
+            "name": "MaxwellAI",
             "tooltip": "Explore Menu 1 options",
             "items": [
                 {
-                    "name": "Dropdown Option 1.1",
+                    "name": "Tasks: From Idea to Action",
                     "tooltip": "Perform action 1.1"
                 },
                 {
-                    "name": "Dropdown Option 1.2",
+                    "name": "Feed",
                     "tooltip": "Perform action 1.2"
-                }
-            ]
-        },
-        {
-            "_id": "Menu 2",
-            "name": "Menu 2",
-            "tooltip": "Explore Menu 2 options",
-            "items": [
-                {
-                    "name": "Dropdown Option 2.1",
-                    "tooltip": "Perform action 2.1"
-                },
-                {
-                    "name": "Dropdown Option 2.2",
-                    "tooltip": "Perform action 2.2"
                 }
             ]
         },

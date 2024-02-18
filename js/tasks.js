@@ -252,7 +252,7 @@ const openChatModal = (_id, category, description) => {
 
     // Set modal title and body.
     // Note: This will replace any existing content in the title.
-    modalTitle.textContent = `Chat About: ${category}`;
+    modalTitle.textContent = `Let's Chat About ${category}`;
 
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);
