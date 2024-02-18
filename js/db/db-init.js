@@ -7,6 +7,7 @@ import { initializeNotifications } from './db-init-notifications.js'
 import { initializeTasks } from './db-init-tasks.js';
 import { initializeFeed } from './db-init-feed.js';
 import { initializeFeedFeedback } from './db-init-feed-feedback.js';
+import { initializeTaskFeedback } from './db-init-task-feedback.js';
 
 // Construct the full remote database URL with credentials for authentication
 const remoteDbUrl = `https://${encodeURIComponent(config.remoteDbUsername)}:${encodeURIComponent(config.remoteDbPassword)}@${config.remoteDbBase}`;
@@ -23,3 +24,4 @@ initializeNotifications(localDb);
 initializeTasks(localDb);
 initializeFeed(localDb);
 initializeFeedFeedback(localDb);
+initializeTaskFeedback(localDb);

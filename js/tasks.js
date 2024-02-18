@@ -254,10 +254,52 @@ const openChatModal = (_id, category, description) => {
     // Note: This will replace any existing content in the title.
     modalTitle.textContent = `Let's Chat About ${category}`;
 
+    // Load the existing chat conversation
+    loadChatConversation(_id);
+
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);
     chatModalInstance.show();
 };
+
+async function loadChatConversation(conversationId) {
+    try {
+        // Fetch the feed feedback data from PouchDB
+        const taskFeedbackData = await localDb.get('maxwellai_task_feedback');
+        
+        // Find the conversation corresponding to the given ID
+        const conversation = taskFeedbackData.tasks_feedback.find(tasks_feedback => tasks_feedback._id === conversationId);
+        
+        if (!conversation) {
+            console.error('Conversation not found.');
+            return;
+        }
+        
+        const chatWindow = document.getElementById('chat-body');
+        chatWindow.innerHTML = '';  // Clear existing messages
+
+        // Iterate over dialogue and format the messages
+        conversation.dialogue.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${message.speaker}: ${message.text}`;
+            
+            // Apply different classes based on the speaker for styling
+            messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
+
+            // Add tooltip for each message
+            messageDiv.title = message.text;
+
+            chatWindow.appendChild(messageDiv);
+            chatWindow.appendChild(document.createElement('br')); // Add line break after each message
+        });
+
+        // Show the modal if not already visible
+        // Implementation depends on how your modal is being handled
+        $('#chatModal').modal('show'); // Example for Bootstrap-based modal
+    } catch (error) {
+        console.error('Error loading conversation:', error);
+    }
+}
 
 
 adjustPageSize();
