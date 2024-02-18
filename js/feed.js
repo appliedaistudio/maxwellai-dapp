@@ -96,8 +96,10 @@ const renderFeedItems = (items, page, pageSize) => {
         aiChatButton.textContent = '';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
-        aiChatButton.setAttribute('data-bs-toggle', 'modal');
-        aiChatButton.setAttribute('data-bs-target', '#chatModal');
+        
+        // Pass the necessary task details as arguments to openChatModal
+        aiChatButton.addEventListener('click', () => openChatModal(item._id, item.category, item.description));
+
         cardFooter.appendChild(aiChatButton);
 
         card.appendChild(cardFooter);
@@ -186,6 +188,25 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
 
     const mainContent = document.getElementById('main-content');
     mainContent.insertAdjacentElement('afterend', paginationContainer);
+};
+
+const openChatModal = (_id, category, description) => {
+    console.log("Opening chat for task:", _id, category, description); // Example usage of the passed parameters
+
+    // Here you can use the _id, category, and description to adjust the modal content or behavior.
+    // Let's set these as the modal's title or part of its body content.
+    
+    const chatModal = document.getElementById('chatModal');
+    const modalTitle = chatModal.querySelector('.modal-title');
+    const modalBody = chatModal.querySelector('.modal-body');
+
+    // Set modal title and body.
+    // Note: This will replace any existing content in the title.
+    modalTitle.textContent = `Let's Chat About ${category}`;
+
+    // Open the modal using Bootstrap's JavaScript API.
+    const chatModalInstance = new bootstrap.Modal(chatModal);
+    chatModalInstance.show();
 };
 
 // Event listener for changing page size
