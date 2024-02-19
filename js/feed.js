@@ -213,6 +213,9 @@ const openChatModal = (_id, category, description) => {
 };
 
 async function loadChatConversation(conversationId) {
+    const chatWindow = document.getElementById('chat-body');
+    chatWindow.innerHTML = '';  // Clear existing messages
+
     try {
         // Fetch the feed feedback data from PouchDB
         const feedFeedbackData = await localDb.get('maxwellai_feed_feedback');
@@ -224,9 +227,6 @@ async function loadChatConversation(conversationId) {
             console.error('Conversation not found.');
             return;
         }
-        
-        const chatWindow = document.getElementById('chat-body');
-        chatWindow.innerHTML = '';  // Clear existing messages
 
         // Iterate over dialogue and format the messages
         conversation.dialogue.forEach(message => {
