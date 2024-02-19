@@ -1,3 +1,8 @@
+import config from '../dapp-config.js';
+
+// Initialize local PouchDB instance using the provided configuration
+const localDb = new PouchDB(config.localDbName);
+
 // This function initializes UI controls after the page has loaded and PouchDB setup is complete.
 export function loadMainContentControls(db, controlsId) {
   db.get(controlsId).then(function (controlsData) {
@@ -37,6 +42,44 @@ const openChatModal = () => {
   chatModal.show();
 };
 
+// Load a stored conversation into the chat window
+async function loadChatConversation(data_name, nodeName, conversationId) {
+    
+  // Fetch the data from PouchDB
+  const data = await localDb.get(data_name);
+
+  const chatWindow = document.getElementById('chat-body');
+  chatWindow.innerHTML = '';  // Clear existing messages
+
+  try {
+      // Find the conversation corresponding to the given ID
+      const conversation = data[nodeName].find(item => item._id === conversationId);
+      
+      if (!conversation) {
+          console.error('Conversation not found.');
+          return;
+      }
+
+      // Iterate over dialogue and format the messages
+      conversation.dialogue.forEach(message => {
+          const messageDiv = document.createElement('div');
+          messageDiv.textContent = `${message.speaker}: ${message.text}`;
+          
+          // Apply different classes based on the speaker for styling
+          messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
+
+          // Add tooltip for each message
+          messageDiv.title = message.text;
+
+          chatWindow.appendChild(messageDiv);
+          chatWindow.appendChild(document.createElement('br')); // Add line break after each message
+      });
+      
+  } catch (error) {
+      console.error('Error loading conversation:', error);
+  }
+}
+
 // Function called when an icon is clicked.
 function executeControlFunction(iconName) {
 
@@ -47,6 +90,9 @@ function executeControlFunction(iconName) {
   // Set modal title and body.
   // Note: This will replace any existing content in the title.
   modalTitle.textContent = `Let's Chat About ${iconName}`;
+
+  // Load conversation data
+  loadChatConversation('maxwellai_project_feedback', 'project_feedback', 1)
 
   openChatModal();
 }
