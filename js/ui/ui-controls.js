@@ -3,6 +3,13 @@ import config from '../dapp-config.js';
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
+// Mapping icon names to conversation ids
+const iconNameToConversationIdMapping = {
+  'personal': 1,
+  'aspirational': 2,
+  'environmental': 3
+};
+
 // This function initializes UI controls after the page has loaded and PouchDB setup is complete.
 export function loadMainContentControls(db, controlsId) {
   db.get(controlsId).then(function (controlsData) {
@@ -92,7 +99,8 @@ function executeControlFunction(iconName) {
   modalTitle.textContent = `Let's Chat About ${iconName}`;
 
   // Load conversation data
-  loadChatConversation('maxwellai_project_feedback', 'project_feedback', 1)
+  const conversationId = iconNameToConversationIdMapping[iconName]
+  loadChatConversation('maxwellai_project_feedback', 'project_feedback', conversationId)
 
   openChatModal();
 }
