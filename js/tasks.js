@@ -280,6 +280,10 @@ async function loadChatConversation(data_name, nodeName, conversationId) {
             return;
         }
 
+        // Set the tooltip for the chat header to be the concatenation of all takeaway contents
+        const chatHeader = document.getElementById('chat-header');
+        chatHeader.title = `Takeaway: ${Object.values(conversation.takeaway).join('\n')}`;
+
         // Iterate over dialogue and format the messages
         conversation.dialogue.forEach(message => {
             const messageDiv = document.createElement('div');
