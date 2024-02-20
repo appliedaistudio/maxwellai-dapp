@@ -7,7 +7,7 @@
     }
     #app-content {
         max-width: 90%;  /* Adjust the maximum width to be responsive */
-        max-height: 70vh; /* Adjust the maximum height to allow for margin around the container */
+        max-height: 95vh; /* Adjust the maximum height to allow for margin around the container */
         padding: 1.5rem;  /* Adjust the padding if needed */
         overflow: auto;   /* Add a scrollbar if the content exceeds the container */
     }
@@ -22,7 +22,7 @@
     }
     #app-content {
         max-width: 90%; /* Adaptive width for smaller screens */
-        max-height: 80vh; /* Adaptive max height for smaller screens */
+        max-height: 95vh; /* Adaptive max height for smaller screens */
     }
 }
 

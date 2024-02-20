@@ -8,22 +8,51 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 const localDb = new PouchDB(config.localDbName);
 
 let currentPage = 1; // Define currentPage globally
-let itemsPerPage = 6; // Default number of items per page
+
+// Define constant mapping between page size and items per page
+const PAGE_SIZE_MAPPING = {
+    extraSmall: 2,
+    small: 4,
+    medium: 6,
+    large: 6,
+    extraLarge: 6
+};
+
+let itemsPerPage = PAGE_SIZE_MAPPING.medium; // Default number of items per page for medium screens
 
 document.addEventListener('DOMContentLoaded', () => {
-    isLoggedIn(localDb).then(loggedIn => {
-        if (!loggedIn) {
-            window.location.replace('./login.html');
-        } else {
-            console.log('User is logged in. Initializing DB and UI components...');
-            loadMenu(localDb, 'hello_world_menu');
-            loadMainContentControls(localDb, 'hello_world_controls');
-            displayFeedData(currentPage, itemsPerPage);
-        }
-    }).catch(err => {
-        console.error('Error while checking if user is logged in:', err);
-    });
+    isLoggedIn(localDb)
+        .then(loggedIn => {
+            if (!loggedIn) {
+                window.location.replace('./login.html');
+            } else {
+                console.log('User is logged in. Initializing DB and UI components...');
+                loadMenu(localDb, 'hello_world_menu');
+                loadMainContentControls(localDb, 'hello_world_controls');
+                // Get initial itemsPerPage based on screen size
+                updateItemsPerPage();
+                displayFeedData(currentPage, itemsPerPage);
+            }
+        })
+        .catch(err => {
+            console.error('Error while checking if user is logged in:', err);
+        });
 });
+
+// Function to update itemsPerPage based on screen size
+const updateItemsPerPage = () => {
+    if (window.innerWidth < 576) {
+        itemsPerPage = PAGE_SIZE_MAPPING.extraSmall; // Extra Small screens
+    } else if (window.innerWidth < 768) {
+        itemsPerPage = PAGE_SIZE_MAPPING.small; // Small screens like phones
+    } else if (window.innerWidth < 992) {
+        itemsPerPage = PAGE_SIZE_MAPPING.medium; // Medium screens like tablets
+    } else if (window.innerWidth < 1200) {
+        itemsPerPage = PAGE_SIZE_MAPPING.large; // Large screens like desktops
+    } else {
+        itemsPerPage = PAGE_SIZE_MAPPING.extraLarge; // Extra Large screens
+    }
+};
 
 const displayFeedData = async (page, pageSize) => {
     try {
@@ -43,7 +72,7 @@ const renderFeedItems = (items, page, pageSize) => {
     mainContent.innerHTML = ''; // Clear existing content
 
     const rowDiv = document.createElement('div');
-    rowDiv.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4';
+    rowDiv.className = 'row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4';
 
     paginatedItems.forEach((item, index) => {
         const colDiv = document.createElement('div');
@@ -69,11 +98,6 @@ const renderFeedItems = (items, page, pageSize) => {
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body custom-card-body'; // Added custom class
 
-        //const categoryTitle = document.createElement('h5');
-        //categoryTitle.className = 'card-title';
-        //categoryTitle.textContent = item.category;
-        //cardBody.appendChild(categoryTitle);
-
         const usefulnessDescription = document.createElement('p');
         usefulnessDescription.className = 'card-text';
         usefulnessDescription.textContent = item.usefulness_description;
@@ -96,7 +120,7 @@ const renderFeedItems = (items, page, pageSize) => {
         aiChatButton.textContent = '';
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this task');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
-        
+
         // Pass the necessary task details as arguments to openChatModal
         aiChatButton.addEventListener('click', () => openChatModal(item._id, item.category, item.description));
 
@@ -111,7 +135,6 @@ const renderFeedItems = (items, page, pageSize) => {
 
     renderPagination(items.length, page, pageSize);
 };
-
 
 const renderPagination = (totalItems, currentPage, pageSize) => {
     const totalPages = Math.ceil(totalItems / pageSize);
@@ -196,7 +219,7 @@ const openChatModal = (_id, category, description) => {
 
     // Here you can use the _id, category, and description to adjust the modal content or behavior.
     // Let's set these as the modal's title or part of its body content.
-    
+
     const chatModal = document.getElementById('chatModal');
     const modalTitle = chatModal.querySelector('.modal-title');
     const modalBody = chatModal.querySelector('.modal-body');
@@ -215,7 +238,7 @@ const openChatModal = (_id, category, description) => {
 
 // Load a stored conversation into the chat window
 async function loadChatConversation(data_name, nodeName, conversationId) {
-    
+
     // Fetch the data from PouchDB
     const data = await localDb.get(data_name);
 
@@ -225,7 +248,7 @@ async function loadChatConversation(data_name, nodeName, conversationId) {
     try {
         // Find the conversation corresponding to the given ID
         const conversation = data[nodeName].find(item => item._id === conversationId);
-        
+
         if (!conversation) {
             console.error('Conversation not found.');
             return;
@@ -239,7 +262,7 @@ async function loadChatConversation(data_name, nodeName, conversationId) {
         conversation.dialogue.forEach(message => {
             const messageDiv = document.createElement('div');
             messageDiv.textContent = `${message.speaker}: ${message.text}`;
-            
+
             // Apply different classes based on the speaker for styling
             messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
 
@@ -255,16 +278,9 @@ async function loadChatConversation(data_name, nodeName, conversationId) {
     }
 }
 
-
 // Event listener for changing page size
 window.addEventListener('resize', () => {
-    if (window.innerWidth < 768) {
-        itemsPerPage = 3; // Small screens like phones
-    } else if (window.innerWidth < 992) {
-        itemsPerPage = 5; // Medium screens like tablets
-    } else {
-        itemsPerPage = 5; // Large screens like computers
-    }
-
+    // Update itemsPerPage based on screen size
+    updateItemsPerPage();
     displayFeedData(currentPage, itemsPerPage);
 });
