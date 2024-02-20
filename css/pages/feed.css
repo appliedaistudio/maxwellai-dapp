@@ -15,6 +15,14 @@
     padding: 1rem; /* Add padding to the card body */
 }
 
+/* Custom styles for card thumbnail images */
+.custom-card-img {
+    width: 100%; /* Ensure the image fills the available horizontal space */
+    max-height: 120px; /* Set the maximum vertical height for the image */
+    object-fit: cover; /* Scale the image to cover the entire container */
+    object-position: center; /* Center the image within the container */
+}
+
 .custom-card .card-footer {
     padding: 0.5rem 1rem; /* Add padding to the card footer */
 }

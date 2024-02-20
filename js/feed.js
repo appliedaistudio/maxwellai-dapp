@@ -61,7 +61,7 @@ const renderFeedItems = (items, page, pageSize) => {
 
         const thumbnail = document.createElement('img');
         thumbnail.src = item.thumbnail_url;
-        thumbnail.className = 'card-img-top';
+        thumbnail.className = 'card-img-top custom-card-img'; // Added custom class for image styling
         thumbnail.alt = item.description;
         thumbnail.title = item.description; // Tooltip for the thumbnail
         cardLink.appendChild(thumbnail);
@@ -111,6 +111,7 @@ const renderFeedItems = (items, page, pageSize) => {
 
     renderPagination(items.length, page, pageSize);
 };
+
 
 const renderPagination = (totalItems, currentPage, pageSize) => {
     const totalPages = Math.ceil(totalItems / pageSize);
