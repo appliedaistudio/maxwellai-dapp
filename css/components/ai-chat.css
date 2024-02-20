@@ -1,6 +1,8 @@
 /* Updated ai-chat.css incorporating color variables from variables.css */
+
 .chat-window {
     border: 1px solid var(--accent-color);
+    width: 100%;
 }
 
 .chat-window .chat-body {
@@ -10,11 +12,20 @@
 
 .chat-message-input {
     resize: none;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    border-top: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-.chat-conversation-btn {
-    background-color: var(--light-color);
-    border: 1px solid var(--accent-color);
+.chat-conversation-btn,
+.chat-voice-btn,
+.chat-send-btn {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
+    border: none;
+    cursor: pointer;
 }
 
 .chat-conversation-btn:hover,
@@ -24,17 +35,48 @@
     font-weight: bold;
 }
 
-.chat-header,
-.chat-voice-btn,
-.chat-send-btn {
+.chat-header {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.chat-suggested-messages button {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
+    border: 1px solid var(--accent-color);
+    cursor: pointer;
+}
+
+.chat-suggested-messages button:hover {
+    background-color: var(--accent-color);
+    color: var(--light-color);
+}
+
+.dropdown-menu {
     background-color: var(--neutral-color);
     color: var(--light-color);
 }
 
-.chat-suggested-messages button {
-    cursor: pointer;
+.dropdown-item {
+    color: var(--light-color);
+}
+
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+}
+
+.chat-input-group {
+    border-top: 1px solid var(--accent-color);
 }
 
 .chat-input-group button {
+    background-color: var(--neutral-color);
+    color: var(--light-color);
     border: none;
+    cursor: pointer;
+}
+
+.chat-input-group button:hover {
+    background-color: var(--accent-color);
 }

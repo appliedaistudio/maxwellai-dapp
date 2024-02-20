@@ -171,46 +171,44 @@
                 <div class="modal-body">
                     <div class="row">
                         <!-- Chat window -->
-                        <div class="col-md-8">
-                            <div class="card chat-window" id="chat-window" style="border: 1px solid var(--accent-color);">
-                                <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" style="background-color: var(--neutral-color); color: var(--light-color);" id="chat-header">
-                                    <p class="mb-0 fw-bold">Selected Conversation</p>
-                                </div>
-                                <div class="card-body chat-body" id="chat-body">
-                                    
-                                </div>
-                                <!-- Chat input group -->
-                                <div class="input-group chat-input-group mb-3">
-                                    <button class="chat-voice-btn" onclick="startVoiceToText()" title="Start Voice Input">
-                                        <i class="fas fa-microphone"></i>
-                                    </button>
-                                    <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here..." style="background-color: var(--light-color); color: var(--dark-color); border-top: none; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
-                                    <button class="chat-send-btn" onclick="sendMessage()" title="Send Message">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                </div>
+                        <div class="card chat-window" id="chat-window" style="border: 1px solid var(--accent-color);">
+                            <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" style="background-color: var(--neutral-color); color: var(--light-color);" id="chat-header">
+                                <p class="mb-0 fw-bold">Selected Conversation</p>
+                            </div>
+                            <div class="card-body chat-body" id="chat-body">
+                                
+                            </div>
+                            <!-- Chat input group -->
+                            <div class="input-group chat-input-group mb-3">
+                                <button class="chat-voice-btn" onclick="startVoiceToText()" title="Start Voice Input">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here..." style="background-color: var(--light-color); color: var(--dark-color); border-top: none; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+                                <button class="chat-send-btn" onclick="sendMessage()" title="Send Message">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
 
-                                <!-- Default and suggested responses -->
-                                <div class="chat-suggested-messages">
-                                    <!-- Default responses -->
-                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Hello!')" title="Send 'Hello!'">Hello!</button>
-                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Can you help me?')" title="Send 'Can you help me?'">Can you help me?</button>
-                                    <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Thank you!')" title="Send 'Thank you!'">Thank you!</button>
-                                    <!-- Suggested responses -->
-                                    <!-- These will be dynamically loaded -->
-                                </div>
+                            <!-- Default and suggested responses -->
+                            <div class="chat-suggested-messages">
+                                <!-- Default responses -->
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Hello!')" title="Send 'Hello!'">Hello!</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Can you help me?')" title="Send 'Can you help me?'">Can you help me?</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Thank you!')" title="Send 'Thank you!'">Thank you!</button>
+                                <!-- Suggested responses -->
+                                <!-- These will be dynamically loaded -->
+                            </div>
 
-                                <!-- Dropdown for selecting different responses -->
-                                <div class="dropdown mt-3">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="responseDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: var(--neutral-color); color: var(--light-color); width: 100%;">
-                                        Choose a Different Response
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="responseDropdown">
-                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('greetings')">Greetings</a></li>
-                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('questions')">Questions</a></li>
-                                        <li><a class="dropdown-item" href="#" onclick="loadSuggestions('appreciation')">Appreciation</a></li>
-                                    </ul>
-                                </div>
+                            <!-- Dropdown for selecting different responses -->
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="responseDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: var(--neutral-color); color: var(--light-color); width: 100%;">
+                                    Choose a Different Response
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="responseDropdown">
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('greetings')">Greetings</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('questions')">Questions</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('appreciation')">Appreciation</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
