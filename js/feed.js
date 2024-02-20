@@ -8,7 +8,7 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 const localDb = new PouchDB(config.localDbName);
 
 let currentPage = 1; // Define currentPage globally
-let itemsPerPage = 4; // Default number of items per page
+let itemsPerPage = 6; // Default number of items per page
 
 document.addEventListener('DOMContentLoaded', () => {
     isLoggedIn(localDb).then(loggedIn => {
@@ -69,10 +69,10 @@ const renderFeedItems = (items, page, pageSize) => {
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body custom-card-body'; // Added custom class
 
-        const categoryTitle = document.createElement('h5');
-        categoryTitle.className = 'card-title';
-        categoryTitle.textContent = item.category;
-        cardBody.appendChild(categoryTitle);
+        //const categoryTitle = document.createElement('h5');
+        //categoryTitle.className = 'card-title';
+        //categoryTitle.textContent = item.category;
+        //cardBody.appendChild(categoryTitle);
 
         const usefulnessDescription = document.createElement('p');
         usefulnessDescription.className = 'card-text';

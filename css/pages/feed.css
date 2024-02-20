@@ -1,6 +1,8 @@
 /* Custom styles for cards */
 .custom-card {
     border: 1px solid #dee2e6; /* Add your desired border style */
+    max-width: 225px;
+    min-width: 150px;
 }
 
 .custom-card .card-link {
@@ -18,7 +20,7 @@
 /* Custom styles for card thumbnail images */
 .custom-card-img {
     width: 100%; /* Ensure the image fills the available horizontal space */
-    max-height: 120px; /* Set the maximum vertical height for the image */
+    max-height: 75px; /* Set the maximum vertical height for the image */
     object-fit: cover; /* Scale the image to cover the entire container */
     object-position: center; /* Center the image within the container */
 }
