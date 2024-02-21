@@ -6,9 +6,21 @@ const optionFunctionMappings = {
     'Logout': {
         func: logoutUser, // The function to execute
         params: [] // Parameters to pass to the function
+    },
+    'Suggested Tasks': {
+        func: navigateToScreen, // The function to execute
+        params: 'Tasks.html' // Directly provide the URL string
+    },
+    'Suggested Resources': {
+        func: navigateToScreen, // The function to execute
+        params: 'Feed.html' // Directly provide the URL string
     }
     // Add other options here as needed
 };
+
+function navigateToScreen(url) {
+    window.location.href = url; // Change the URL to navigate to the new screen
+}
 
 // Function to load menu dynamically
 export function loadMenu(db, menuId) {
@@ -64,18 +76,15 @@ export function loadMenu(db, menuId) {
 
 // Function to execute menu option based on the option name
 function executeMenuOption(db, optionName) {
-    alert(`Menu option clicked: ${optionName}`);
 
     if (optionFunctionMappings.hasOwnProperty(optionName)) {
         const mapping = optionFunctionMappings[optionName];
 
-        // Check if params is an array and if so, make a copy and unshift the db to the parameters
+        // Check if params is an array, if not, call the function directly
         if (Array.isArray(mapping.params)) {
-            const paramsWithDb = [db, ...mapping.params];
-            mapping.func(...paramsWithDb);
+            mapping.func(db, ...mapping.params);
         } else {
-            // Call the function with db as the only parameter
-            mapping.func(db);
+            mapping.func(mapping.params); // Call the function with the provided parameter
         }
     } else {
         alert(`No function found for menu option: ${optionName}`);

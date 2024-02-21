@@ -44,3 +44,8 @@
     font-size: 0.9rem; /* Adjust font size of the button */
     margin-left: auto; /* Align button to the right within the card footer */
 }
+
+.card-text {
+    color: var(--neutral-color); /* Neutral text color, assuming light background*/
+    text-align: left;
+}

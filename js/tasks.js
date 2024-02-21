@@ -55,7 +55,7 @@ const createTaskTable = (tasks) => {
 
     // Create table header
     const headerRow = document.createElement('tr');
-    const headers = ['Priority', 'Category', 'Description', 'Target Completion Date', 'AI Chat']; // Table headers
+    const headers = ['Priority', 'Category', 'Description', 'Target Completion', 'AI']; // Table headers
     headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
@@ -86,7 +86,7 @@ const createTaskTable = (tasks) => {
 
         // Create category cell
         const categoryCell = document.createElement('td');
-        const categoryTitle = document.createElement('h5');
+        const categoryTitle = document.createElement('p');
         categoryTitle.textContent = task.category;
         categoryCell.appendChild(categoryTitle);
         categoryCell.setAttribute('title', 'Category');

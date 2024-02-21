@@ -7,12 +7,12 @@
             "tooltip": "Explore Menu 1 options",
             "items": [
                 {
-                    "name": "Tasks: From Idea to Action",
-                    "tooltip": "Perform action 1.1"
+                    "name": "Suggested Tasks",
+                    "tooltip": "Open the tasks window"
                 },
                 {
-                    "name": "Feed",
-                    "tooltip": "Perform action 1.2"
+                    "name": "Suggested Resources",
+                    "tooltip": "Open the feed window"
                 }
             ]
         },
