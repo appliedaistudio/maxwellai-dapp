@@ -1,82 +1,130 @@
 /* Updated ai-chat.css incorporating color variables from variables.css */
 
+/* Styles for the close (X) icon */
+.close {
+    color: var(--light-color); /* Use the --light-color variable for the close icon */
+}
+
+/* Hover style for the close (X) icon */
+.close:hover {
+    color: var(--neutral-color); /* Change the color to the accent color on hover */
+}
+
+/* Styles for the chat window container */
 .chat-window {
-    border: 1px solid var(--accent-color);
-    width: 100%;
+    border: 1px solid var(--accent-color); /* Set border color for the chat window */
+    width: 100%; /* Ensure the chat window occupies the full width */
 }
 
+/* Styles for the chat body container */
 .chat-window .chat-body {
-    max-height: 250px;
-    overflow-y: auto;
+    max-height: 250px; /* Set maximum height for the chat body */
+    overflow-y: auto; /* Enable vertical scrolling for overflow */
 }
 
+/* Styles for AI messages */
+.ai-message {
+    background-color: var(--accent-color); /* Background color for AI messages */
+    color: var(--light-color); /* Text color for AI messages */
+    padding: 5px 10px; /* Add padding to AI messages */
+    margin: 5px; /* Add margin to AI messages */
+    border-radius: 10px; /* Add border-radius to AI messages for rounded corners */
+    float: left; /* Align AI messages to the left */
+    clear: both; /* Ensure proper alignment */
+    max-width: 80%; /* Limit the maximum width of the AI message bubble to 80% */
+}
+
+/* Styles for user messages */
+.user-message {
+    background-color: var(--neutral-color); /* Background color for user messages */
+    color: var(--light-color); /* Text color for user messages */
+    padding: 5px 10px; /* Add padding to user messages */
+    margin: 5px; /* Add margin to user messages */
+    border-radius: 10px; /* Add border-radius to user messages for rounded corners */
+    float: right; /* Align user messages to the right */
+    clear: both; /* Ensure proper alignment */
+    max-width: 80%; /* Limit the maximum width of the user message bubble to 80% */
+}
+
+/* Styles for the chat message input */
 .chat-message-input {
-    resize: none;
-    background-color: var(--light-color);
-    color: var(--dark-color);
-    border-top: none;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    resize: none; /* Disable resizing of the input field */
+    background-color: var(--light-color); /* Background color for the input field */
+    color: var(--dark-color); /* Text color for the input field */
+    border-top: none; /* Remove top border of the input field */
+    border-bottom-right-radius: 0; /* Ensure bottom-right border radius is 0 */
+    border-bottom-left-radius: 0; /* Ensure bottom-left border radius is 0 */
 }
 
+/* Styles for chat control buttons */
 .chat-conversation-btn,
 .chat-voice-btn,
 .chat-send-btn {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
-    border: none;
-    cursor: pointer;
+    background-color: var(--neutral-color); /* Background color for chat control buttons */
+    color: var(--light-color); /* Text color for chat control buttons */
+    border: none; /* Remove borders from chat control buttons */
+    cursor: pointer; /* Set cursor style to pointer for chat control buttons */
 }
 
+/* Hover styles for chat conversation button */
 .chat-conversation-btn:hover,
 .chat-conversation-btn.active {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
-    font-weight: bold;
+    background-color: var(--neutral-color); /* Hover background color for chat conversation button */
+    color: var(--light-color); /* Hover text color for chat conversation button */
+    font-weight: bold; /* Set bold font weight on hover */
 }
 
+/* Styles for the chat header */
 .chat-header {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
-    border-bottom: 1px solid var(--accent-color);
+    background-color: var(--neutral-color); /* Background color for the chat header */
+    color: var(--light-color); /* Text color for the chat header */
+    border-bottom: 1px solid var(--accent-color); /* Add bottom border to the chat header */
 }
 
+/* Styles for suggested messages */
 .chat-suggested-messages button {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
-    border: 1px solid var(--accent-color);
-    cursor: pointer;
+    background-color: var(--neutral-color); /* Background color for suggested messages buttons */
+    color: var(--light-color); /* Text color for suggested messages buttons */
+    border: 1px solid var(--accent-color); /* Add border to suggested messages buttons */
+    cursor: pointer; /* Set cursor style to pointer for suggested messages buttons */
 }
 
+/* Hover styles for suggested messages buttons */
 .chat-suggested-messages button:hover {
-    background-color: var(--accent-color);
-    color: var(--light-color);
+    background-color: var(--accent-color); /* Hover background color for suggested messages buttons */
+    color: var(--light-color); /* Hover text color for suggested messages buttons */
 }
 
+/* Styles for dropdown menu */
 .dropdown-menu {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
+    background-color: var(--neutral-color); /* Background color for dropdown menu */
+    color: var(--light-color); /* Text color for dropdown menu */
 }
 
+/* Styles for dropdown items */
 .dropdown-item {
-    color: var(--light-color);
+    color: var(--light-color); /* Text color for dropdown items */
 }
 
+/* Hover styles for dropdown items */
 .dropdown-item:hover {
-    background-color: var(--accent-color);
+    background-color: var(--accent-color); /* Hover background color for dropdown items */
 }
 
+/* Styles for chat input group */
 .chat-input-group {
-    border-top: 1px solid var(--accent-color);
+    border-top: 1px solid var(--accent-color); /* Add top border to the chat input group */
 }
 
+/* Styles for chat input group buttons */
 .chat-input-group button {
-    background-color: var(--neutral-color);
-    color: var(--light-color);
-    border: none;
-    cursor: pointer;
+    background-color: var(--neutral-color); /* Background color for chat input group buttons */
+    color: var(--light-color); /* Text color for chat input group buttons */
+    border: none; /* Remove borders from chat input group buttons */
+    cursor: pointer; /* Set cursor style to pointer for chat input group buttons */
 }
 
+/* Hover styles for chat input group buttons */
 .chat-input-group button:hover {
-    background-color: var(--accent-color);
+    background-color: var(--accent-color); /* Hover background color for chat input group buttons */
 }
