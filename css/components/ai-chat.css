@@ -95,22 +95,6 @@
     color: var(--light-color); /* Hover text color for suggested messages buttons */
 }
 
-/* Styles for dropdown menu */
-.dropdown-menu {
-    background-color: var(--neutral-color); /* Background color for dropdown menu */
-    color: var(--light-color); /* Text color for dropdown menu */
-}
-
-/* Styles for dropdown items */
-.dropdown-item {
-    color: var(--light-color); /* Text color for dropdown items */
-}
-
-/* Hover styles for dropdown items */
-.dropdown-item:hover {
-    background-color: var(--accent-color); /* Hover background color for dropdown items */
-}
-
 /* Styles for chat input group */
 .chat-input-group {
     border-top: 1px solid var(--accent-color); /* Add top border to the chat input group */
