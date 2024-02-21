@@ -150,18 +150,18 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', 'Page navigation');
     const ul = document.createElement('ul');
-    ul.className = 'pagination';
-    ul.id = 'pagination-list'; // Unique ID for the pagination list
+    ul.className = 'pagination pagination-list';
+    ul.id = 'pagination-list'; // Updated ID to match CSS selector
 
     const prevLi = document.createElement('li');
     prevLi.className = 'page-item';
-    prevLi.id = 'prev-page-item'; // Unique ID for the previous page item
+    prevLi.id = 'prev-page-item'; // Updated ID to match CSS selector
     const prevLink = document.createElement('a');
     prevLink.className = 'page-link';
     prevLink.href = '#';
     prevLink.textContent = 'Previous';
     prevLink.title = 'Go to Previous Page'; // Tooltip for previous page button
-    prevLink.id = 'prev-page-link'; // Unique ID for the previous page link
+    prevLink.id = 'prev-page-link'; // Updated ID to match CSS selector
     prevLink.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
@@ -191,13 +191,13 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
 
     const nextLi = document.createElement('li');
     nextLi.className = 'page-item';
-    nextLi.id = 'next-page-item'; // Unique ID for the next page item
+    nextLi.id = 'next-page-item'; // Updated ID to match CSS selector
     const nextLink = document.createElement('a');
     nextLink.className = 'page-link';
     nextLink.href = '#';
     nextLink.textContent = 'Next';
     nextLink.title = 'Go to Next Page'; // Tooltip for next page button
-    nextLink.id = 'next-page-link'; // Unique ID for the next page link
+    nextLink.id = 'next-page-link'; // Updated ID to match CSS selector
     nextLink.addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage++;
