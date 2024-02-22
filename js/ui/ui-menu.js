@@ -11,7 +11,7 @@ const optionFunctionMappings = {
         func: navigateToScreen, // The function to execute
         params: 'tasks.html' // Directly provide the URL string
     },
-    'Useful Resources': {
+    'Inspiration and Ideas': {
         func: navigateToScreen, // The function to execute
         params: 'feed.html' // Directly provide the URL string
     }
