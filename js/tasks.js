@@ -252,7 +252,7 @@ const openChatModal = (_id, category, description) => {
 
     // Set modal title and body.
     // Note: This will replace any existing content in the title.
-    modalTitle.textContent = `Let's Chat About ${category}`;
+    modalTitle.textContent = `We're talking about ${category}`;
     
     // Load the existing chat conversation
     loadChatConversation('maxwellai_task_feedback', 'tasks_feedback', _id);

@@ -5,9 +5,9 @@ const localDb = new PouchDB(config.localDbName);
 
 // Mapping icon names to conversation ids
 const iconNameToConversationIdMapping = {
-  'personal': 1,
-  'aspirational': 2,
-  'environmental': 3
+  'you': 1,
+  'your aspirations': 2,
+  'your environment': 3
 };
 
 // This function initializes UI controls after the page has loaded and PouchDB setup is complete.
@@ -100,7 +100,7 @@ function executeControlFunction(iconName) {
 
   // Set modal title and body.
   // Note: This will replace any existing content in the title.
-  modalTitle.textContent = `Let's Chat About ${iconName}`;
+  modalTitle.textContent = `We're talking about ${iconName}`;
 
   // Load conversation data
   const conversationId = iconNameToConversationIdMapping[iconName]
