@@ -15,6 +15,7 @@
 
 .task-table tbody tr:hover {
     background-color: var(--neutral-color-bg);
+    color: var(--light-color);
 }
 
 .priority-badge {
