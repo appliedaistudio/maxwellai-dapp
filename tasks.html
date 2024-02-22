@@ -193,9 +193,9 @@
                             <!-- Default and suggested responses -->
                             <div class="chat-suggested-messages">
                                 <!-- Default responses -->
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Hello!')" title="Send 'Hello!'">Hello!</button>
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Can you help me?')" title="Send 'Can you help me?'">Can you help me?</button>
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Thank you!')" title="Send 'Thank you!'">Thank you!</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Got new project ideas?')" title="Send 'Got new project ideas?'">Got new project ideas?</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Lets chat about projects.')" title="Send 'Let's chat about projects.'">Let's chat about projects.</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Im considering new goals for myself.')" title="Send 'I'm considering new goals for myself.'">I'm considering new goals for myself.</button>
                                 <!-- Suggested responses -->
                                 <!-- These will be dynamically loaded -->
                             </div>
@@ -206,9 +206,9 @@
                                     Choose a Different Response
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="responseDropdown">
-                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('greetings')">Greetings</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('questions')">Questions</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('appreciation')">Appreciation</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('current projects')">Current Projects</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('inspiration and ideas')">Inspiration and Ideas</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('support and feedback')">Support and Feedback</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -224,9 +224,9 @@
             // You need to implement logic to fetch suggestions based on the selected category
             // For now, let's assume we have predefined sets of suggestions for different categories
             var suggestions = {
-                'greetings': ["Hello!", "Hi!", "Good morning!"],
-                'questions': ["How can I help you?", "What do you need assistance with?", "Do you have any questions?"],
-                'appreciation': ["Thank you!", "I appreciate your help.", "That's very helpful."]
+                'current projects': ["I want to update you on my progress.", "I'd like feedback on my latest work.", "I want to talk about a challenge I'm facing"],
+                'inspiration and ideas': ["I'd like to share a new writing promtp.", "I'd like to explore a creative spark.", "I want to brainstorm on plot twists and characters."],
+                'support and feedback': ["I need some encouragement.", "I need help getting past my writers block.", "I need help staying motivated."]
             };
 
             var newSuggestions = suggestions[category];
