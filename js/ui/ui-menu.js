@@ -7,13 +7,13 @@ const optionFunctionMappings = {
         func: logoutUser, // The function to execute
         params: [] // Parameters to pass to the function
     },
-    'Suggested Tasks': {
+    'Small, Meaningful Tasks': {
         func: navigateToScreen, // The function to execute
-        params: 'Tasks.html' // Directly provide the URL string
+        params: 'tasks.html' // Directly provide the URL string
     },
-    'Suggested Resources': {
+    'Useful Resources': {
         func: navigateToScreen, // The function to execute
-        params: 'Feed.html' // Directly provide the URL string
+        params: 'feed.html' // Directly provide the URL string
     }
     // Add other options here as needed
 };

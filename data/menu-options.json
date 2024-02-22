@@ -7,12 +7,12 @@
             "tooltip": "Explore Menu 1 options",
             "items": [
                 {
-                    "name": "Suggested Tasks",
-                    "tooltip": "Open the tasks window"
+                    "name": "Small, Meaningful Tasks",
+                    "tooltip": "Your goals broken down into attainable tasks"
                 },
                 {
-                    "name": "Suggested Resources",
-                    "tooltip": "Open the feed window"
+                    "name": "Useful Resources",
+                    "tooltip": "A set of resource suggestions tailored to your goals"
                 }
             ]
         },

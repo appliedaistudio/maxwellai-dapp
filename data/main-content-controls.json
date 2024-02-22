@@ -3,21 +3,21 @@
     "icons": [
       {
         "_id": "icon1",
-        "name": "personal",
+        "name": "you",
         "iconClass": "fas fa-user",
-        "tooltip": "Talk about me and my personality"
+        "tooltip": "Let MaxwellAI get to know you."
       },
       {
         "_id": "icon2",
-        "name": "aspirational",
+        "name": "your aspirations",
         "iconClass": "fas fa-rocket",
-        "tooltip": "Talk about my projects and aspirations"
+        "tooltip": "Talk to MaxwellAI about your projects and aspirations."
       },
       {
         "_id": "icon3",
-        "name": "environmental",
+        "name": "your environment",
         "iconClass": "fa fa-home",
-        "tooltip": "Talk about what's happening around me"
+        "tooltip": "Talk to MaxwellAI about what's happening around you."
       }
     ]
   }
