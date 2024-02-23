@@ -1,0 +1,95 @@
+{
+    "_id": "hhighcliffai_maintenance_user_feedback",
+    "maintenance_user_feedback": [
+        {
+            "id": 12,
+            "time": "2024-01-27 10:00 AM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I noticed an issue with the Microwave in the inventory."},
+                {"speaker": "AI", "text": "What seems to be the problem with the Microwave?"},
+                {"speaker": "User", "text": "The purchase date for the Panasonic Microwave is incorrect; it should be 2020, not 2021."},
+                {"speaker": "AI", "text": "Thank you for pointing that out. I'll update the information for the Panasonic Microwave."},
+                {"speaker": "User", "text": "Also, it would be helpful if the AI could provide more specific maintenance recommendations for each appliance."},
+                {"speaker": "AI", "text": "Noted. I'll work on providing more detailed maintenance recommendations based on the specific appliances."},
+                {"speaker": "User", "text": "Great! Please make sure to include information about routine checks and any signs of potential issues."},
+                {"speaker": "AI", "text": "Understood. I'll include more detailed information in future maintenance recommendations."},
+                {"speaker": "User", "text": "That sounds good. I appreciate your attention to feedback."},
+                {"speaker": "AI", "text": "Thank you for your feedback. If you have any more suggestions or corrections, feel free to let me know."},
+                {"speaker": "User", "text": "Sure, will do. Thanks!"}
+            ],
+            "takeaway_inventory_update": "Update the purchase date for the Microwave to 2020.",
+            "takeaway_maintenance": "Improve maintenance recommendations to include routine checks and signs of potential issues."
+        },
+        {
+            "id": 7,
+            "time": "2024-01-27 02:30 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've noticed the Refrigerator (ID: 7) making strange noises. Any advice on maintenance?"},
+                {"speaker": "AI", "text": "Strange noises could indicate a problem. Check for loose parts or contact a technician for a thorough inspection."},
+                {"speaker": "User", "text": "Thanks for the advice. I'll look into it."},
+                {"speaker": "AI", "text": "You're welcome. Let me know if you need further assistance."}
+            ],
+            "takeaway_inventory_update": "",
+            "takeaway_maintenance": "Provide advice on addressing strange noises in the Refrigerator and suggest contacting a technician for inspection if needed."
+        },
+        {
+            "id": 10,
+            "time": "2024-01-28 09:15 AM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "The Oven (ID: 10) has been working perfectly. No issues to report."},
+                {"speaker": "AI", "text": "That's great to hear! If you ever have questions or need maintenance tips, feel free to ask."},
+                {"speaker": "User", "text": "Will do. Thanks for your help."},
+                {"speaker": "AI", "text": "You're welcome. Have a wonderful day!"}
+            ],
+            "takeaway_inventory_update": "",
+            "takeaway_maintenance": ""
+        },
+        {
+            "id": 14,
+            "time": "2024-01-29 03:45 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I have a suggestion regarding the Toaster (ID: 14) maintenance recommendation."},
+                {"speaker": "AI", "text": "Sure, what's your suggestion?"},
+                {"speaker": "User", "text": "The current recommendations are helpful, but it would be great to know how often I should clean the toaster's crumb tray."},
+                {"speaker": "AI", "text": "That's a good point. I'll make sure to include specific information about cleaning the crumb tray in future maintenance recommendations for the Toaster."},
+                {"speaker": "User", "text": "Thanks! It would make the maintenance advice even more practical."},
+                {"speaker": "AI", "text": "I appreciate your feedback. Let me know if there's anything else you'd like to suggest."},
+                {"speaker": "User", "text": "Will do. Keep up the good work!"}
+            ],
+            "takeaway_inventory_update": "",
+            "takeaway_maintenance": "Include specific information about cleaning the crumb tray in future maintenance recommendations for the Toaster (ID: 14)."
+        },
+        {
+            "id": 7,
+            "time": "2024-01-30 11:30 AM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've been using the Washing Machine (ID: 5) a lot lately. Do you have any tips for maintaining its performance?"},
+                {"speaker": "AI", "text": "Regularly clean the drum, use the right detergent, and check for any unusual noises during operation. Additionally, avoid overloading."},
+                {"speaker": "User", "text": "Thanks! I'll keep that in mind for better maintenance."},
+                {"speaker": "AI", "text": "You're welcome. If you have more questions, feel free to ask."}
+            ],
+            "takeaway_inventory_update": "",
+            "takeaway_maintenance": "Provide tips for maintaining the performance of the Washing Machine (ID: 5), including cleaning the drum, using the right detergent, and avoiding overloading."
+        }
+    ]
+}

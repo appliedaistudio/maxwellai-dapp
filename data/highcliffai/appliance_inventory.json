@@ -1,0 +1,48 @@
+{
+    "_id": "hhighcliffai_appliance_inventory",
+    "Electrical_and_Mechanical": [
+        "Air Conditioner",
+        "Dishwasher",
+        "Washing Machine",
+        "Refrigerator",
+        "Oven",
+        "Ceiling Fan",
+        "Microwave",
+        "Coffee Maker",
+        "Toaster"
+    ],
+    "appliance_inventory": {
+        "Air Conditioner": [
+            {"id": 1, "Brand": "Whirlpool", "Date_of_Purchase": 2013, "Quantity_Available": 1, "Price_Per_Unit": 800},
+            {"id": 2, "Brand": "LG", "Date_of_Purchase": 2014, "Quantity_Available": 2, "Price_Per_Unit": 750}
+        ],
+        "Dishwasher": [
+            {"id": 3, "Brand": "KitchenAid", "Date_of_Purchase": 2012, "Quantity_Available": 1, "Price_Per_Unit": 400},
+            {"id": 4, "Brand": "Bosch", "Date_of_Purchase": 2013, "Quantity_Available": 2, "Price_Per_Unit": 350}
+        ],
+        "Washing Machine": [
+            {"id": 5, "Brand": "Electrolux", "Date_of_Purchase": 2014, "Quantity_Available": 1, "Price_Per_Unit": 600},
+            {"id": 6, "Brand": "Maytag", "Date_of_Purchase": 2015, "Quantity_Available": 2, "Price_Per_Unit": 550}
+        ],
+        "Refrigerator": [
+            {"id": 7, "Brand": "Samsung", "Date_of_Purchase": 2016, "Quantity_Available": 1, "Price_Per_Unit": 900},
+            {"id": 8, "Brand": "Whirlpool", "Date_of_Purchase": 2017, "Quantity_Available": 2, "Price_Per_Unit": 850}
+        ],
+        "Oven": [
+            {"id": 9, "Brand": "GE", "Date_of_Purchase": 2018, "Quantity_Available": 1, "Price_Per_Unit": 500},
+            {"id": 10, "Brand": "KitchenAid", "Date_of_Purchase": 2019, "Quantity_Available": 2, "Price_Per_Unit": 450}
+        ],
+        "Ceiling Fan": [
+            {"id": 11, "Brand": "Hunter", "Date_of_Purchase": 2020, "Quantity_Available": 3, "Price_Per_Unit": 100}
+        ],
+        "Microwave": [
+            {"id": 12, "Brand": "Panasonic", "Date_of_Purchase": 2021, "Quantity_Available": 1, "Price_Per_Unit": 120}
+        ],
+        "Coffee Maker": [
+            {"id": 13, "Brand": "Keurig", "Date_of_Purchase": 2022, "Quantity_Available": 2, "Price_Per_Unit": 80}
+        ],
+        "Toaster": [
+            {"id": 14, "Brand": "Cuisinart", "Date_of_Purchase": 2023, "Quantity_Available": 1, "Price_Per_Unit": 50}
+        ]
+    }
+}
