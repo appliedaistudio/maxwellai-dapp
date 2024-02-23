@@ -25,3 +25,11 @@
     padding: 4px 8px; /* Add padding for better appearance */
     border-radius: 4px; /* Round the corners */
 }
+
+.category-badge {
+    margin-right: 5px;
+    color: var(--light-color); /* Use light color for badge text */
+    background-color: var(--secondary-accent-color); /* Use accent color for badge background */
+    padding: 4px 8px; /* Add padding for better appearance */
+    border-radius: 4px; /* Round the corners */
+}

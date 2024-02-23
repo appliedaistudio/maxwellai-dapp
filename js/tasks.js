@@ -134,7 +134,6 @@ const createTaskTable = (tasks) => {
     return table;
 };
 
-
 const renderPagination = (totalTasks) => {
     let paginationContainer = document.getElementById('pagination-container');
     if (!paginationContainer) {
@@ -219,7 +218,6 @@ const renderPagination = (totalTasks) => {
         document.getElementById('main-content').insertAdjacentElement('afterend', paginationContainer);
     }
 };
-
 
 const paginate = (array, currentPage, pageSize) => {
     const startIndex = (currentPage - 1) * pageSize;
