@@ -55,7 +55,7 @@ const createTaskTable = (tasks) => {
 
     // Create table header
     const headerRow = document.createElement('tr');
-    const headers = ['Priority', 'Category', 'Description', 'Target Completion', 'AI']; // Table headers
+    const headers = ['Description', 'Target Completion', 'AI']; // Table headers
     headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
@@ -74,31 +74,28 @@ const createTaskTable = (tasks) => {
         row.className = 'task-row'; // Added class for styling
         row.id = `row-${index + 1}`; // Unique ID for each row
 
-        // Create priority badge cell
-        const priorityCell = document.createElement('td');
-        const priorityBadge = document.createElement('span');
-        priorityBadge.textContent = task.priority;
-        priorityBadge.className = 'badge bg-primary priority-badge'; // Added class for styling
-        priorityBadge.setAttribute('title', 'Priority');
-        priorityCell.appendChild(priorityBadge);
-        priorityCell.id = `priority-cell-${index + 1}`; // Unique ID for each priority cell
-        row.appendChild(priorityCell);
-
-        // Create category cell
-        const categoryCell = document.createElement('td');
-        const categoryTitle = document.createElement('p');
-        categoryTitle.textContent = task.category;
-        categoryCell.appendChild(categoryTitle);
-        categoryCell.setAttribute('title', 'Category');
-        categoryCell.className = 'category-cell'; // Added class for styling
-        categoryCell.id = `category-cell-${index + 1}`; // Unique ID for each category cell
-        row.appendChild(categoryCell);
-
         // Create description cell
         const descriptionCell = document.createElement('td');
         const taskDescription = document.createElement('p');
         taskDescription.textContent = task.description;
+
+        // Create priority badge
+        const priorityBadge = document.createElement('span');
+        priorityBadge.textContent = task.priority;
+        priorityBadge.className = 'badge bg-primary priority-badge me-1'; // Added class for styling
+        priorityBadge.setAttribute('title', 'Priority');
+
+        // Create category badge
+        const categoryBadge = document.createElement('span');
+        categoryBadge.textContent = task.category;
+        categoryBadge.className = 'badge bg-secondary category-badge'; // Added class for styling
+        categoryBadge.setAttribute('title', 'Category');
+
+        // Append badges to description cell
         descriptionCell.appendChild(taskDescription);
+        descriptionCell.appendChild(priorityBadge);
+        descriptionCell.appendChild(categoryBadge);
+
         descriptionCell.setAttribute('title', 'Description');
         descriptionCell.className = 'description-cell'; // Added class for styling
         descriptionCell.id = `description-cell-${index + 1}`; // Unique ID for each description cell
@@ -136,6 +133,7 @@ const createTaskTable = (tasks) => {
 
     return table;
 };
+
 
 const renderPagination = (totalTasks) => {
     let paginationContainer = document.getElementById('pagination-container');
