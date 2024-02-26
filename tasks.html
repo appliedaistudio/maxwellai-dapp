@@ -45,33 +45,37 @@
     <!-- Registering the service worker -->
     <script type="module">
         import config from './js/dapp-config.js';
-  
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
-              console.log('Service Worker registration successful with scope:', registration.scope);
-  
-              // Ensuring service worker is controlling the page before sending a message.
-              if (navigator.serviceWorker.controller) {
-                // Sending a message to the service worker with the interval value.
-                navigator.serviceWorker.controller.postMessage({
-                  type: 'SET_INTERVAL',
-                  interval: config.notificationCheckInterval,
+    
+        // Check if service worker is already registered in local storage
+        if (!localStorage.getItem('serviceWorkerRegistered')) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                    console.log('Service Worker registration successful with scope:', registration.scope);
+                    
+                    // Sending a message to the service worker with the interval value.
+                    if (navigator.serviceWorker.controller) {
+                        // Sending a message to the service worker with the interval value.
+                        navigator.serviceWorker.controller.postMessage({
+                            type: 'SET_INTERVAL',
+                            interval: config.notificationCheckInterval,
+                        });
+                    } else {
+                        navigator.serviceWorker.ready.then((registration) => {
+                            registration.active.postMessage({
+                                type: 'SET_INTERVAL',
+                                interval: config.notificationCheckInterval,
+                            });
+                        });
+                    }
+    
+                    // Set flag indicating service worker registration
+                    localStorage.setItem('serviceWorkerRegistered', 'true');
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
                 });
-              } else {
-                navigator.serviceWorker.ready.then((registration) => {
-                  registration.active.postMessage({
-                    type: 'SET_INTERVAL',
-                    interval: config.notificationCheckInterval,
-                  });
-                });
-              }
-            }).catch(function(error) {
-              console.log('Service Worker registration failed:', error);
             });
-          });
         }
-    </script>
+    </script>    
 
     <!-- Script for requesting notification permission -->
     <script>
