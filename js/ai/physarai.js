@@ -224,9 +224,9 @@ async function formatObservation(output, schema) {
 };
 
 // Stream agent function
-async function Stream_agent(tools, prompt, outputSchema) {
-    // Enter Stream_agent function
-    log("Entering Stream_agent function", config.verbosityLevel, 1); // Log function entry with verbosity level 1
+async function PhysarAI(tools, prompt, outputSchema) {
+    // Enter PhysarAI function
+    log("Entering PhysarAI function", config.verbosityLevel, 1); // Log function entry with verbosity level 1
 
     // Check if the output schema contains required fields
     if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
@@ -311,8 +311,8 @@ async function Stream_agent(tools, prompt, outputSchema) {
         // Log the formatted final observation validation success
         log("Formatted final observation validation succeeded", config.verbosityLevel, 1); // Log validation success with verbosity level 1
 
-        // Exit Stream_agent function
-        log("Exiting Stream_agent function", config.verbosityLevel, 1); // Log function exit with verbosity level 1
+        // Exit PhysarAI function
+        log("Exiting PhysarAI function", config.verbosityLevel, 1); // Log function exit with verbosity level 1
         return formattedFinalObservation;
     } else {
         // Log validation error
@@ -327,8 +327,8 @@ async function Stream_agent(tools, prompt, outputSchema) {
     }
 };
 
-// Example usage of Stream_agent function
-async function main() {
+// Example usage of PhysarAI function
+async function testPhysarAI() {
     // Enter main function
     log("Entering main function", config.verbosityLevel, 1); // Log function entry with verbosity level 1
 
@@ -377,12 +377,11 @@ async function main() {
         "required": ["outputValue", "success"]
     };    
 
-    // Call Stream_agent function
-    const outcome = await Stream_agent(tools, prompt, outputSchema);
+    // Call PhysarAI function
+    const outcome = await PhysarAI(tools, prompt, outputSchema);
 
     // Exit main function
     log("Exiting main function", config.verbosityLevel, 1); // Log function exit with verbosity level 1
 };
 
-// Call the main function
-//main();
+export {PhysarAI, testPhysarAI}
