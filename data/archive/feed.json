@@ -1,0 +1,106 @@
+{
+  "_id": "maxwell_ai_feed",
+  "urls_to_browse": [
+    {
+      "_id": 1,
+      "url": "https://www.writersdigest.com/",
+      "description": "Resource hub for writers.",
+      "usefulness_description": "Offers writing tips and advice.",
+      "category": "Writing Resources",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/1/200"
+    },
+    {
+      "_id": 2,
+      "url": "https://www.goodreads.com/",
+      "description": "Social platform for book lovers.",
+      "usefulness_description": "Discover new books, track progress, and join discussions.",
+      "category": "Reading & Inspiration",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/2/200"
+    },
+    {
+      "_id": 3,
+      "url": "https://www.theguardian.com/books",
+      "description": "Literary news and reviews.",
+      "usefulness_description": "Covers book reviews, author interviews, and trends.",
+      "category": "Literary News & Trends",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/3/200"
+    },
+    {
+      "_id": 4,
+      "url": "https://www.masterclass.com/",
+      "description": "Online courses by experts.",
+      "usefulness_description": "Taught by renowned authors; offers valuable lessons.",
+      "category": "Online Learning",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/4/200"
+    },
+    {
+      "_id": 5,
+      "url": "https://www.biography.com/writer/edgar-allan-poe",
+      "description": "Inspiration for Gothic writers.",
+      "usefulness_description": "Explore Poe's themes, style, and techniques.",
+      "category": "Writing Inspiration",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/5/200"
+    },
+    {
+      "_id": 6,
+      "url": "https://www.poetryfoundation.org/",
+      "description": "Repository of poems and articles.",
+      "usefulness_description": "Archive of poems, articles, and interviews.",
+      "category": "Poetry",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/6/200"
+    },
+    {
+      "_id": 7,
+      "url": "https://www.reddit.com/r/writing/",
+      "description": "Community for writers' feedback.",
+      "usefulness_description": "Engage with a supportive community and share work.",
+      "category": "Community & Feedback",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/7/200"
+    },
+    {
+      "_id": 8,
+      "url": "https://www.britannica.com/",
+      "description": "Trusted source for information.",
+      "usefulness_description": "Authoritative articles for research.",
+      "category": "Research & Reference",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/8/200"
+    },
+    {
+      "_id": 9,
+      "url": "https://www.nytimes.com/section/books",
+      "description": "Literary news and reviews.",
+      "usefulness_description": "Covers literary topics and book reviews.",
+      "category": "Literary News & Trends",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/9/200"
+    },
+    {
+      "_id": 10,
+      "url": "https://www.penguinrandomhouse.com/",
+      "description": "Publisher's latest releases.",
+      "usefulness_description": "Features latest book releases and publishing news.",
+      "category": "Reading & Inspiration",
+      "review_status": "Pending",
+      "thumbnail_url": "https://picsum.photos/seed/10/200"
+    }
+  ],
+  "categories": [
+    "Writing Resources",
+    "Reading & Inspiration",
+    "Literary News & Trends",
+    "Online Learning",
+    "Community & Feedback",
+    "Poetry",
+    "Research & Reference",
+    "Writing Inspiration"
+  ],
+  "review_statuses": ["Pending", "Reviewed", "Not Suitable"]
+}

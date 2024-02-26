@@ -1,0 +1,152 @@
+{
+    "_id": "maxwell_ai_tasks",
+    "categories": ["Planning", "Research", "Writing", "Editing", "Publishing"],
+    "priorities": ["High", "Medium", "Low"],
+    "status": ["Not Started", "In Progress", "Completed", "Deferred"],
+    "tasks": [
+      {
+        "_id": 1,
+        "category": "Planning",
+        "priority": "High",
+        "date_identified": "2024-02-15",
+        "date_and_time_start": "2024-02-17T09:00:00",
+        "target_date_and_time_completion": "2024-02-25T12:00:00",
+        "status": "Not Started",
+        "description": "Create an outline for the book",
+        "dependent_tasks": [2, 3]
+      },
+      {
+        "_id": 2,
+        "category": "Research",
+        "priority": "Medium",
+        "date_identified": "2024-02-17",
+        "date_and_time_start": "2024-02-20T10:00:00",
+        "target_date_and_time_completion": "2024-03-05T15:00:00",
+        "status": "Not Started",
+        "description": "Research background information on the book's setting",
+        "dependent_tasks": [4, 5]
+      },
+      {
+        "_id": 3,
+        "category": "Writing",
+        "priority": "High",
+        "date_identified": "2024-02-25",
+        "date_and_time_start": "2024-02-27T13:00:00",
+        "target_date_and_time_completion": "2024-03-05T16:00:00",
+        "status": "Not Started",
+        "description": "Write the opening scene",
+        "dependent_tasks": [6]
+      },
+      {
+        "_id": 4,
+        "category": "Editing",
+        "priority": "Medium",
+        "date_identified": "2024-03-05",
+        "date_and_time_start": "2024-03-07T14:00:00",
+        "target_date_and_time_completion": "2024-03-10T17:00:00",
+        "status": "Not Started",
+        "description": "Proofread and revise the first chapter",
+        "dependent_tasks": [7]
+      },
+      {
+        "_id": 5,
+        "category": "Publishing",
+        "priority": "High",
+        "date_identified": "2024-03-10",
+        "date_and_time_start": "2024-03-12T11:00:00",
+        "target_date_and_time_completion": "2024-03-15T18:00:00",
+        "status": "Not Started",
+        "description": "Research potential book cover designs",
+        "dependent_tasks": [8]
+      },
+      {
+        "_id": 6,
+        "category": "Planning",
+        "priority": "Medium",
+        "date_identified": "2024-02-17",
+        "date_and_time_start": "2024-02-17T09:00:00",
+        "target_date_and_time_completion": "2024-02-17T11:00:00",
+        "status": "Completed",
+        "description": "Brainstorm possible book titles",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 7,
+        "category": "Planning",
+        "priority": "Medium",
+        "date_identified": "2024-02-17",
+        "date_and_time_start": "2024-02-18T09:00:00",
+        "target_date_and_time_completion": "2024-02-18T11:00:00",
+        "status": "Completed",
+        "description": "Outline main character traits",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 8,
+        "category": "Planning",
+        "priority": "Medium",
+        "date_identified": "2024-02-18",
+        "date_and_time_start": "2024-02-19T09:00:00",
+        "target_date_and_time_completion": "2024-02-19T11:00:00",
+        "status": "Completed",
+        "description": "Sketch the main plot points",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 9,
+        "category": "Research",
+        "priority": "Medium",
+        "date_identified": "2024-02-20",
+        "date_and_time_start": "2024-02-20T09:00:00",
+        "target_date_and_time_completion": "2024-02-20T11:00:00",
+        "status": "Completed",
+        "description": "Find articles related to the historical context of the book",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 10,
+        "category": "Research",
+        "priority": "Medium",
+        "date_identified": "2024-02-20",
+        "date_and_time_start": "2024-02-21T09:00:00",
+        "target_date_and_time_completion": "2024-02-21T11:00:00",
+        "status": "Completed",
+        "description": "Look up popular authors in the same genre",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 11,
+        "category": "Writing",
+        "priority": "High",
+        "date_identified": "2024-02-27",
+        "date_and_time_start": "2024-02-27T09:00:00",
+        "target_date_and_time_completion": "2024-02-27T11:00:00",
+        "status": "Completed",
+        "description": "Write the opening scene",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 12,
+        "category": "Editing",
+        "priority": "Medium",
+        "date_identified": "2024-03-07",
+        "date_and_time_start": "2024-03-07T09:00:00",
+        "target_date_and_time_completion": "2024-03-07T11:00:00",
+        "status": "Completed",
+        "description": "Proofread and revise the first chapter",
+        "dependent_tasks": []
+      },
+      {
+        "_id": 13,
+        "category": "Publishing",
+        "priority": "High",
+        "date_identified": "2024-03-12",
+        "date_and_time_start": "2024-03-12T09:00:00",
+        "target_date_and_time_completion": "2024-03-12T11:00:00",
+        "status": "Completed",
+        "description": "Find potential book cover designs online",
+        "dependent_tasks": []
+      }
+    ]
+  }
+  
