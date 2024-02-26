@@ -1,114 +1,173 @@
 {
     "_id": "maxwellai_feed_feedback",
     "feed_feedback": [
-      {
-        "_id": 1,
-        "time": "2024-02-15 09:30 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've reviewed the Writer's Digest website from the browse list."},
-          {"speaker": "AI", "text": "Great! What did you think about it?"},
-          {"speaker": "User", "text": "It's quite comprehensive, with a lot of useful articles and tips for writers."},
-          {"speaker": "AI", "text": "That sounds promising. Do you think it's suitable for your needs?"},
-          {"speaker": "User", "text": "Yes, definitely. I found some helpful resources that I plan to explore further."},
-          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed and useful. Anything else you'd like to discuss about the browse list?"},
-          {"speaker": "User", "text": "Not at the moment. I'll continue reviewing the other links."},
-          {"speaker": "AI", "text": "Alright. Let me know if you need further assistance or have any feedback."},
-          {"speaker": "User", "text": "Will do. Thanks!"}
-        ],
-        "takeaway": {
-          "general": "User found Writer's Digest useful. Marked as reviewed and useful."
+        {
+            "_id": 1,
+            "time": "2024-03-15 10:00 AM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've reviewed the Institute for Advanced Study website."},
+                {"speaker": "AI", "text": "What are your impressions?"},
+                {"speaker": "User", "text": "Honestly, I found the content too technical and hard to understand. It's not suitable for someone at my level."},
+                {"speaker": "AI", "text": "I see. Would you like me to suggest a different resource?"},
+                {"speaker": "User", "text": "Yes, please. Something more beginner-friendly would be appreciated."},
+                {"speaker": "AI", "text": "Understood. I'll mark it as not suitable and provide an alternative. Thank you for your feedback."},
+                {"speaker": "User", "text": "Thank you."},
+                {"speaker": "AI", "text": "You're welcome."}
+            ],
+            "takeaway": {
+                "general": "User found the Institute for Advanced Study website too technical and not suitable. Marked as not suitable. AI will suggest an alternative."
+            }
+        },
+        {
+            "_id": 2,
+            "time": "2024-03-20 02:45 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've explored the National Security Agency - Cybersecurity page."},
+                {"speaker": "AI", "text": "What are your thoughts on it?"},
+                {"speaker": "User", "text": "The NSA's cybersecurity resources are extensive and reliable. It's reassuring to have access to such authoritative information."},
+                {"speaker": "AI", "text": "That's good to hear. Do you think it will enhance your understanding of cybersecurity practices?"},
+                {"speaker": "User", "text": "Definitely. It provides a solid foundation for my research and decision-making."},
+                {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed. Let me know if there's anything else you'd like to discuss."},
+                {"speaker": "User", "text": "No, I'm good. Thanks for your help!"},
+                {"speaker": "AI", "text": "Anytime!"}
+            ],
+            "takeaway": {
+                "general": "User found the National Security Agency - Cybersecurity page valuable for cybersecurity resources. Marked as reviewed and useful."
+            }
+        },
+        {
+            "_id": 3,
+            "time": "2024-03-25 11:30 AM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've checked out the International Information System Security Certification Consortium website."},
+                {"speaker": "AI", "text": "How was your experience?"},
+                {"speaker": "User", "text": "The ISC² website offers valuable certification resources and industry insights. It's essential for anyone pursuing a career in cybersecurity."},
+                {"speaker": "AI", "text": "That sounds beneficial. Do you think it will support your certification goals?"},
+                {"speaker": "User", "text": "Absolutely. It provides valuable guidance for exam preparation and career advancement."},
+                {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Let me know if there's anything else you'd like to discuss."},
+                {"speaker": "User", "text": "No, that's all for now. Thanks for your assistance!"},
+                {"speaker": "AI", "text": "You're welcome!"}
+            ],
+            "takeaway": {
+                "general": "User found the International Information System Security Certification Consortium website valuable for certification resources. Marked as reviewed and useful."
+            }
+        },
+        {
+            "_id": 4,
+            "time": "2024-04-05 03:15 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've watched some TED Talks on Cybersecurity."},
+                {"speaker": "AI", "text": "How were they?"},
+                {"speaker": "User", "text": "The TED Talks offer insightful discussions on cybersecurity trends and innovations. They provide a fresh perspective on complex topics."},
+                {"speaker": "AI", "text": "That's interesting. Do you think they'll influence your approach to cybersecurity?"},
+                {"speaker": "User", "text": "Definitely. They've sparked new ideas and prompted me to rethink certain strategies."},
+                {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed. Let me know if you have any other feedback."},
+                {"speaker": "User", "text": "Sure thing. Thanks for your support!"},
+                {"speaker": "AI", "text": "Anytime!"}
+            ],
+            "takeaway": {
+                "general": "User found the TED Talks on Cybersecurity insightful. Marked as reviewed and useful."
+            }
+        },
+        {
+            "_id": 5,
+            "time": "2024-04-10 04:30 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've been reading articles on CSO Online - Security."},
+                {"speaker": "AI", "text": "How's the content?"},
+                {"speaker": "User", "text": "I'm disappointed with the quality of the articles. They lack depth and seem outdated."},
+                {"speaker": "AI", "text": "I understand. Would you like me to suggest a different resource for more up-to-date information?"},
+                {"speaker": "User", "text": "Yes, please. I need something more current."},
+                {"speaker": "AI", "text": "Okay, I'll mark CSO Online as not suitable and provide alternative options. Thank you for your feedback."},
+                {"speaker": "User", "text": "Thanks for understanding."},
+                {"speaker": "AI", "text": "Of course."}
+            ],
+            "takeaway": {
+                "general": "User found CSO Online - Security articles lacking depth and outdated. Marked as not suitable. AI will suggest an alternative."
+            }
         }
-      },
-      {
-        "_id": 2,
-        "time": "2024-02-20 03:15 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've looked into the Goodreads website from the browse list."},
-          {"speaker": "AI", "text": "What are your thoughts on it?"},
-          {"speaker": "User", "text": "Goodreads is amazing! I've already discovered several books that I want to add to my reading list."},
-          {"speaker": "AI", "text": "That's great to hear. Do you find it relevant to your writing goals?"},
-          {"speaker": "User", "text": "Absolutely. It helps me explore different genres and learn from other authors' works."},
-          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed and useful. Anything else you'd like to share about the browse list?"},
-          {"speaker": "User", "text": "No, that's all for now. I'll continue exploring the other links."},
-          {"speaker": "AI", "text": "Alright. Let me know if you have any further feedback or need assistance."},
-          {"speaker": "User", "text": "Sure thing. Thanks!"}
-        ],
-        "takeaway": {
-          "general": "User found Goodreads useful. Marked as reviewed and useful."
+        {
+            "_id": 6,
+            "time": "2024-04-15 12:00 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've enrolled in a course on SANS Institute - Cyber Security Training."},
+                {"speaker": "AI", "text": "How's the course so far?"},
+                {"speaker": "User", "text": "The course offers comprehensive training modules and practical exercises. It's a fantastic learning resource for cybersecurity professionals."},
+                {"speaker": "AI", "text": "That's fantastic. Do you think it will enhance your skills?"},
+                {"speaker": "User", "text": "Absolutely. It provides hands-on experience and industry-relevant knowledge."},
+                {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Let me know if there's anything else you'd like to discuss."},
+                {"speaker": "User", "text": "No, that's all. Thanks for your support!"},
+                {"speaker": "AI", "text": "Anytime!"}
+            ],
+            "takeaway": {
+                "general": "User found the SANS Institute - Cyber Security Training course valuable for skill enhancement. Marked as reviewed and useful."
+            }
+        },
+        {
+            "_id": 7,
+            "time": "2024-04-20 03:45 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've been reading articles on Dark Reading - Security."},
+                {"speaker": "AI", "text": "How's the content?"},
+                {"speaker": "User", "text": "Dark Reading offers comprehensive coverage of security-related news and analysis. It's a go-to source for staying updated in the field."},
+                {"speaker": "AI", "text": "That's good to hear. Do you find it helpful for your research?"},
+                {"speaker": "User", "text": "Definitely. It provides valuable insights for my ongoing projects."},
+                {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed. Let me know if there's anything else you'd like to discuss."},
+                {"speaker": "User", "text": "No, that's all. Thanks for your assistance!"},
+                {"speaker": "AI", "text": "You're welcome!"}
+            ],
+            "takeaway": {
+                "general": "User found Dark Reading - Security articles valuable for staying updated on security trends. Marked as reviewed and useful."
+            }
+        },
+        {
+            "_id": 8,
+            "time": "2024-04-25 04:30 PM",
+            "speakers": [
+                {"speaker": "User"},
+                {"speaker": "AI"}
+            ],
+            "dialogue": [
+                {"speaker": "User", "text": "I've been reading articles on Security Magazine."},
+                {"speaker": "AI", "text": "How's the content?"},
+                {"speaker": "User", "text": "Security Magazine provides insightful articles on cybersecurity trends and technologies. It's a valuable resource for industry professionals."},
+                {"speaker": "AI", "text": "That's good to hear. Do you think it will help you stay informed?"},
+                {"speaker": "User", "text": "Absolutely. It keeps me up-to-date with the latest developments in the field."},
+                {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Let me know if there's anything else you'd like to discuss."},
+                {"speaker": "User", "text": "No, that's all. Thanks for your support!"},
+                {"speaker": "AI", "text": "Anytime!"}
+            ],
+            "takeaway": {
+                "general": "User found Security Magazine articles valuable for staying informed about cybersecurity trends. Marked as reviewed and useful."
+            }
         }
-      },
-      {
-        "_id": 3,
-        "time": "2024-02-25 11:00 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've checked out the MasterClass website from the browse list."},
-          {"speaker": "AI", "text": "How did you find it?"},
-          {"speaker": "User", "text": "MasterClass offers some intriguing writing courses taught by renowned authors."},
-          {"speaker": "AI", "text": "Sounds promising. Do you think it's worth exploring further?"},
-          {"speaker": "User", "text": "Definitely. I'm particularly interested in the course by Margaret Atwood."},
-          {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Anything else on your mind regarding the browse list?"},
-          {"speaker": "User", "text": "No, I'm good for now. I'll keep reviewing the rest of the links."},
-          {"speaker": "AI", "text": "Okay. Feel free to reach out if you need assistance or have feedback."},
-          {"speaker": "User", "text": "Thanks. Will do!"}
-        ],
-        "takeaway": {
-          "general": "User found MasterClass intriguing, especially the course by Margaret Atwood. Marked as reviewed."
-        }
-      },
-      {
-        "_id": 4,
-        "time": "2024-03-05 02:30 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've explored the Biography.com page on Edgar Allan Poe."},
-          {"speaker": "AI", "text": "Interesting choice. What did you think?"},
-          {"speaker": "User", "text": "Learning about Poe's life and works was fascinating. It gave me insights into Gothic literature."},
-          {"speaker": "AI", "text": "That's great! Do you think it will influence your writing in any way?"},
-          {"speaker": "User", "text": "Absolutely. It's inspiring to see how Poe's experiences shaped his writing style."},
-          {"speaker": "AI", "text": "Excellent! I'll mark it as reviewed. Anything else you'd like to discuss?"},
-          {"speaker": "User", "text": "No, that covers it for now. I'll continue with the other links."},
-          {"speaker": "AI", "text": "Alright. Let me know if you need further assistance."},
-          {"speaker": "User", "text": "Thanks. Bye!"}
-        ],
-        "takeaway": {
-          "general": "User found the Biography.com page on Edgar Allan Poe inspiring. Marked as reviewed."
-        }
-      },
-      {
-        "_id": 5,
-        "time": "2024-03-10 04:00 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've reviewed the Poetry Foundation website."},
-          {"speaker": "AI", "text": "What are your thoughts on it?"},
-          {"speaker": "User", "text": "The Poetry Foundation has an extensive collection of poems and resources. It's a goldmine for poetry enthusiasts."},
-          {"speaker": "AI", "text": "That sounds valuable. Do you think it will help with your writing?"},
-          {"speaker": "User", "text": "Definitely. It provides inspiration and exposes me to different poetic styles and techniques."},
-          {"speaker": "AI", "text": "Great! I'll mark it as reviewed. Let me know if you have any more feedback."},
-          {"speaker": "User", "text": "Will do. Thanks!"}
-        ],
-        "takeaway": {
-          "general": "User found the Poetry Foundation website valuable for inspiration. Marked as reviewed."
-        }
-      }
     ]
-  }
-  
+}
