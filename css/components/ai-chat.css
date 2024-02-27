@@ -18,7 +18,7 @@
 
 /* Styles for the chat body container */
 .chat-window .chat-body {
-    max-height: 450px; /* Set maximum height for the chat body */
+    max-height: 400px; /* Set maximum height for the chat body */
     overflow-y: auto; /* Enable vertical scrolling for overflow */
 }
 

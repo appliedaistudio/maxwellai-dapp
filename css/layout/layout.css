@@ -20,7 +20,7 @@
     
     width: 100%; /* Use 100% of the container width, adjusting to the container's width */
     max-width: 800px; /* Limits the maximum width to ensure content doesn’t stretch too wide on larger screens */
-    max-height: 90vh; /* Limits the maximum height to prevent overflow of the screen height */
+    max-height: 98vh; /* Limits the maximum height to prevent overflow of the screen height */
     overflow: auto; /* Enables scrolling for the content area if the content exceeds the box size */
     
     /* Centering the content box */
