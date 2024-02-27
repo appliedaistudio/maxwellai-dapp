@@ -201,9 +201,9 @@
                             <!-- Default and suggested responses -->
                             <div class="chat-suggested-messages">
                                 <!-- Default responses -->
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Got new project ideas?')" title="Send 'Got new project ideas?'">Got new project ideas?</button>
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Lets chat about projects.')" title="Send 'Let's chat about projects.'">Let's chat about projects.</button>
-                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="sendMessage('Im considering new goals for myself.')" title="Send 'I'm considering new goals for myself.'">I'm considering new goals for myself.</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Got new project ideas?')" title="Send 'Got new project ideas?'">Got new project ideas?</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Lets chat about projects.')" title="Send 'Let's chat about projects.'">Let's chat about projects.</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Im considering new goals for myself.')" title="Send 'I'm considering new goals for myself.'">I'm considering new goals for myself.</button>
                                 <!-- Suggested responses -->
                                 <!-- These will be dynamically loaded -->
                             </div>
@@ -225,37 +225,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Function to load suggestions based on selected category
-        function loadSuggestions(category) {
-            // You need to implement logic to fetch suggestions based on the selected category
-            // For now, let's assume we have predefined sets of suggestions for different categories
-            var suggestions = {
-                'current projects': ["I want to update you on my progress.", "I'd like feedback on my latest work.", "I want to talk about a challenge I'm facing"],
-                'inspiration and ideas': ["I'd like to share a new writing promtp.", "I'd like to explore a creative spark.", "I want to brainstorm on plot twists and characters."],
-                'support and feedback': ["I need some encouragement.", "I need help getting past my writers block.", "I need help staying motivated."]
-            };
-
-            var newSuggestions = suggestions[category];
-
-            // Clear existing suggestions
-            var suggestionsContainer = document.querySelector('.chat-suggested-messages');
-            suggestionsContainer.innerHTML = '';
-
-            // Add new suggestions
-            newSuggestions.forEach(function(suggestion) {
-                var button = document.createElement('button');
-                button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
-                button.textContent = suggestion;
-                button.setAttribute('onclick', "sendMessage('" + suggestion + "')");
-                button.setAttribute('title', "Send '" + suggestion + "'");
-                suggestionsContainer.appendChild(button);
-            });
-        }
-    </script>
-
-
     
     <!-- External libraries and scripts -->
     <script src="./lib/vibrant/vibrant.min.js"></script>
@@ -274,8 +243,51 @@
     <script type="module" src="./js/ui/ui-auth.js"></script>
     <script type="module" src="./js/feed.js"></script>
 
-    <!-- JavaScript functions -->
+    <!-- AI chat app JavaScript functions -->
     <script>
+        // Function to select a suggestion and submit it
+        function selectSuggestion(suggestion) {
+            const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
+            const sendButton = document.querySelector('.chat-send-btn'); // Selecting the send message button
+            
+            // Set the suggestion text into the chat input field
+            messageInput.value = suggestion;
+
+            // Trigger a click event on the send message button
+            sendButton.click();
+        }
+
+        // Function to load suggestions based on selected category
+        function loadSuggestions(category) {
+            // You need to implement logic to fetch suggestions based on the selected category
+            // For now, let's assume we have predefined sets of suggestions for different categories
+            var suggestions = {
+                'current projects': ["I want to update you on my progress.", "I'd like feedback on my latest work.", "I want to talk about a challenge I'm facing"],
+                'inspiration and ideas': ["I'd like to share a new writing prompt.", "I'd like to explore a creative spark.", "I want to brainstorm on plot twists and characters."],
+                'support and feedback': ["I need some encouragement.", "I need help getting past my writer's block.", "I need help staying motivated."]
+            };
+
+            var newSuggestions = suggestions[category];
+
+            // Clear existing suggestions
+            var suggestionsContainer = document.querySelector('.chat-suggested-messages');
+            suggestionsContainer.innerHTML = '';
+
+            // Add new suggestions
+            newSuggestions.forEach(function(suggestion) {
+                var button = document.createElement('button');
+                button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
+                button.textContent = suggestion;
+                button.setAttribute('title', "Send '" + suggestion + "'");
+                suggestionsContainer.appendChild(button);
+
+                // Attach click event listener to each button
+                button.addEventListener('click', function() {
+                    selectSuggestion(suggestion); // Call selectSuggestion with the suggestion
+                });
+            });
+        }
+
         // Function to send a message
         function sendMessage() {
             const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
@@ -291,6 +303,9 @@
 
                 // Append the new user message element to the chat body
                 chatBody.appendChild(userMessageElement);
+
+                // Scroll to the bottom of the chat body
+                chatBody.scrollTop = chatBody.scrollHeight;
 
                 // Clear the message input field
                 messageInput.value = '';
