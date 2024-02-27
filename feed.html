@@ -277,12 +277,36 @@
     <!-- JavaScript functions -->
     <script>
         // Function to send a message
-        function sendMessage(messageText = null) {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageText || messageInput.value;
-            console.log("Message sent:", message);
-            messageInput.value = '';
+        function sendMessage() {
+            const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
+            const messageText = messageInput.value.trim(); // Get the trimmed value of the input
+
+            if (messageText !== '') { // Check if the message is not empty
+                const chatBody = document.getElementById('chat-body'); // Selecting the chat body container
+
+                // Create a new user message element
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('user-message');
+                userMessageElement.textContent = messageText;
+
+                // Append the new user message element to the chat body
+                chatBody.appendChild(userMessageElement);
+
+                // Clear the message input field
+                messageInput.value = '';
+            }
         }
+
+        // Event listener for the "Send Message" button click
+        document.querySelector('.chat-send-btn').addEventListener('click', sendMessage);
+
+        // Event listener for the Enter key press in the chat input field
+        document.querySelector('.chat-message-input').addEventListener('keypress', function(event) {
+            // Check if the Enter key is pressed
+            if (event.key === 'Enter') {
+                sendMessage(); // Call the sendMessage function
+            }
+        });
 
         // Function to start voice-to-text
         function startVoiceToText() {
