@@ -179,8 +179,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <!-- Chat window -->
-                        <div class="card chat-window" id="chat-window" style="border: 1px solid var(--accent-color);">
-                            <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" style="background-color: var(--neutral-color); color: var(--light-color);" id="chat-header">
+                        <div class="card chat-window" id="chat-window">
+                            <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" id="chat-header">
                                 <p class="mb-0 fw-bold">Hover here to see what MaxwellAI learned</p>
                             </div>
                             <div class="card-body chat-body" id="chat-body">
@@ -191,7 +191,7 @@
                                 <button class="chat-voice-btn" onclick="startVoiceToText()" title="Start Voice Input">
                                     <i class="fas fa-microphone"></i>
                                 </button>
-                                <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here..." style="background-color: var(--light-color); color: var(--dark-color); border-top: none; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+                                <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here...">
                                 <button class="chat-send-btn" onclick="sendMessage()" title="Send Message">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
