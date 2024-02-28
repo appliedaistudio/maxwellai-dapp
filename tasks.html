@@ -288,6 +288,10 @@
                 // Update conversation with the new dialogue
                 conversation.dialogue = dialogue;
                 
+                // Extract takeaway from the chat header tooltip
+                const chatHeader = document.getElementById('chat-header');
+                conversation.takeaway = { project: chatHeader.title.replace('Takeaway: ', '') };
+                
                 // Save the updated data back to PouchDB
                 await localDb.put(data);
                 
