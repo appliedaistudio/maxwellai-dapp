@@ -1,6 +1,6 @@
 {
     "_id": "maxwellai_feed_feedback",
-    "feed_feedback": [
+    "feedback": [
         {
             "_id": 1,
             "time": "2024-03-15 10:00 AM",

@@ -1,5 +1,7 @@
 import config from '../dapp-config.js';
 
+import { loadChatConversation } from './ui-ai-chat.js';
+
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
@@ -49,52 +51,6 @@ const openChatModal = () => {
   chatModal.show();
 };
 
-// Load a stored conversation into the chat window
-async function loadChatConversation(data_name, nodeName, conversationId) {
-    
-  // Fetch the data from PouchDB
-  const data = await localDb.get(data_name);
-
-  // Update hidden input fields with document ID and conversation ID
-  document.getElementById('documentId').value = data_name;
-  document.getElementById('conversationId').value = conversationId;
-
-  const chatWindow = document.getElementById('chat-body');
-  chatWindow.innerHTML = '';  // Clear existing messages
-
-  try {
-      // Find the conversation corresponding to the given ID
-      const conversation = data[nodeName].find(item => item._id === conversationId);
-      
-      if (!conversation) {
-          console.error('Conversation not found.');
-          return;
-      }
-
-      // Set the tooltip for the chat header to be the concatenation of all takeaway contents
-      const chatHeader = document.getElementById('chat-header');
-      chatHeader.title = `Takeaway: ${Object.values(conversation.takeaway).join('\n')}`;
-
-      // Iterate over dialogue and format the messages
-      conversation.dialogue.forEach(message => {
-          const messageDiv = document.createElement('div');
-          messageDiv.textContent = `${message.speaker}: ${message.text}`;
-          
-          // Apply different classes based on the speaker for styling
-          messageDiv.className = message.speaker === 'AI' ? 'ai-message' : 'user-message';
-
-          // Add tooltip for each message
-          messageDiv.title = message.text;
-
-          chatWindow.appendChild(messageDiv);
-          chatWindow.appendChild(document.createElement('br')); // Add line break after each message
-      });
-      
-  } catch (error) {
-      console.error('Error loading conversation:', error);
-  }
-}
-
 // Function called when an icon is clicked.
 function executeControlFunction(iconName) {
 
@@ -108,7 +64,7 @@ function executeControlFunction(iconName) {
 
   // Load conversation data
   const conversationId = iconNameToConversationIdMapping[iconName]
-  loadChatConversation('maxwellai_project_feedback', 'project_feedback', conversationId)
+  loadChatConversation('maxwellai_project_feedback', conversationId)
 
   openChatModal();
 }
