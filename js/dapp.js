@@ -49,6 +49,10 @@ async function loadChatConversation(data_name, nodeName, conversationId) {
     // Fetch the data from PouchDB
     const data = await localDb.get(data_name);
 
+    // Update hidden input fields with document ID and conversation ID
+    document.getElementById('documentId').value = data_name;
+    document.getElementById('conversationId').value = conversationId;
+
     const chatWindow = document.getElementById('chat-body');
     chatWindow.innerHTML = '';  // Clear existing messages
 

@@ -233,6 +233,8 @@
     <!-- External libraries and scripts -->
     <script src="./lib/vibrant/vibrant.min.js"></script>
     <script src="./lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script to define the color pallete based on the background image-->
     <script type="module">
         // Importing functions and configurations
         import { updateThemeColorsBasedOnImage } from './js/ui/ui-color-extractor.js';
@@ -243,9 +245,62 @@
                     updateThemeColorsBasedOnImage(config.backgroundImage);
         });
     </script>
+    
     <!-- Scripts for UI authentication and main application logic -->
     <script type="module" src="./js/ui/ui-auth.js"></script>
     <script type="module" src="./js/tasks.js"></script>
+
+    <!-- AI chat app JavaScript function to save the current chat conversation -->
+    <script type="module">
+        import config from './js/dapp-config.js';
+
+        // Initialize local PouchDB instance using the provided configuration
+        const localDb = new PouchDB(config.localDbName);
+
+        // Function to save the current chat conversation to the local database
+        async function saveChatConversation() {
+            try {
+                // Retrieve the document ID and conversation ID from hidden input fields
+                const documentId = document.getElementById('documentId').value;
+                const conversationId = document.getElementById('conversationId').value;
+                
+                // Fetch the data from PouchDB
+                const data = await localDb.get(documentId);
+                
+                // Find the conversation corresponding to the given conversationId
+                const conversation = data.project_feedback.find(conversation => conversation._id === parseInt(conversationId));
+                
+                if (!conversation) {
+                    console.error('Conversation not found.');
+                    return;
+                }
+                
+                // Update dialogue messages from the chat window
+                const chatWindow = document.getElementById('chat-body');
+                const dialogue = [];
+                const messageDivs = chatWindow.querySelectorAll('.user-message, .ai-message');
+                messageDivs.forEach(messageDiv => {
+                    const speaker = messageDiv.classList.contains('ai-message') ? 'AI' : 'User';
+                    const text = messageDiv.textContent.replace(`${speaker}: `, ''); // Remove speaker label
+                    dialogue.push({ speaker, text });
+                });
+                
+                // Update conversation with the new dialogue
+                conversation.dialogue = dialogue;
+                
+                // Save the updated data back to PouchDB
+                await localDb.put(data);
+                
+                console.log('Conversation saved successfully.');
+            } catch (error) {
+                console.error('Error saving conversation:', error);
+            }
+        }
+
+        // Add event listener to the modal dialog box for 'hidden.bs.modal' event
+        const chatModal = document.getElementById('chatModal');
+        chatModal.addEventListener('hidden.bs.modal', saveChatConversation);
+    </script>
 
     <!-- AI chat app JavaScript functions -->
     <script>
