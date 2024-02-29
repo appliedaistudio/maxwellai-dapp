@@ -156,9 +156,54 @@ window.sendMessage = function() {
         // Scroll to the bottom of the chat body
         chatBody.scrollTop = chatBody.scrollHeight;
 
+        // Show typing indicator for AI
+        const typingIndicator = showTypingIndicator(chatBody);
+
         // Clear the message input field
         messageInput.value = '';
+
+        // Simulate AI response after a delay
+        setTimeout(() => {
+            // Remove the typing indicator
+            chatBody.removeChild(typingIndicator);
+
+            // Dummy AI responses
+            const dummyResponses = [
+                "I'm sorry, I don't understand.",
+                "Could you please provide more context?",
+                "Interesting, tell me more."
+            ];
+
+            // Randomly select a response from the array
+            const randomIndex = Math.floor(Math.random() * dummyResponses.length);
+            const aiResponse = dummyResponses[randomIndex];
+
+            // Create a new AI message element with the selected response
+            const aiMessageElement = document.createElement('div');
+            aiMessageElement.classList.add('ai-message');
+            aiMessageElement.textContent = "AI: " + aiResponse;
+
+            // Append the new AI message element to the chat body
+            chatBody.appendChild(aiMessageElement);
+
+            // Scroll to the bottom of the chat body
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 1000); // Simulate AI typing for 1 second
     }
+}
+
+function showTypingIndicator(chatBody) {
+    const aiTypingElement = document.createElement('div');
+    aiTypingElement.classList.add('ai-message');
+    aiTypingElement.textContent = "AI is typing...";
+
+    // Append the typing indicator to the chat body
+    chatBody.appendChild(aiTypingElement);
+
+    // Scroll to the bottom of the chat body
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    return aiTypingElement; // Return the typing indicator element
 }
 
 // Function to start voice-to-text
