@@ -133,33 +133,6 @@ window.loadSuggestions = function(category) {
     });
 }
 
-// Default and suggested user responses
-const suggestedChatResponses = {
-    defaultResponses: [
-        "FOO Got new project ideas?",
-        "Let's chat about projects.",
-        "I'm considering new goals for myself."
-    ],
-    suggestedResponses: {
-        "current projects": [
-            "FOO I want to update you on my progress.", 
-            "I'd like feedback on my latest work.", 
-            "I want to talk about a challenge I'm facing"
-        ],
-        "inspiration and ideas": [
-            "I'd like to share a new writing prompt.", 
-            "I'd like to explore a creative spark.", 
-            "I want to brainstorm on plot twists and characters."
-        ],
-        "support and feedback": [
-            "I need some encouragement.", 
-            "I need help getting past my writer's block.", 
-            "I need help staying motivated."
-        ]
-    },
-    lastAIResponse: "This is the response from the AI"
-};
-
 // JSON schema for chatResponses object
 const chatResponsesSchema = {
     type: "object",
@@ -248,15 +221,44 @@ function loadSuggestedChatResponses(chatResponses) {
 
 // Function to generate AI responses
 function generateAIResponse() {
+    // Default and suggested user responses
+    const suggestedChatResponses = {
+        defaultResponses: [
+            "FOO Got new project ideas?",
+            "Let's chat about projects.",
+            "I'm considering new goals for myself."
+        ],
+        suggestedResponses: {
+            "current projects": [
+                "FOO I want to update you on my progress.", 
+                "I'd like feedback on my latest work.", 
+                "I want to talk about a challenge I'm facing"
+            ],
+            "inspiration and ideas": [
+                "I'd like to share a new writing prompt.", 
+                "I'd like to explore a creative spark.", 
+                "I want to brainstorm on plot twists and characters."
+            ],
+            "support and feedback": [
+                "I need some encouragement.", 
+                "I need help getting past my writer's block.", 
+                "I need help staying motivated."
+            ]
+        },
+        lastAIResponse: "This is the response from the AI"
+    };
+
     const dummyResponses = [
         "I'm sorry, I don't understand.",
         "Could you please provide more context?",
         "Interesting, tell me more."
     ];
 
-    // Randomly select a response from the array
+    // Randomly select a response from the array and assign it as the last AI response
     const randomIndex = Math.floor(Math.random() * dummyResponses.length);
-    return dummyResponses[randomIndex];
+    suggestedChatResponses.lastAIResponse = dummyResponses[randomIndex]
+
+    return suggestedChatResponses;
 }
 
 // Function to send a message
@@ -289,8 +291,14 @@ window.sendMessage = function() {
             // Remove the typing indicator
             chatBody.removeChild(typingIndicator);
 
+            // Extract the current conversation from the chat window
+            const extractedConversation = extractChatConversation();
+            console.log('Extracted conversation:', extractedConversation);
+
             // Generate an AI response
-            const aiResponse = generateAIResponse();
+            const suggestedChatResponses = generateAIResponse();
+            const aiResponse = suggestedChatResponses['lastAIResponse'];
+
 
             // Create a new AI message element with the selected response
             const aiMessageElement = document.createElement('div');
@@ -302,14 +310,11 @@ window.sendMessage = function() {
 
             // Scroll to the bottom of the chat body
             chatBody.scrollTop = chatBody.scrollHeight;
+
+            //Load new suggested chat responses based on the updated conversation
+            loadSuggestedChatResponses(suggestedChatResponses);
+
         }, 1000); // Simulate AI typing for 1 second
-
-        // Extract the current conversation from the chat window
-        const extractedConversation = extractChatConversation();
-        console.log('Extracted conversation:', extractedConversation);
-
-        //Load new suggested chat responses based on the updated conversation
-        loadSuggestedChatResponses(suggestedChatResponses);
     }
 }
 
@@ -386,7 +391,8 @@ function handleChatDialogOpen() {
     const extractedConversation = extractChatConversation();
     console.log('Extracted conversation:', extractedConversation);
 
-    // Load new suggested chat responses based on the updated conversation
+    // Load new ai-suggested chat responses based on the updated conversation
+    const suggestedChatResponses = generateAIResponse();
     loadSuggestedChatResponses(suggestedChatResponses);
 }
 
