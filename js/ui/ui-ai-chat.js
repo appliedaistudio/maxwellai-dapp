@@ -108,13 +108,9 @@ window.selectSuggestion = function(suggestion) {
 
 // Function to load suggestions based on selected category
 window.loadSuggestions = function(category) {
-    // You need to implement logic to fetch suggestions based on the selected category
-    // For now, let's assume we have predefined sets of suggestions for different categories
-    var suggestions = {
-        'current projects': ["I want to update you on my progress.", "I'd like feedback on my latest work.", "I want to talk about a challenge I'm facing"],
-        'inspiration and ideas': ["I'd like to share a new writing prompt.", "I'd like to explore a creative spark.", "I want to brainstorm on plot twists and characters."],
-        'support and feedback': ["I need some encouragement.", "I need help getting past my writer's block.", "I need help staying motivated."]
-    };
+    // Retrieve suggestion data from script tag
+    var suggestionDataScript = document.getElementById('suggestionData');
+    var suggestions = JSON.parse(suggestionDataScript.textContent.trim());
 
     var newSuggestions = suggestions[category];
 
@@ -135,6 +131,73 @@ window.loadSuggestions = function(category) {
             selectSuggestion(suggestion); // Call selectSuggestion with the suggestion
         });
     });
+}
+
+// Default and suggested user responses
+const suggestedChatResponses = {
+    defaultResponses: [
+        "FOOBAR Got new project ideas?",
+        "Let's chat about projects.",
+        "I'm considering new goals for myself."
+    ],
+    suggestedResponses: {
+        "current projects": [
+            "Tell me more about your current projects.",
+            "How are your current projects going?"
+        ],
+        "inspiration and ideas": [
+            "Where do you find inspiration for new projects?",
+            "How do you generate new ideas?"
+        ],
+        "support and feedback": [
+            "Do you need any support or feedback on your projects?",
+            "How can I help you with your projects?"
+        ]
+    }
+};
+
+// JSON schema for chatResponses object
+const chatResponsesSchema = {
+    type: "object",
+    properties: {
+        defaultResponses: {
+            type: "array",
+            items: { type: "string" }
+        },
+        suggestedResponses: {
+            type: "object",
+            patternProperties: {
+                ".*": {
+                    type: "array",
+                    items: { type: "string" }
+                }
+            }
+        }
+    },
+    required: ["defaultResponses", "suggestedResponses"]
+};
+
+function loadSuggestedChatResponses(chatResponses) {
+    // Clear existing suggested responses
+    const suggestedResponseContainer = document.getElementById('chat-suggested-messages');
+    suggestedResponseContainer.innerHTML = '';
+
+    // Load suggested responses
+    const suggestedResponses = chatResponses.suggestedResponses;
+    for (const category in suggestedResponses) {
+        const categoryResponses = suggestedResponses[category];
+        const categoryHeader = document.createElement('p');
+        categoryHeader.textContent = category;
+        suggestedResponseContainer.appendChild(categoryHeader);
+        categoryResponses.forEach(response => {
+            const button = document.createElement('button');
+            button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
+            button.textContent = response;
+            button.title = `Send '${response}'`;
+            button.onclick = () => sendMessage(response); // Example function to send the message
+            suggestedResponseContainer.appendChild(button);
+        });
+    }
 }
 
 // Function to send a message
@@ -189,6 +252,13 @@ window.sendMessage = function() {
             // Scroll to the bottom of the chat body
             chatBody.scrollTop = chatBody.scrollHeight;
         }, 1000); // Simulate AI typing for 1 second
+
+        // Extract the current conversation from the chat window
+        const extractedConversation = extractChatConversation();
+        console.log('Extracted conversation:', extractedConversation);
+
+        //Load new suggested chat responses based on the updated conversation
+        loadSuggestedChatResponses(suggestedChatResponses);
     }
 }
 
@@ -205,6 +275,54 @@ function showTypingIndicator(chatBody) {
 
     return aiTypingElement; // Return the typing indicator element
 }
+
+function extractChatConversation() {
+    try {
+        // Retrieve the document ID and conversation ID from hidden input fields
+        const documentId = document.getElementById('documentId').value;
+        const conversationId = document.getElementById('conversationId').value;
+        
+        if (!documentId || !conversationId) {
+            console.error('Document ID or Conversation ID is missing.');
+            return null;
+        }
+
+        // Find the chat body
+        const chatBody = document.getElementById('chat-body');
+        if (!chatBody) {
+            console.error('Chat body not found.');
+            return null;
+        }
+
+        // Extract dialogue messages from the chat body
+        const dialogue = [];
+        const messageDivs = chatBody.querySelectorAll('.user-message, .ai-message');
+        messageDivs.forEach(messageDiv => {
+            const speaker = messageDiv.classList.contains('ai-message') ? 'AI' : 'User';
+            const text = messageDiv.textContent.replace(`${speaker}: `, ''); // Remove speaker label
+            dialogue.push({ speaker, text });
+        });
+        
+        // Extract takeaway from the chat header tooltip
+        const chatHeader = document.getElementById('chat-header');
+        const takeaway = chatHeader ? chatHeader.title.replace('Takeaway: ', '') : null;
+        
+        // Construct the conversation object
+        const conversationData = {
+            documentId,
+            conversationId,
+            dialogue,
+            takeaway
+        };
+        
+        // Return the conversation data as a JSON string
+        return JSON.stringify(conversationData);
+    } catch (error) {
+        console.error('Error extracting conversation:', error);
+        return null;
+    }
+}
+
 
 // Function to start voice-to-text
 window.startVoiceToText = function() {
