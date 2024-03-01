@@ -136,7 +136,7 @@ window.loadSuggestions = function(category) {
 // Default and suggested user responses
 const suggestedChatResponses = {
     defaultResponses: [
-        "FOOBAR Got new project ideas?",
+        "Got new project ideas?",
         "Let's chat about projects.",
         "I'm considering new goals for myself."
     ],
@@ -153,7 +153,8 @@ const suggestedChatResponses = {
             "Do you need any support or feedback on your projects?",
             "How can I help you with your projects?"
         ]
-    }
+    },
+    lastAIResponse: "This is the response from the AI"
 };
 
 // JSON schema for chatResponses object
@@ -172,14 +173,15 @@ const chatResponsesSchema = {
                     items: { type: "string" }
                 }
             }
-        }
+        },
+        lastAIResponse: { type: "string" } // Add lastAIResponse property to the schema
     },
-    required: ["defaultResponses", "suggestedResponses"]
+    required: ["defaultResponses", "suggestedResponses", "lastAIResponse"]
 };
 
 function loadSuggestedChatResponses(chatResponses) {
     // Clear existing suggested responses
-    const suggestedResponseContainer = document.getElementById('chat-suggested-messages');
+    const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
     suggestedResponseContainer.innerHTML = '';
 
     // Load suggested responses
@@ -194,11 +196,14 @@ function loadSuggestedChatResponses(chatResponses) {
             button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
             button.textContent = response;
             button.title = `Send '${response}'`;
-            button.onclick = () => sendMessage(response); // Example function to send the message
+            button.addEventListener('click', function() {
+                sendMessage(response); // Example function to send the message
+            });
             suggestedResponseContainer.appendChild(button);
         });
     }
 }
+
 
 // Function to send a message
 window.sendMessage = function() {
