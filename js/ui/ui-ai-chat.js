@@ -246,6 +246,18 @@ function loadSuggestedChatResponses(chatResponses) {
     suggestedDataScript.textContent = jsonData;
 }
 
+// Function to generate AI responses
+function generateAIResponse() {
+    const dummyResponses = [
+        "I'm sorry, I don't understand.",
+        "Could you please provide more context?",
+        "Interesting, tell me more."
+    ];
+
+    // Randomly select a response from the array
+    const randomIndex = Math.floor(Math.random() * dummyResponses.length);
+    return dummyResponses[randomIndex];
+}
 
 // Function to send a message
 window.sendMessage = function() {
@@ -277,16 +289,8 @@ window.sendMessage = function() {
             // Remove the typing indicator
             chatBody.removeChild(typingIndicator);
 
-            // Dummy AI responses
-            const dummyResponses = [
-                "I'm sorry, I don't understand.",
-                "Could you please provide more context?",
-                "Interesting, tell me more."
-            ];
-
-            // Randomly select a response from the array
-            const randomIndex = Math.floor(Math.random() * dummyResponses.length);
-            const aiResponse = dummyResponses[randomIndex];
+            // Generate an AI response
+            const aiResponse = generateAIResponse();
 
             // Create a new AI message element with the selected response
             const aiMessageElement = document.createElement('div');
@@ -308,6 +312,7 @@ window.sendMessage = function() {
         loadSuggestedChatResponses(suggestedChatResponses);
     }
 }
+
 
 function showTypingIndicator(chatBody) {
     const aiTypingElement = document.createElement('div');
