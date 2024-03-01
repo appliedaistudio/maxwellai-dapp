@@ -370,11 +370,25 @@ function extractChatConversation() {
     }
 }
 
-
 // Function to start voice-to-text
 window.startVoiceToText = function() {
     console.log("Voice-to-text entry started");
 }
+
+// Function to handle when the chat dialog is opened
+function handleChatDialogOpen() {
+    // Get the current chat conversation
+    const extractedConversation = extractChatConversation();
+    console.log('Extracted conversation:', extractedConversation);
+
+    // Load new suggested chat responses based on the updated conversation
+    loadSuggestedChatResponses(suggestedChatResponses);
+}
+
+// Add event listener to the chat modal for 'shown.bs.modal' event
+const chatModal = document.getElementById('chatModal');
+chatModal.addEventListener('shown.bs.modal', handleChatDialogOpen);
+
 
 // Event listener for the "Send Message" button click
 document.querySelector('.chat-send-btn').addEventListener('click', sendMessage);
@@ -388,5 +402,4 @@ document.querySelector('.chat-message-input').addEventListener('keypress', funct
 });
 
 // Add event listener to the modal dialog box for 'hidden.bs.modal' event
-const chatModal = document.getElementById('chatModal');
 chatModal.addEventListener('hidden.bs.modal', saveChatConversation);
