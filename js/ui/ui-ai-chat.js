@@ -219,8 +219,34 @@ function loadSuggestedChatResponses(chatResponses) {
     suggestedDataScript.textContent = jsonData;
 }
 
+function generatePrompt(conversation, aiAndUserResponses) {
+    // Convert the conversation JSON to a string
+    const conversationString = JSON.stringify(conversation, null, 4);
+
+    // Convert the ai and user response JSON to a string
+    const aiAndUserResponsesString = JSON.stringify(aiAndUserResponses, null, 4);
+
+    // Generate the prompt string
+    const prompt = `
+        Given the following conversation between a user and an AI:
+
+        ${conversationString}
+
+        Generate an AI response and provide categorized user response suggestions. 
+        The user-response categories and corresponding suggestions should cover various aspects of possible and 
+        reasonable user-responses to the conversation. 
+        Combine the AI response and categorized user response suggestions into an output that follows this example:
+
+        ${aiAndUserResponsesString}
+        `;
+
+    return prompt;
+}
+
+
 // Function to generate AI responses
-function generateAIResponse() {
+function generateAIResponse(conversation) {
+
     // Default and suggested user responses
     const suggestedChatResponses = {
         defaultResponses: [
@@ -247,6 +273,9 @@ function generateAIResponse() {
         },
         lastAIResponse: "This is the response from the AI"
     };
+
+    const aiPrompt = generatePrompt(conversation, suggestedChatResponses);
+    console.log(aiPrompt);
 
     const dummyResponses = [
         "I'm sorry, I don't understand.",
@@ -296,7 +325,7 @@ window.sendMessage = function() {
             console.log('Extracted conversation:', extractedConversation);
 
             // Generate an AI response
-            const suggestedChatResponses = generateAIResponse();
+            const suggestedChatResponses = generateAIResponse(extractedConversation);
             const aiResponse = suggestedChatResponses['lastAIResponse'];
 
 
@@ -392,7 +421,7 @@ function handleChatDialogOpen() {
     console.log('Extracted conversation:', extractedConversation);
 
     // Load new ai-suggested chat responses based on the updated conversation
-    const suggestedChatResponses = generateAIResponse();
+    const suggestedChatResponses = generateAIResponse(extractedConversation);
     loadSuggestedChatResponses(suggestedChatResponses);
 }
 
