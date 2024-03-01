@@ -136,7 +136,7 @@ window.loadSuggestions = function(category) {
 // Default and suggested user responses
 const suggestedChatResponses = {
     defaultResponses: [
-        "Got new project ideas?",
+        "FOOGot new project ideas?",
         "Let's chat about projects.",
         "I'm considering new goals for myself."
     ],
@@ -180,26 +180,41 @@ const chatResponsesSchema = {
 };
 
 function loadSuggestedChatResponses(chatResponses) {
-    // Clear existing suggested responses
+    // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
     suggestedResponseContainer.innerHTML = '';
+    
+    const responseDropdown = document.querySelector('.response-dropdown');
+    responseDropdown.innerHTML = '';
 
-    // Load suggested responses
+    // Load default responses into chat-suggested-messages area
+    const defaultResponses = chatResponses.defaultResponses;
+    defaultResponses.forEach(response => {
+        const button = document.createElement('button');
+        button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
+        button.textContent = response;
+        button.title = `Send '${response}'`;
+        button.addEventListener('click', function() {
+            selectSuggestion(response); // Call selectSuggestion with the response
+        });
+        suggestedResponseContainer.appendChild(button);
+    });
+
+    // Load suggested responses into responseDropdown area
     const suggestedResponses = chatResponses.suggestedResponses;
     for (const category in suggestedResponses) {
         const categoryResponses = suggestedResponses[category];
-        const categoryHeader = document.createElement('p');
-        categoryHeader.textContent = category;
-        suggestedResponseContainer.appendChild(categoryHeader);
         categoryResponses.forEach(response => {
-            const button = document.createElement('button');
-            button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
-            button.textContent = response;
-            button.title = `Send '${response}'`;
-            button.addEventListener('click', function() {
-                sendMessage(response); // Example function to send the message
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.classList.add('dropdown-item');
+            link.href = "#";
+            link.textContent = response;
+            link.addEventListener('click', function() {
+                selectSuggestion(response); // Call selectSuggestion with the response
             });
-            suggestedResponseContainer.appendChild(button);
+            listItem.appendChild(link);
+            responseDropdown.appendChild(listItem);
         });
     }
 }
