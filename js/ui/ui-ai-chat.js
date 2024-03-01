@@ -136,22 +136,25 @@ window.loadSuggestions = function(category) {
 // Default and suggested user responses
 const suggestedChatResponses = {
     defaultResponses: [
-        "FOOGot new project ideas?",
+        "FOO Got new project ideas?",
         "Let's chat about projects.",
         "I'm considering new goals for myself."
     ],
     suggestedResponses: {
         "current projects": [
-            "Tell me more about your current projects.",
-            "How are your current projects going?"
+            "FOO I want to update you on my progress.", 
+            "I'd like feedback on my latest work.", 
+            "I want to talk about a challenge I'm facing"
         ],
         "inspiration and ideas": [
-            "Where do you find inspiration for new projects?",
-            "How do you generate new ideas?"
+            "I'd like to share a new writing prompt.", 
+            "I'd like to explore a creative spark.", 
+            "I want to brainstorm on plot twists and characters."
         ],
         "support and feedback": [
-            "Do you need any support or feedback on your projects?",
-            "How can I help you with your projects?"
+            "I need some encouragement.", 
+            "I need help getting past my writer's block.", 
+            "I need help staying motivated."
         ]
     },
     lastAIResponse: "This is the response from the AI"
@@ -183,7 +186,7 @@ function loadSuggestedChatResponses(chatResponses) {
     // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
     suggestedResponseContainer.innerHTML = '';
-    
+
     const responseDropdown = document.querySelector('.response-dropdown');
     responseDropdown.innerHTML = '';
 
@@ -204,19 +207,43 @@ function loadSuggestedChatResponses(chatResponses) {
     const suggestedResponses = chatResponses.suggestedResponses;
     for (const category in suggestedResponses) {
         const categoryResponses = suggestedResponses[category];
+
+        // Create the list item for the category
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.classList.add('dropdown-item');
+        link.href = "#";
+        link.textContent = category;
+        link.addEventListener('click', function() {
+            loadSuggestions(category); // Call loadSuggestions with the category
+        });
+        listItem.appendChild(link);
+
+        const submenu = document.createElement('ul');
+        submenu.classList.add('dropdown-menu');
+        submenu.setAttribute('aria-labelledby', 'responseDropdown');
+
         categoryResponses.forEach(response => {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-            link.classList.add('dropdown-item');
-            link.href = "#";
-            link.textContent = response;
-            link.addEventListener('click', function() {
+            const subListItem = document.createElement('li');
+            const subLink = document.createElement('a');
+            subLink.classList.add('dropdown-item');
+            subLink.href = "#";
+            subLink.textContent = response;
+            subLink.addEventListener('click', function() {
                 selectSuggestion(response); // Call selectSuggestion with the response
             });
-            listItem.appendChild(link);
-            responseDropdown.appendChild(listItem);
+            subListItem.appendChild(subLink);
+            submenu.appendChild(subListItem);
         });
+
+        listItem.appendChild(submenu);
+        responseDropdown.appendChild(listItem);
     }
+
+    // Transform the input chat responses into the suggestedData area
+    const suggestedDataScript = document.getElementById('suggestionData');
+    const jsonData = JSON.stringify(chatResponses.suggestedResponses);
+    suggestedDataScript.textContent = jsonData;
 }
 
 
