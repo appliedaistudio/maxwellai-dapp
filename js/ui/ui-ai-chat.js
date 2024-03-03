@@ -3,6 +3,8 @@ import config from '../dapp-config.js';
 import { PhysarAI } from '../ai/physarai.js';
 import { searchWikipedia } from '../ai/knowledge.js';
 
+import { formatJson } from '../utils/string-parse.js';
+
 
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -202,10 +204,10 @@ function loadSuggestedChatResponses(chatResponses) {
 
 function generatePrompt(conversation, aiAndUserResponses) {
     // Convert the conversation JSON to a string
-    const conversationString = JSON.stringify(conversation, null, 4);
+    const conversationString = formatJson(conversation, null, 4);
 
     // Convert the ai and user response JSON to a string
-    const aiAndUserResponsesString = JSON.stringify(aiAndUserResponses, null, 4);
+    const aiAndUserResponsesString = formatJson(aiAndUserResponses, null, 4);
 
     // Generate the prompt string
     const prompt = `
@@ -418,7 +420,7 @@ function extractChatConversation() {
         };
         
         // Return the conversation data as a JSON string
-        return JSON.stringify(conversationData);
+        return conversationData;
     } catch (error) {
         console.error('Error extracting conversation:', error);
         return null;

@@ -4,7 +4,7 @@ const config = {
     LLMendpoint: 'https://api.openai.com/v1/chat/completions',
     LLM: 'gpt-4',
     debug: true,
-    verbosityLevel: 4
+    verbosityLevel: 5
 };
 
 export default config;
