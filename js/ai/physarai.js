@@ -1,5 +1,5 @@
 // Import configuration module
-import config from './physarai-config';
+import config from './physarai-config.js';
 
 // Log a message if the current verbosity level is equal to or higher than the specified minimum verbosity level
 function log(message, currentVerbosity, minVerbosity) {
@@ -178,6 +178,7 @@ function extractFinalObservation(message) {
             return content.substring(observationPrefix.length).trim();
         } else {
             // Return null if the content is not in the expected format
+            log('The final observation content is not in the expected format', config.verbosityLevel, 4); // Log error message with verbosity level 4
             return null;
         }
     } catch (error) {
@@ -241,7 +242,7 @@ async function PhysarAI(tools, prompt, outputSchema) {
         { "role": "user", "content": prompt },
     ];
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
         // Log the current loop run number
         log(`Loop run number: ${i+1}`, config.verbosityLevel, 1); // Log current loop run number with verbosity level 1
 
@@ -280,8 +281,8 @@ async function PhysarAI(tools, prompt, outputSchema) {
             break;
         }
 
-        // Pause for 10 seconds between loops
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        // Pause for 1 seconds between loops
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     // Log the outcome

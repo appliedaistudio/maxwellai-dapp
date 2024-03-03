@@ -1,5 +1,8 @@
 import config from '../dapp-config.js';
 
+import { PhysarAI } from '../ai/physarai.js';
+import { searchWikipedia } from '../ai/knowledge.js';
+
 
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -133,28 +136,6 @@ window.loadSuggestions = function(category) {
     });
 }
 
-// JSON schema for chatResponses object
-const chatResponsesSchema = {
-    type: "object",
-    properties: {
-        defaultResponses: {
-            type: "array",
-            items: { type: "string" }
-        },
-        suggestedResponses: {
-            type: "object",
-            patternProperties: {
-                ".*": {
-                    type: "array",
-                    items: { type: "string" }
-                }
-            }
-        },
-        lastAIResponse: { type: "string" } // Add lastAIResponse property to the schema
-    },
-    required: ["defaultResponses", "suggestedResponses", "lastAIResponse"]
-};
-
 function loadSuggestedChatResponses(chatResponses) {
     // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
@@ -243,51 +224,86 @@ function generatePrompt(conversation, aiAndUserResponses) {
     return prompt;
 }
 
-
 // Function to generate AI responses
-function generateAIResponse(conversation) {
+async function generateAIResponse(conversation) {
+    try {
+        // Define an array of tools for the AI to use in generating a response
+        const tools = [
+            {
+                name: "Search",
+                func: searchWikipedia,
+                description: "Useful for when you need to answer questions about current events. You should ask targeted questions."
+            }
+        ];
 
-    // Default and suggested user responses
-    const suggestedChatResponses = {
-        defaultResponses: [
-            "FOO Got new project ideas?",
-            "Let's chat about projects.",
-            "I'm considering new goals for myself."
-        ],
-        suggestedResponses: {
-            "current projects": [
-                "FOO I want to update you on my progress.", 
-                "I'd like feedback on my latest work.", 
-                "I want to talk about a challenge I'm facing"
+        // Create the prompt for the AI
+        const exampleSuggestedChatResponses = {
+            defaultResponses: [
+                "FOO Got new project ideas?",
+                "Let's chat about projects.",
+                "I'm considering new goals for myself."
             ],
-            "inspiration and ideas": [
-                "I'd like to share a new writing prompt.", 
-                "I'd like to explore a creative spark.", 
-                "I want to brainstorm on plot twists and characters."
-            ],
-            "support and feedback": [
-                "I need some encouragement.", 
-                "I need help getting past my writer's block.", 
-                "I need help staying motivated."
-            ]
-        },
-        lastAIResponse: "This is the response from the AI"
-    };
+            suggestedResponses: {
+                "current projects": [
+                    "FOO I want to update you on my progress.", 
+                    "I'd like feedback on my latest work.", 
+                    "I want to talk about a challenge I'm facing"
+                ],
+                "inspiration and ideas": [
+                    "I'd like to share a new writing prompt.", 
+                    "I'd like to explore a creative spark.", 
+                    "I want to brainstorm on plot twists and characters."
+                ],
+                "support and feedback": [
+                    "I need some encouragement.", 
+                    "I need help getting past my writer's block.", 
+                    "I need help staying motivated."
+                ]
+            },
+            lastAIResponse: "This is the response from the AI"
+        };
+        const aiPrompt = generatePrompt(conversation, exampleSuggestedChatResponses);
+        console.log(`AI Prompt: ${aiPrompt}`);
 
-    const aiPrompt = generatePrompt(conversation, suggestedChatResponses);
-    console.log(aiPrompt);
+        // Define the JSON schema expected of the AI response
+        const chatResponsesSchema = {
+            type: "object",
+            properties: {
+                success: { type: "boolean" }, // Added success property
+                errorMessage: { type: "string" }, // Added errorMessage property
+                data: { // Added data property to encapsulate the previous structure
+                    type: "object",
+                    properties: {
+                        defaultResponses: {
+                            type: "array",
+                            items: { type: "string" }
+                        },
+                        suggestedResponses: {
+                            type: "object",
+                            patternProperties: {
+                                ".*": {
+                                    type: "array",
+                                    items: { type: "string" }
+                                }
+                            }
+                        },
+                        lastAIResponse: { type: "string" } // Add lastAIResponse property to the schema
+                    },
+                    required: ["defaultResponses", "suggestedResponses", "lastAIResponse"]
+                }
+            },
+            required: ["success", "data"] // Modified required properties to include success and data
+        };        
 
-    const dummyResponses = [
-        "I'm sorry, I don't understand.",
-        "Could you please provide more context?",
-        "Interesting, tell me more."
-    ];
+        // Call PhysarAI function
+        console.log("calling physarai");
+        const suggestedChatResponses = await PhysarAI(tools, aiPrompt, chatResponsesSchema);
 
-    // Randomly select a response from the array and assign it as the last AI response
-    const randomIndex = Math.floor(Math.random() * dummyResponses.length);
-    suggestedChatResponses.lastAIResponse = dummyResponses[randomIndex]
-
-    return suggestedChatResponses;
+        return suggestedChatResponses;
+    } catch (error) {
+        console.error('Error generating AI response:', error);
+        throw error; // Rethrow the error for the caller to handle
+    }
 }
 
 // Function to send a message
@@ -415,14 +431,18 @@ window.startVoiceToText = function() {
 }
 
 // Function to handle when the chat dialog is opened
-function handleChatDialogOpen() {
-    // Get the current chat conversation
-    const extractedConversation = extractChatConversation();
-    console.log('Extracted conversation:', extractedConversation);
+async function handleChatDialogOpen() {
+    try {
+        // Get the current chat conversation
+        const extractedConversation = extractChatConversation();
+        console.log('Extracted conversation:', extractedConversation);
 
-    // Load new ai-suggested chat responses based on the updated conversation
-    const suggestedChatResponses = generateAIResponse(extractedConversation);
-    loadSuggestedChatResponses(suggestedChatResponses);
+        // Generate AI response and load suggested chat responses based on the updated conversation
+        const suggestedChatResponses = await generateAIResponse(extractedConversation);
+        loadSuggestedChatResponses(suggestedChatResponses);
+    } catch (error) {
+        console.error('Error handling chat dialog open:', error);
+    }
 }
 
 // Add event listener to the chat modal for 'shown.bs.modal' event
