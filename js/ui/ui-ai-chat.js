@@ -308,8 +308,31 @@ async function generateAIResponse(conversation) {
     }
 }
 
+function showLoadingIndicator() {
+    // Clear existing suggested responses and response dropdown
+    const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
+    suggestedResponseContainer.innerHTML = '';
+
+    const responseDropdown = document.querySelector('.response-dropdown');
+    responseDropdown.innerHTML = '';
+
+    // Show loading message or icon
+    const loadingMessage = document.createElement('p');
+    loadingMessage.textContent = 'Loading suggestions...';
+    loadingMessage.classList.add('loading-message'); // Add a class to the loading message
+    suggestedResponseContainer.appendChild(loadingMessage);
+
+    // You can also use an icon instead of text if preferred
+    // const loadingIcon = document.createElement('i');
+    // loadingIcon.classList.add('fa', 'fa-spinner', 'fa-spin', 'loading-icon');
+    // suggestedResponseContainer.appendChild(loadingIcon);
+}
+
 // Function to send a message
 window.sendMessage = function() {
+    // Show the loading indicator function
+    showLoadingIndicator();
+
     const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
     const messageText = messageInput.value.trim(); // Get the trimmed value of the input
 
@@ -435,6 +458,9 @@ window.startVoiceToText = function() {
 // Function to handle when the chat dialog is opened
 async function handleChatDialogOpen() {
     try {
+        // Show the loading indicator function
+        showLoadingIndicator();
+
         // Get the current chat conversation
         const extractedConversation = extractChatConversation();
         console.log('Extracted conversation:', extractedConversation);

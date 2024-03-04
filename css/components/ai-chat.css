@@ -112,3 +112,10 @@
 .chat-input-group button:hover {
     background-color: var(--accent-color); /* Hover background color for chat input group buttons */
 }
+
+/* Styles styles for the "loading" display message */
+.loading-message {
+    color: var(--accent-color); /* Example color */
+    font-style: italic; /* Example font style */
+    /* Add more styling as needed */
+}
