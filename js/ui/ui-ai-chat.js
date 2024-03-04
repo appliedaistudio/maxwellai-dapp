@@ -147,7 +147,7 @@ function loadSuggestedChatResponses(chatResponses) {
     responseDropdown.innerHTML = '';
 
     // Load default responses into chat-suggested-messages area
-    const defaultResponses = chatResponses.defaultResponses;
+    const defaultResponses = chatResponses.data.defaultResponses;
     defaultResponses.forEach(response => {
         const button = document.createElement('button');
         button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
@@ -160,7 +160,7 @@ function loadSuggestedChatResponses(chatResponses) {
     });
 
     // Load suggested responses into responseDropdown area
-    const suggestedResponses = chatResponses.suggestedResponses;
+    const suggestedResponses = chatResponses.data.suggestedResponses;
     for (const category in suggestedResponses) {
         const categoryResponses = suggestedResponses[category];
 
@@ -198,7 +198,7 @@ function loadSuggestedChatResponses(chatResponses) {
 
     // Transform the input chat responses into the suggestedData area
     const suggestedDataScript = document.getElementById('suggestionData');
-    const jsonData = JSON.stringify(chatResponses.suggestedResponses);
+    const jsonData = JSON.stringify(chatResponses.data.suggestedResponses);
     suggestedDataScript.textContent = jsonData;
 }
 
@@ -441,6 +441,7 @@ async function handleChatDialogOpen() {
 
         // Generate AI response and load suggested chat responses based on the updated conversation
         const suggestedChatResponses = await generateAIResponse(extractedConversation);
+
         loadSuggestedChatResponses(suggestedChatResponses);
     } catch (error) {
         console.error('Error handling chat dialog open:', error);
