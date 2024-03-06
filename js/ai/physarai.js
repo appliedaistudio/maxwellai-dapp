@@ -138,6 +138,35 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
     }
 }
 
+async function getKeyTakeaway(conversationData, documentId, conversationId) {
+    try {
+        // Condense conversationData into a string listing what AI and user said to each other
+        const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
+
+        // Create a short AI prompt asking for the key takeaway of the conversation
+        const aiPrompt = `
+            Given the following conversation:
+
+            ${conversationString}
+
+            What is the key takeaway from this conversation? 
+            If the takeaway involves updating data, include the document ID (${documentId}) and conversation ID (${conversationId}) in the directive for the AI to take action.`;
+
+        // Call promptLLM function to get the AI response
+        const aiResponse = await promptLLM({
+            apiKey: config.openAIapiKey, // Assuming config is imported and contains the API key
+            prompt: aiPrompt,
+            endpoint: config.LLMendpoint,
+            model: config.LLM
+        });
+
+        return aiResponse.toString(); // Convert the AI response to a string
+    } catch (error) {
+        console.error('Error getting key takeaway:', error);
+        return null;
+    }
+}
+
 //TODO: RENAME THIS. MAKE IT MORE SPECIFIC
 function generateLLMPrompt(tools) {
     const functionName = "generateLLMPrompt";
@@ -429,4 +458,4 @@ async function testPhysarAI() {
     log("Exiting main function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
 };
 
-export {generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI, testPhysarAI}
+export {getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI, testPhysarAI}

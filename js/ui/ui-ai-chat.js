@@ -1,6 +1,6 @@
 import config from '../dapp-config.js';
 
-import { generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI } from '../ai/physarai.js';
+import { getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI } from '../ai/physarai.js';
 import { searchWikipedia } from '../ai/knowledge.js';
 
 import { formatJson } from '../utils/string-parse.js';
@@ -363,7 +363,7 @@ window.sendMessage = async function() {
             const extractedConversation = extractChatConversation();
             console.log('Extracted conversation:', extractedConversation);
 
-            // Wait for 2 seconds before generating an AI response
+            // Wait for 1 seconds before generating an AI response
             setTimeout(async () => {
                 // Generate an AI response using LLM
                 const aiResponse = await generateAIResponseToConversation(extractedConversation);
@@ -383,6 +383,13 @@ window.sendMessage = async function() {
                     // Scroll to the bottom of the chat body
                     chatBody.scrollTop = chatBody.scrollHeight;
 
+                    // Get the key takeaway from the conversation
+                    const takeaway = await getKeyTakeaway(extractedConversation, documentId, conversationId);
+                    
+                    // Set the tooltip for the chat header to be the concatenation of all takeaway contents
+                    const chatHeader = document.getElementById('chat-header');
+                    chatHeader.title = `Takeaway: ${takeaway}`;
+                    
                     // Load user response suggestions based on the updated conversation
                     showUserResponseSuggestionLoadingIndicator();
                     
@@ -395,12 +402,13 @@ window.sendMessage = async function() {
                 } else {
                     console.error('Failed to generate AI response.');
                 }
-            }, 2000); // 2 second delay
+            }, 1000); // 1 second delay
         } catch (error) {
             console.error('Error generating AI response:', error);
         }
     }
 }
+
 
 function showTypingIndicator(chatBody) {
     const aiTypingElement = document.createElement('div');
