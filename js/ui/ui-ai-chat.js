@@ -1,6 +1,6 @@
 import config from '../dapp-config.js';
 
-import { generateAIResponseToConversation, PhysarAI } from '../ai/physarai.js';
+import { generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI } from '../ai/physarai.js';
 import { searchWikipedia } from '../ai/knowledge.js';
 
 import { formatJson } from '../utils/string-parse.js';
@@ -139,7 +139,7 @@ window.loadSuggestions = function(category) {
 }
 
 // Load the given suggested chat responses into the AI chat window
-function loadSuggestedChatResponses(chatResponses) {
+function loadSuggestedUserChatResponses(chatResponses) {
     // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
     suggestedResponseContainer.innerHTML = '';
@@ -148,7 +148,7 @@ function loadSuggestedChatResponses(chatResponses) {
     responseDropdown.innerHTML = '';
 
     // Load default responses into chat-suggested-messages area
-    const defaultResponses = chatResponses.data.defaultResponses;
+    const defaultResponses = chatResponses.defaultUserResponses;
     defaultResponses.forEach(response => {
         const button = document.createElement('button');
         button.classList.add('btn', 'btn-outline-secondary', 'btn-sm', 'm-1');
@@ -161,7 +161,7 @@ function loadSuggestedChatResponses(chatResponses) {
     });
 
     // Load suggested responses into responseDropdown area
-    const suggestedResponses = chatResponses.data.suggestedResponses;
+    const suggestedResponses = chatResponses.suggestedUserResponses;
     for (const category in suggestedResponses) {
         const categoryResponses = suggestedResponses[category];
 
@@ -199,7 +199,7 @@ function loadSuggestedChatResponses(chatResponses) {
 
     // Transform the input chat responses into the suggestedData area
     const suggestedDataScript = document.getElementById('suggestionData');
-    const jsonData = JSON.stringify(chatResponses.data.suggestedResponses);
+    const jsonData = JSON.stringify(chatResponses.suggestedUserResponses);
     suggestedDataScript.textContent = jsonData;
 }
 
@@ -246,13 +246,13 @@ async function generateAIResponse(conversation) {
         // Create the prompt for the AI
         const exampleSuggestedChatResponses = {
             defaultResponses: [
-                "FOO Got new project ideas?",
+                "Got new project ideas?",
                 "Let's chat about projects.",
                 "I'm considering new goals for myself."
             ],
             suggestedResponses: {
                 "current projects": [
-                    "FOO I want to update you on my progress.", 
+                    "I want to update you on my progress.", 
                     "I'd like feedback on my latest work.", 
                     "I want to talk about a challenge I'm facing"
                 ],
@@ -313,7 +313,7 @@ async function generateAIResponse(conversation) {
     }
 }
 
-function showLoadingIndicator() {
+function showUserResponseSuggestionLoadingIndicator() {
     // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
     suggestedResponseContainer.innerHTML = '';
@@ -335,9 +335,6 @@ function showLoadingIndicator() {
 
 // Function to send a message
 window.sendMessage = async function() {
-    // Show the loading indicator function
-    showLoadingIndicator();
-
     const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
     const messageText = messageInput.value.trim(); // Get the trimmed value of the input
 
@@ -355,7 +352,7 @@ window.sendMessage = async function() {
         // Scroll to the bottom of the chat body
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Show typing indicator for AI
+        // Show typing indicator for AI after a delay of 2 seconds
         const typingIndicator = showTypingIndicator(chatBody);
 
         // Clear the message input field
@@ -366,32 +363,44 @@ window.sendMessage = async function() {
             const extractedConversation = extractChatConversation();
             console.log('Extracted conversation:', extractedConversation);
 
-            // Generate an AI response using LLM
-            const aiResponse = await generateAIResponseToConversation(extractedConversation);
+            // Wait for 2 seconds before generating an AI response
+            setTimeout(async () => {
+                // Generate an AI response using LLM
+                const aiResponse = await generateAIResponseToConversation(extractedConversation);
 
-            if (aiResponse) {
-                // Remove the typing indicator
-                chatBody.removeChild(typingIndicator);
+                if (aiResponse) {
+                    // Remove the typing indicator
+                    chatBody.removeChild(typingIndicator);
 
-                // Create a new AI message element with the selected response
-                const aiMessageElement = document.createElement('div');
-                aiMessageElement.classList.add('ai-message');
-                aiMessageElement.textContent = "AI: " + aiResponse;
+                    // Create a new AI message element with the selected response
+                    const aiMessageElement = document.createElement('div');
+                    aiMessageElement.classList.add('ai-message');
+                    aiMessageElement.textContent = "AI: " + aiResponse;
 
-                // Append the new AI message element to the chat body
-                chatBody.appendChild(aiMessageElement);
+                    // Append the new AI message element to the chat body
+                    chatBody.appendChild(aiMessageElement);
 
-                // Scroll to the bottom of the chat body
-                chatBody.scrollTop = chatBody.scrollHeight;
-            } else {
-                console.error('Failed to generate AI response.');
-            }
+                    // Scroll to the bottom of the chat body
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    // Load user response suggestions based on the updated conversation
+                    showUserResponseSuggestionLoadingIndicator();
+                    
+                    const userResponseSuggestions = await generateDefaultAndSuggestedUserResponses(extractedConversation);
+                    if (userResponseSuggestions) {
+                        loadSuggestedUserChatResponses(userResponseSuggestions);
+                    } else {
+                        console.error('Failed to generate user response suggestions.');
+                    }
+                } else {
+                    console.error('Failed to generate AI response.');
+                }
+            }, 2000); // 2 second delay
         } catch (error) {
             console.error('Error generating AI response:', error);
         }
     }
 }
-
 
 function showTypingIndicator(chatBody) {
     const aiTypingElement = document.createElement('div');

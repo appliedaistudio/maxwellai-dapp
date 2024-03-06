@@ -79,6 +79,65 @@ async function generateAIResponseToConversation(conversationData) {
     }
 }
 
+async function generateDefaultAndSuggestedUserResponses(conversationData) {
+    try {
+        // Condense conversationData into a string listing what AI and user said to each other
+        const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
+
+        // Create a short AI prompt asking for suggested default and categorized user responses
+        const aiPrompt = `
+            Given the following conversation:
+            
+            ${conversationString}
+            
+            Generate default and categorized user responses for the conversation. 
+            Provide the output in the JSON format that follows this example:
+            
+            {
+                defaultUserResponses: [
+                    "Got new project ideas?",
+                    "Let's chat about projects.",
+                    "I'm considering new goals for myself."
+                ],
+                suggestedUserResponses: {
+                    "current projects": [
+                        "I want to update you on my progress.", 
+                        "I'd like feedback on my latest work.", 
+                        "I want to talk about a challenge I'm facing"
+                    ],
+                    "inspiration and ideas": [
+                        "I'd like to share a new writing prompt.", 
+                        "I'd like to explore a creative spark.", 
+                        "I want to brainstorm on plot twists and characters."
+                    ],
+                    "support and feedback": [
+                        "I need some encouragement.", 
+                        "I need help getting past my writer's block.", 
+                        "I need help staying motivated."
+                    ]
+                }
+            }`;
+
+        // Call promptLLM function to get the LLM response
+        const aiResponse = await promptLLM({
+            apiKey: config.openAIapiKey,
+            prompt: aiPrompt,
+            endpoint: config.LLMendpoint,
+            model: config.LLM
+        });
+
+        // Convert the ai response to JSON
+        const aiResponseJson = JSON.parse(aiResponse);
+        console.log("generating default responses");
+        console.log(aiResponseJson);
+        return aiResponseJson;
+
+    } catch (error) {
+        console.error('Error generating AI response to conversation:', error);
+        return null;
+    }
+}
+
 //TODO: RENAME THIS. MAKE IT MORE SPECIFIC
 function generateLLMPrompt(tools) {
     const functionName = "generateLLMPrompt";
@@ -370,4 +429,4 @@ async function testPhysarAI() {
     log("Exiting main function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
 };
 
-export {generateAIResponseToConversation, PhysarAI, testPhysarAI}
+export {generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI, testPhysarAI}
