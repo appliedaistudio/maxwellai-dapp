@@ -1,6 +1,6 @@
 import config from '../dapp-config.js';
 
-import { PhysarAI } from '../ai/physarai.js';
+import { generateAIResponseToConversation, PhysarAI } from '../ai/physarai.js';
 import { searchWikipedia } from '../ai/knowledge.js';
 
 import { formatJson } from '../utils/string-parse.js';
@@ -138,6 +138,7 @@ window.loadSuggestions = function(category) {
     });
 }
 
+// Load the given suggested chat responses into the AI chat window
 function loadSuggestedChatResponses(chatResponses) {
     // Clear existing suggested responses and response dropdown
     const suggestedResponseContainer = document.querySelector('.chat-suggested-messages');
@@ -211,14 +212,18 @@ function generatePrompt(conversation, aiAndUserResponses) {
 
     // Generate the prompt string
     const prompt = `
-        Given the following conversation between a user and an AI:
+        Given the following existing conversation between a user and an AI:
 
         ${conversationString}
 
-        Generate an AI response and provide categorized user response suggestions. 
+        Generate default responses, an AI response and categorized user response suggestions.
+        The defualt responses are the user's (human) most likely reaction to the existing conversation.
+        The AI response should be the AI's repsonse to the existing conversation.
+        The categorised user response suggestions should be possible user (human) responses to the AI's response.
+        The defualt responses and categorized user response suggestions should be short and meaningful.
         The user-response categories and corresponding suggestions should cover various aspects of possible and 
-        reasonable user-responses to the conversation. 
-        Combine the AI response and categorized user response suggestions into an output that follows this example:
+        reasonable user-responses to the AI's response. 
+        Combine the AI response, default responses and categorized user response suggestions into an output that follows this example:
 
         ${aiAndUserResponsesString}
         `;
@@ -318,18 +323,18 @@ function showLoadingIndicator() {
 
     // Show loading message or icon
     const loadingMessage = document.createElement('p');
-    loadingMessage.textContent = 'Loading suggestions...';
+    loadingMessage.textContent = 'MaxwellAI is creating response suggestions...';
     loadingMessage.classList.add('loading-message'); // Add a class to the loading message
     suggestedResponseContainer.appendChild(loadingMessage);
 
     // You can also use an icon instead of text if preferred
-    // const loadingIcon = document.createElement('i');
-    // loadingIcon.classList.add('fa', 'fa-spinner', 'fa-spin', 'loading-icon');
-    // suggestedResponseContainer.appendChild(loadingIcon);
+     const loadingIcon = document.createElement('i');
+     loadingIcon.classList.add('fa', 'fa-spinner', 'fa-spin', 'loading-icon');
+     suggestedResponseContainer.appendChild(loadingIcon);
 }
 
 // Function to send a message
-window.sendMessage = function() {
+window.sendMessage = async function() {
     // Show the loading indicator function
     showLoadingIndicator();
 
@@ -356,35 +361,34 @@ window.sendMessage = function() {
         // Clear the message input field
         messageInput.value = '';
 
-        // Simulate AI response after a delay
-        setTimeout(() => {
-            // Remove the typing indicator
-            chatBody.removeChild(typingIndicator);
-
+        try {
             // Extract the current conversation from the chat window
             const extractedConversation = extractChatConversation();
             console.log('Extracted conversation:', extractedConversation);
 
-            // Generate an AI response
-            const suggestedChatResponses = generateAIResponse(extractedConversation);
-            const aiResponse = suggestedChatResponses['lastAIResponse'];
+            // Generate an AI response using LLM
+            const aiResponse = await generateAIResponseToConversation(extractedConversation);
 
+            if (aiResponse) {
+                // Remove the typing indicator
+                chatBody.removeChild(typingIndicator);
 
-            // Create a new AI message element with the selected response
-            const aiMessageElement = document.createElement('div');
-            aiMessageElement.classList.add('ai-message');
-            aiMessageElement.textContent = "AI: " + aiResponse;
+                // Create a new AI message element with the selected response
+                const aiMessageElement = document.createElement('div');
+                aiMessageElement.classList.add('ai-message');
+                aiMessageElement.textContent = "AI: " + aiResponse;
 
-            // Append the new AI message element to the chat body
-            chatBody.appendChild(aiMessageElement);
+                // Append the new AI message element to the chat body
+                chatBody.appendChild(aiMessageElement);
 
-            // Scroll to the bottom of the chat body
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            //Load new suggested chat responses based on the updated conversation
-            loadSuggestedChatResponses(suggestedChatResponses);
-
-        }, 1000); // Simulate AI typing for 1 second
+                // Scroll to the bottom of the chat body
+                chatBody.scrollTop = chatBody.scrollHeight;
+            } else {
+                console.error('Failed to generate AI response.');
+            }
+        } catch (error) {
+            console.error('Error generating AI response:', error);
+        }
     }
 }
 
@@ -459,16 +463,17 @@ window.startVoiceToText = function() {
 async function handleChatDialogOpen() {
     try {
         // Show the loading indicator function
-        showLoadingIndicator();
+        //showLoadingIndicator();
 
         // Get the current chat conversation
-        const extractedConversation = extractChatConversation();
-        console.log('Extracted conversation:', extractedConversation);
+        //const extractedConversation = extractChatConversation();
+        //console.log('Extracted conversation:', extractedConversation);
 
         // Generate AI response and load suggested chat responses based on the updated conversation
-        const suggestedChatResponses = await generateAIResponse(extractedConversation);
+        //const suggestedChatResponses = await generateAIResponse(extractedConversation);
 
-        loadSuggestedChatResponses(suggestedChatResponses);
+        //loadSuggestedChatResponses(suggestedChatResponses);
+
     } catch (error) {
         console.error('Error handling chat dialog open:', error);
     }

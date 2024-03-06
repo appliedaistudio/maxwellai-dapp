@@ -115,7 +115,13 @@
 
 /* Styles styles for the "loading" display message */
 .loading-message {
-    color: var(--accent-color); /* Example color */
+    color: var(--neutral-color); /* Example color */
     font-style: italic; /* Example font style */
+    /* Add more styling as needed */
+}
+
+/* Styles styles for the "loading" icon */
+.loading-icon {
+    color: var(--accent-color); /* Example color */
     /* Add more styling as needed */
 }

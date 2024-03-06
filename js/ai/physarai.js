@@ -55,6 +55,31 @@ async function promptLLM(parameters) {
     }
 };
 
+// Generate AI response to conversation based on the extracted conversation data.
+async function generateAIResponseToConversation(conversationData) {
+    try {
+        // Condense conversationData into a string listing what AI and user said to each other
+        const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
+
+        // Create a short AI prompt asking for the AI's response to the conversation
+        const aiPrompt = `Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
+
+        // Call promptLLM function to get the AI response
+        const aiResponse = await promptLLM({
+            apiKey: config.openAIapiKey,
+            prompt: aiPrompt,
+            endpoint: config.LLMendpoint,
+            model: config.LLM
+        });
+
+        return aiResponse;
+    } catch (error) {
+        console.error('Error generating AI response to conversation:', error);
+        return null;
+    }
+}
+
+//TODO: RENAME THIS. MAKE IT MORE SPECIFIC
 function generateLLMPrompt(tools) {
     const functionName = "generateLLMPrompt";
 
@@ -150,57 +175,6 @@ function extract_action_and_input(text) {
     log(input, config.verbosityLevel, 4, functionName); // Log input with verbosity level 4
     log("Exiting extract_action_and_input function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
     return [action, input];
-};
-
-
-function extractLastMessage(outcome) {
-    const functionName = "extractLastMessage";
-
-    log("Entering extractLastMessage function", config.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-    log("Outcome:", config.verbosityLevel, 4, functionName); // Log outcome with verbosity level 4
-    log(outcome, config.verbosityLevel, 4, functionName); // Log outcome with verbosity level 4
-
-    // Check if outcome is an array and is not empty
-    if (Array.isArray(outcome) && outcome.length > 0) {
-        // Return the last message in the outcome array
-        const lastMessage = outcome[outcome.length - 1];
-        log("Last Message:", config.verbosityLevel, 4, functionName); // Log last message with verbosity level 4
-        log(lastMessage, config.verbosityLevel, 4, functionName); // Log last message with verbosity level 4
-        log("Exiting extractLastMessage function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-        return lastMessage;
-    } else {
-        // Log that the outcome given is not valid
-        log("Cannot extract the last message from an invalid outcome", config.verbosityLevel, 2, functionName); // Log error with verbosity level 2
-        log("Exiting extractLastMessage function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-        // Return null if the outcome is not valid
-        return null;
-    }
-};
-
-function extractFinalObservation(message) {
-    const functionName = "extractFinalObservation";
-
-    try {
-        // Log the entire message object
-        log('Message object:', message, config.verbosityLevel, 4, functionName); // Log message object with verbosity level 4
-
-        // Extract observation from the content string
-        const content = message.content;
-        log('Message object content:', content, config.verbosityLevel, 4, functionName); // Log message object content with verbosity level 4
-        
-        const observationPrefix = 'Observation: ';
-        if (content && content.startsWith(observationPrefix)) {
-            return content.substring(observationPrefix.length).trim();
-        } else {
-            // Return null if the content is not in the expected format
-            log('The final observation content is not in the expected format', config.verbosityLevel, 4, functionName); // Log error message with verbosity level 4
-            return null;
-        }
-    } catch (error) {
-        // Log and handle errors
-        log('Error extracting final observation:' + error, config.verbosityLevel, 2, functionName); // Log error with verbosity level 2
-        return null;
-    }
 };
 
 // Function to format the response to human
@@ -396,4 +370,4 @@ async function testPhysarAI() {
     log("Exiting main function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
 };
 
-export {PhysarAI, testPhysarAI}
+export {generateAIResponseToConversation, PhysarAI, testPhysarAI}
