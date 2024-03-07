@@ -478,21 +478,17 @@ window.startVoiceToText = function() {
 
 // Function to handle when the chat dialog is opened
 async function handleChatDialogOpen() {
-    try {
-        // Show the loading indicator function
-        //showLoadingIndicator();
+    // Load user response suggestions based on the updated conversation
+    showUserResponseSuggestionLoadingIndicator();
 
-        // Get the current chat conversation
-        //const extractedConversation = extractChatConversation();
-        //console.log('Extracted conversation:', extractedConversation);
-
-        // Generate AI response and load suggested chat responses based on the updated conversation
-        //const suggestedChatResponses = await generateAIResponse(extractedConversation);
-
-        //loadSuggestedChatResponses(suggestedChatResponses);
-
-    } catch (error) {
-        console.error('Error handling chat dialog open:', error);
+    // Extract the current conversation from the chat window
+    const extractedConversation = extractChatConversation();
+                        
+    const userResponseSuggestions = await generateDefaultAndSuggestedUserResponses(extractedConversation);
+    if (userResponseSuggestions) {
+        loadSuggestedUserChatResponses(userResponseSuggestions);
+    } else {
+        console.error('Failed to generate user response suggestions.');
     }
 }
 
