@@ -62,7 +62,9 @@ async function generateAIResponseToConversation(conversationData) {
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
 
         // Create a short AI prompt asking for the AI's response to the conversation
-        const aiPrompt = `Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
+        const aiPrompt = `
+            ${config.aiProfile} 
+            Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
 
         // Call promptLLM function to get the AI response
         const aiResponse = await promptLLM({
@@ -86,6 +88,8 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
 
         // Create a short AI prompt asking for suggested default and categorized user responses
         const aiPrompt = `
+            ${config.aiProfile}
+
             Given the following conversation:
             
             ${conversationString}
@@ -145,6 +149,8 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
 
         // Create a short AI prompt asking for the key takeaway of the conversation
         const aiPrompt = `
+            ${config.aiProfile}
+
             Given the following conversation:
 
             ${conversationString}
