@@ -108,7 +108,10 @@ const createNotificationTable = (notifications) => {
         aiChatButton.className = 'btn btn-primary ai-chat-button'; // Added class for styling
         aiChatButton.setAttribute('aria-label', 'Initiate AI Chat for this notification');
         aiChatButton.setAttribute('title', 'Initiate AI Chat');
-        aiChatButton.addEventListener('click', () => openChatModal(notification.id, notification.topic, notification.body));
+
+        // Pass the necessary notification details as arguments to openChatModal
+        aiChatButton.addEventListener('click', () => openChatModal(notification._id, notification.topic, notification.body));
+        
         aiChatCell.appendChild(aiChatButton);
         row.appendChild(aiChatCell);
 
@@ -227,7 +230,7 @@ const paginate = (array, currentPage, pageSize) => {
 
 const adjustPageSize = () => {
     if (window.innerWidth < 768) {
-        PAGE_SIZE = 2; // Small screens like phones
+        PAGE_SIZE = 1; // Small screens like phones
     } else if (window.innerWidth < 992) {
         PAGE_SIZE = 3; // Medium screens like tablets
     } else {
@@ -252,7 +255,7 @@ const openChatModal = (_id, category, description) => {
     modalTitle.textContent = `We're talking about ${category}`;
     
     // Load the existing chat conversation
-    loadChatConversation('maxwellai_task_feedback', _id);
+    loadChatConversation('notification_feedback', _id);
 
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);
