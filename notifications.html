@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character set and viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Linking to manifest file and setting title -->
+    <link rel="manifest" href="./manifest.json">
+    <title>MaxwellAI DApp - Notifications</title>
+    
+    <!-- Linking to external CSS libraries -->
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./lib/fontawesome/css/all.min.css">
+    
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" href="./css/base/variables.css">
+    <link rel="stylesheet" href="./css/base/base.css">
+    <link rel="stylesheet" href="./css/base/typography.css">
+    <link rel="stylesheet" href="./css/layout/layout.css">
+    <link rel="stylesheet" href="./css/components/buttons.css">
+    <link rel="stylesheet" href="./css/components/menu.css">
+    <link rel="stylesheet" href="./css/components/controls.css">
+    <link rel="stylesheet" href="./css/components/ai-chat-button.css">
+    <link rel="stylesheet" href="./css/components/ai-chat.css">
+    <link rel="stylesheet" href="./css/components/pagination.css">
+    <link rel="stylesheet" href="./css/utils/responsive.css">
+    <link rel="stylesheet" href="./css/pages/notifications.css">
+
+    <!-- Script for password encryption -->
+    <script src="./lib/bcrypt/js/bcrypt.min.js"></script>
+
+    <!-- External library for PouchDB. This must be done before the messaging script that uses PouchDB -->
+    <script src="./lib/pouchdb/pouchdb.min.js"></script>
+
+    <!-- Library required for JSON schema validation. This mmust be done before using PhysarAI-->
+    <script src="./lib/tv4/tv4.min.js"></script>
+
+    <!-- Script to initialize the local database. This must be done on every page before running any UI code -->
+    <script type="module" src="./js/db/db-init.js"></script>
+
+</head>
+<body class="text-center">
+
+    <!-- Registering the service worker -->
+    <script type="module">
+        import config from './js/dapp-config.js';
+    
+        // Check if service worker is already registered in local storage
+        if (!localStorage.getItem('serviceWorkerRegistered')) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                    console.log('Service Worker registration successful with scope:', registration.scope);
+                    
+                    // Sending a message to the service worker with the interval value.
+                    if (navigator.serviceWorker.controller) {
+                        // Sending a message to the service worker with the interval value.
+                        navigator.serviceWorker.controller.postMessage({
+                            type: 'SET_INTERVAL',
+                            interval: config.notificationCheckInterval,
+                        });
+                    } else {
+                        navigator.serviceWorker.ready.then((registration) => {
+                            registration.active.postMessage({
+                                type: 'SET_INTERVAL',
+                                interval: config.notificationCheckInterval,
+                            });
+                        });
+                    }
+    
+                    // Set flag indicating service worker registration
+                    localStorage.setItem('serviceWorkerRegistered', 'true');
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+    </script>    
+
+    <!-- Script for requesting notification permission -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Checking if Notification API is available
+            if ('Notification' in window) {
+                // Checking if permission is granted or denied
+                if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                    // Requesting permission from the user
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            console.log("Notification permission granted.");
+                            // Now you can use the Notification API to send notifications
+                        }
+                    });
+                }
+            } else {
+                console.log("This browser does not support desktop notification");
+            }
+        });
+    </script>
+
+    <!-- Script for adding an event listener to receive messages from the service worker-->
+    <script type="module">
+        
+        import config from './js/dapp-config.js';
+    
+        // Initialize PouchDB
+        const db = new PouchDB(config.localDbName);
+    
+        // Listen for message from service worker
+        navigator.serviceWorker.addEventListener('message', async event => {
+            if (event.data && event.data.type === 'REQUEST_NOTIFICATION_BODY') {
+                try {
+                    // Fetch the document 'notifications' including the current _rev value
+                    const response = await db.get('notifications');
+                    // Extracting the first pending notification
+                    const notification = response.notifications.find(n => n.status === "pending");
+                    if (notification) {
+                        // Respond to the service worker with the latest notification body
+                        if (navigator.serviceWorker.controller) {
+                            navigator.serviceWorker.controller.postMessage({
+                                type: 'NOTIFICATION_BODY_RESPONSE',
+                                body: notification.body
+                            });
+                        }
+                        // Update the notification status as 'sent'
+                        notification.status = "sent";
+                        try {
+                            // Attempt to update the document with the new status
+                            await db.put(response);
+                        } catch (updateError) {
+                            // If there's a conflict error, fetch the latest document and retry the update
+                            if (updateError.name === 'conflict') {
+                                const latestResponse = await db.get('notifications');
+                                // Use the _rev value from the latest fetched document
+                                response._rev = latestResponse._rev;
+                                await db.put(response);
+                            } else {
+                                throw updateError; // For any other errors, rethrow them
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error fetching or updating notification from PouchDB:', err);
+                }
+            }
+        });
+    </script>
+    
+    <!-- App container -->
+    <nav aria-label="Main Navigation" id="main-navigation">
+        <div id="app-container" class="d-flex flex-column align-items-center justify-content-center vh-100">
+            <div id="app-content" class="bg-dark text-white p-4 rounded-lg">
+                <!-- Menu container -->
+                <div id="menu-container" class="mb-3 mb-md-4 mb-lg-5"></div>
+                <!-- App title -->
+                <h1 id="app-title">Upcoming Notifications</h1>
+                <!-- Main content -->
+                <div id="main-content">
+                    <p>I'm compiling a list of upcoming notifications and actions.</p>
+                    <!-- Button to open chat modal -->
+                    <button class="ai-chat-button" data-bs-toggle="modal" data-bs-target="#chatModal" title="Open AI Chat"></button>
+                </div>
+                <!-- Main content controls -->
+                <div id="main-content-controls"></div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Chat modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+
+        <!-- Hidden input fields -->
+        <input type="hidden" id="documentId">
+        <input type="hidden" id="conversationId">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: var(--neutral-color); color: var(--light-color);">
+                    <h5 class="modal-title" id="chatModalLabel">AI Chat</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Chat window -->
+                        <div class="card chat-window" id="chat-window">
+                            <div class="card-header chat-header d-flex justify-content-between align-items-center p-3" id="chat-header">
+                                <p class="mb-0 fw-bold">Hover here to see what MaxwellAI learned</p>
+                            </div>
+                            <div class="card-body chat-body" id="chat-body">
+
+                            </div>
+                            <!-- Chat input group -->
+                            <div class="input-group chat-input-group mb-3">
+                                <button class="chat-voice-btn" onclick="startVoiceToText()" title="Start Voice Input">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <input type="text" class="chat-message-input form-control" placeholder="Type your message here..." title="Type your message here...">
+                                <button class="chat-send-btn" onclick="sendMessage()" title="Send Message">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+
+                            <!-- Default and suggested responses -->
+                            <div class="chat-suggested-messages">
+                                <!-- Default responses -->
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Got new project ideas?')" title="Send 'Got new project ideas?'">Got new project ideas?</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Lets chat about projects.')" title="Send 'Let's chat about projects.'">Let's chat about projects.</button>
+                                <button class="btn btn-outline-secondary btn-sm m-1" onclick="selectSuggestion('Im considering new goals for myself.')" title="Send 'I'm considering new goals for myself.'">I'm considering new goals for myself.</button>
+                                <!-- Suggested responses -->
+                                <!-- These will be dynamically loaded -->
+                            </div>
+
+                            <!-- Dropdown for selecting different responses -->
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="responseDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: var(--neutral-color); color: var(--light-color); width: 100%;">
+                                    Choose a Different Response
+                                </button>
+                                <ul class="dropdown-menu response-dropdown" aria-labelledby="responseDropdown">
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('current projects')">Current Projects</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('inspiration and ideas')">Inspiration and Ideas</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="loadSuggestions('support and feedback')">Support and Feedback</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script tag to store category and suggestion data -->
+    <script id="suggestionData" type="text/plain">
+    {
+        "current projects": ["I want to update you on my progress.", "I'd like feedback on my latest work.", "I want to talk about a challenge I'm facing"],
+        "inspiration and ideas": ["I'd like to share a new writing prompt.", "I'd like to explore a creative spark.", "I want to brainstorm on plot twists and characters."],
+        "support and feedback": ["I need some encouragement.", "I need help getting past my writer's block.", "I need help staying motivated."]
+    }
+    </script>
+
+
+    <!-- External libraries and scripts -->
+    <script src="./lib/vibrant/vibrant.min.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script to define the color pallete based on the background image-->
+    <script type="module">
+        // Importing functions and configurations
+        import { updateThemeColorsBasedOnImage } from './js/ui/ui-color-extractor.js';
+        import config from './js/dapp-config.js';
+        
+        // Updating theme colors based on image
+        document.addEventListener('DOMContentLoaded', () => {
+                    updateThemeColorsBasedOnImage(config.backgroundImage);
+        });
+    </script>
+    
+    <!-- Scripts for UI authentication and main application logic -->
+    <script type="module" src="./js/ui/ui-auth.js"></script>
+    <script type="module" src="./js/notifications.js"></script>
+
+    <!-- AI chat app JavaScript function to save the current chat conversation -->
+    <script type="module" src="./js/ui/ui-ai-chat.js"></script>
+
+</body>
+</html>

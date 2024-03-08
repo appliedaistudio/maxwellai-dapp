@@ -13,12 +13,16 @@
                 {
                     "name": "Inspiration and Ideas",
                     "tooltip": "A set of resource suggestions tailored to your goals"
+                },
+                {
+                    "name": "Notifications",
+                    "tooltip": "A list of upcoming notifications and actions"
                 }
             ]
         },
         {
             "_id": "User",
-            "name": "User",
+            "name": "You",
             "tooltip": "Access user options",
             "items": [
                 {

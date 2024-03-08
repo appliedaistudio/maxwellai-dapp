@@ -14,6 +14,10 @@ const optionFunctionMappings = {
     'Inspiration and Ideas': {
         func: navigateToScreen, // The function to execute
         params: 'feed.html' // Directly provide the URL string
+    },
+    'Notifications': {
+        func: navigateToScreen, // The function to execute
+        params: 'notifications.html' // Directly provide the URL string
     }
     // Add other options here as needed
 };
