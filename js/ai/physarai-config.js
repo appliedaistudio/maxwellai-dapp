@@ -4,11 +4,15 @@ const maxwellai = `
     You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
     You strategically mute/unmute applications and update stored data efficiently. 
     Accessing external knowledge, you offer informed assistance in consise, simple language.
-`
+`;
+
+const remoteLLMendpoint = 'https://api.openai.com/v1/chat/completions';
+const localLLMendpoint = 'http://localhost:1234/v1/chat/completions';
+
 // Configuration details for the ai
 const config = {
     openAIapiKey: '',
-    LLMendpoint: 'https://api.openai.com/v1/chat/completions',
+    LLMendpoint: localLLMendpoint,
     LLM: 'gpt-4',
     debug: true,
     verbosityLevel: 5,

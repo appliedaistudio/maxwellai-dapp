@@ -464,4 +464,23 @@ async function testPhysarAI() {
     log("Exiting main function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
 };
 
-export {getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI, testPhysarAI}
+// Test connecting to local LLM
+async function testLocalLLM() {
+    const functionName = "testLocalLLM";
+    log("Enter function", config.verbosityLevel, 1, functionName); // Log function entry with verbosity level 1
+
+    const aiPrompt = "What is your name?";
+
+    // Call promptLocalLLM function to get the AI response
+    const aiResponse = await promptLLM({
+        apiKey: config.openAIapiKey,
+        prompt: aiPrompt,
+        endpoint: config.LLMendpoint,
+        model: config.LLM
+    });
+    log("Local LLM response: " + aiResponse, config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
+
+    log("Exit function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
+}
+
+export {getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI, testPhysarAI, testLocalLLM}

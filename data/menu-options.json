@@ -11,12 +11,12 @@
                     "tooltip": "Your goals broken down into attainable tasks"
                 },
                 {
-                    "name": "Inspiration and Ideas",
+                    "name": "Resources and Ideas",
                     "tooltip": "A set of resource suggestions tailored to your goals"
                 },
                 {
-                    "name": "Notifications",
-                    "tooltip": "A list of upcoming notifications and actions"
+                    "name": "Helpful Interventions",
+                    "tooltip": "A list of upcoming actions that MaxwellAI will take on your behalf"
                 }
             ]
         },
