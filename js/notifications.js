@@ -264,3 +264,5 @@ const openChatModal = (_id, category, description) => {
 
 adjustPageSize();
 window.addEventListener('resize', adjustPageSize);
+
+export {loadNotifications}
