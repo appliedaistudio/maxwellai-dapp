@@ -1,122 +1,97 @@
 {
-    "_id": "maxwellai_task_feedback",
-    "feedback": [
-      {
-        "_id": 1,
-        "time": "2024-07-18 10:30 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've started gathering data on recent advancements in cybersecurity threat intelligence (Task ID: 1), but I'm having trouble finding comprehensive sources."},
-          {"speaker": "AI", "text": "I understand. It can be challenging to locate reliable information. Would you like assistance in refining your search criteria or accessing specialized databases?"},
-          {"speaker": "User", "text": "Yes, that would be helpful. I could use guidance on narrowing down the search and identifying reputable sources."},
-          {"speaker": "AI", "text": "I'll provide you with a list of recommended databases and search strategies to streamline your research. Let's ensure the task description reflects these adjustments."},
-          {"speaker": "User", "text": "That sounds perfect. I'll wait for the updates and continue my search."},
-          {"speaker": "AI", "text": "I'll work on it right away. Don't hesitate to reach out if you need further assistance."},
-          {"speaker": "User", "text": "Thanks for the help. I appreciate it."},
-          {"speaker": "AI", "text": "Glad to assist. Let's make your research process more efficient!"},
-          {"speaker": "User", "text": "Absolutely!"},
-          {"speaker": "AI", "text": "Take care!"}
-        ],
-        "takeaway": {
-          "task_adjustments": "Update Task ID 1 description to include guidance on refining search criteria and accessing specialized databases for comprehensive data collection."
-        }
-      },
-      {
-        "_id": 3,
-        "time": "2024-07-23 02:00 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've outlined the structure and key points of the keynote speech on AI in cybersecurity for the NetSPI event (Task ID: 3), but I'm unsure if I've covered all essential aspects."},
-          {"speaker": "AI", "text": "Creating a thorough outline is crucial. Would you like to review the key points together to ensure comprehensive coverage?"},
-          {"speaker": "User", "text": "Yes, a review would be beneficial to identify any gaps or areas needing further elaboration."},
-          {"speaker": "AI", "text": "I'll schedule a review session to go over the outline in detail. Let's also update the task description to include this review process."},
-          {"speaker": "User", "text": "That would be great. I'll be available for the review."},
-          {"speaker": "AI", "text": "Excellent. I'll send you the meeting details shortly."},
-          {"speaker": "User", "text": "Thanks for organizing it."},
-          {"speaker": "AI", "text": "My pleasure. Let's ensure your presentation is impactful and informative!"},
-          {"speaker": "User", "text": "Absolutely!"},
-          {"speaker": "AI", "text": "Take care!"}
-        ],
-        "takeaway": {
-          "task_adjustments": "Schedule a review session to go over the outline of Task ID 3 with the user to ensure comprehensive coverage and update the task description accordingly."
-        }
-      },
-      {
-        "_id": 5,
-        "time": "2024-08-05 11:45 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've started compiling a detailed report on the impact of AI, particularly MaxwellAI, on cybersecurity practices (Task ID: 5). However, I'm struggling to structure the information effectively."},
-          {"speaker": "AI", "text": "Structuring a comprehensive report can be challenging. Would you like assistance in organizing the content and highlighting key insights?"},
-          {"speaker": "User", "text": "Yes, that would be helpful. I could use guidance on creating a clear and coherent framework for the report."},
-          {"speaker": "AI", "text": "I'll provide you with a template and suggestions for structuring the report. Let's ensure the task description reflects these adjustments."},
-          {"speaker": "User", "text": "That sounds perfect. I'll wait for the updates and continue working on the report."},
-          {"speaker": "AI", "text": "I'll work on it right away. Don't hesitate to reach out if you need further assistance."},
-          {"speaker": "User", "text": "Thanks for the help. I appreciate it."},
-          {"speaker": "AI", "text": "Glad to assist. Let's make your report impactful and informative!"},
-          {"speaker": "User", "text": "Absolutely!"},
-          {"speaker": "AI", "text": "Take care!"}
-        ],
-        "takeaway": {
-          "task_adjustments": "Update Task ID 5 description to include guidance on organizing content and creating a clear framework for the report to enhance its effectiveness."
-        }
-      },
-      {
-        "_id": 7,
-        "time": "2024-08-12 03:30 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been proofreading and revising the first chapter (Task ID: 7), but I'm unsure about the changes I've made."},
-          {"speaker": "AI", "text": "Proofreading can be tricky. Would you like some tips or tools to help you identify areas for improvement?"},
-          {"speaker": "User", "text": "Yes, some tips on common mistakes or tools for grammar checking would be useful."},
-          {"speaker": "AI", "text": "I'll provide you with some resources on common grammar mistakes and tools for proofreading. Let's update the task to include these."},
-          {"speaker": "User", "text": "That sounds perfect. I'll wait for the updates before continuing."},
-          {"speaker": "AI", "text": "I'll get to it right away. If you need any further assistance, don't hesitate to reach out."},
-          {"speaker": "User", "text": "Thanks for the help. I appreciate it."},
-          {"speaker": "AI", "text": "Glad to assist. Let's make your writing shine!"},
-          {"speaker": "User", "text": "Absolutely!"},
-          {"speaker": "AI", "text": "Take care!"}
-        ],
-        "takeaway": {
-          "task_adjustments": "Update Task ID 7 description to include resources on common grammar mistakes and tools for proofreading to aid in the revision process."
-        }
-      },
-      {
-        "_id": 9,
-        "time": "2024-08-17 09:00 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've scheduled time to research historical context for the setting (Task ID: 9) tomorrow morning."},
-          {"speaker": "AI", "text": "That sounds like a productive plan. Researching historical context can provide valuable insights for your writing. Do you need any assistance or resources for this task?"},
-          {"speaker": "User", "text": "Not at the moment, but thanks for offering. I'll start with online databases and books."},
-          {"speaker": "AI", "text": "Great approach! If you encounter any difficulties or need additional information, feel free to reach out."},
-          {"speaker": "User", "text": "Will do. Thanks for the support."},
-          {"speaker": "AI", "text": "You're welcome! Wishing you success in your research."},
-          {"speaker": "User", "text": "Thanks! Have a good day!"},
-          {"speaker": "AI", "text": "You too!"}
-        ],
-        "takeaway": {
-          "task_adjustments": "Ensure Task ID 9 has adequate time allocated for thorough research and provide support if needed."
-        }
+  "_id": "maxwellai_task_feedback",
+  "takeaway_types": ["insight", "action"],
+  "feedback": [
+    {
+      "_id": 1,
+      "time": "2024-07-18 10:30 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I've started gathering data on recent advancements in cybersecurity threat intelligence (Task ID: 1), but I'm having trouble finding comprehensive sources."},
+        {"speaker": "AI", "text": "Would you like assistance in refining your search criteria or accessing specialized databases?"},
+        {"speaker": "User", "text": "Yes, guidance on narrowing down the search and identifying reputable sources would be helpful."},
+        {"speaker": "AI", "text": "I'll provide recommendations to streamline your research. Let's ensure the task description reflects these adjustments."},
+        {"speaker": "User", "text": "That's perfect. I'll wait for the updates and continue."},
+        {"speaker": "AI", "text": "I'll work on it right away. Reach out if you need further assistance."},
+        {"speaker": "User", "text": "Thanks for the help."},
+        {"speaker": "AI", "text": "Glad to assist. Let's make your research process more efficient!"},
+        {"speaker": "User", "text": "Absolutely!"},
+        {"speaker": "AI", "text": "Take care!"}
+      ],
+      "takeaway": {
+        "action": "Update Task ID 1 description with search refinement guidance and database access."
       }
-    ],
-    "general_takeaway": {
-      "task_adjustments": "Encourage users to provide specific preferences or difficulties encountered during task execution to tailor future tasks more effectively."
+    },
+    {
+      "_id": 3,
+      "time": "2024-07-23 02:00 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I've outlined the keynote speech on AI in cybersecurity for the NetSPI event (Task ID: 3), but I'm unsure if I've covered everything."},
+        {"speaker": "AI", "text": "Shall we review the key points together?"},
+        {"speaker": "User", "text": "Yes, to ensure comprehensive coverage."},
+        {"speaker": "AI", "text": "I'll schedule a review session and update the task."},
+        {"speaker": "User", "text": "Great. I'll be available."},
+        {"speaker": "AI", "text": "I'll send you details."},
+        {"speaker": "User", "text": "Thanks for organizing."},
+        {"speaker": "AI", "text": "My pleasure. Let's make it impactful!"},
+        {"speaker": "User", "text": "Absolutely!"},
+        {"speaker": "AI", "text": "Take care!"}
+      ],
+      "takeaway": {
+        "action": "Schedule Task ID 3 review session and update description accordingly."
+      }
+    },
+    {
+      "_id": 5,
+      "time": "2024-08-05 11:45 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I've started compiling a report on the impact of AI, particularly MaxwellAI, on cybersecurity (Task ID: 5). I need help structuring it."},
+        {"speaker": "AI", "text": "Shall I provide a template and suggestions?"},
+        {"speaker": "User", "text": "Yes, please. I need a clear framework."},
+        {"speaker": "AI", "text": "I'll update the task description and provide guidance."},
+        {"speaker": "User", "text": "Thanks. Waiting for updates."},
+        {"speaker": "AI", "text": "On it. Let me know if you need more."},
+        {"speaker": "User", "text": "Appreciate it."},
+        {"speaker": "AI", "text": "Glad to assist. Take care!"},
+        {"speaker": "User", "text": "You too!"}
+      ],
+      "takeaway": {
+        "action": "Update Task ID 5 description with structuring guidance."
+      }
+    },
+    {
+      "_id": 7,
+      "time": "2024-08-12 03:30 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm revising the first chapter (Task ID: 7) but unsure about changes."},
+        {"speaker": "AI", "text": "Need tips or tools for proofreading?"},
+        {"speaker": "User", "text": "Yes, on common mistakes or grammar checking."},
+        {"speaker": "AI", "text": "I'll include resources in the task description."},
+        {"speaker": "User", "text": "Waiting for updates."},
+        {"speaker": "AI", "text": "I'll do that. Reach out if you need more."},
+        {"speaker": "User", "text": "Thanks. Appreciate it."},
+        {"speaker": "AI", "text": "Glad to help. Take care!"},
+        {"speaker": "User", "text": "You too!"}
+      ],
+      "takeaway": {
+        "action": "Update Task ID 7 description with proofreading resources."
+      }
+    },
+    {
+      "_id": 9,
+      "time": "2024-08-17 09:00 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "Researching historical context for the setting (Task ID: 9) tomorrow morning."},
+        {"speaker": "AI", "text": "Need assistance or resources?"},
+        {"speaker": "User", "text": "Not now. Starting with online databases and books."},
+        {"speaker": "AI", "text": "Great. Reach out if needed."},
+        {"speaker": "User", "text": "Thanks."},
+        {"speaker": "AI", "text": "Good luck with your research."},
+        {"speaker": "User", "text": "Thanks. Have a good day!"},
+        {"speaker": "AI", "text": "You too!"}
+      ],
+      "takeaway": {
+        "action": "Ensure adequate time for Task ID 9 research and support if needed."
+      }
     }
-  }
-  
+  ]
+}

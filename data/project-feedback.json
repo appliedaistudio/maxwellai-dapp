@@ -1,195 +1,105 @@
 {
-    "_id": "maxwellai_project_feedback",
-    "feedback": [
-      {
-        "_id": 1,
-        "time": "2024-02-15 10:00 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been diving deep into threat intelligence and incident response lately."},
-          {"speaker": "AI", "text": "That's excellent! What strategies have you found most effective?"},
-          {"speaker": "User", "text": "I've been utilizing machine learning algorithms to detect anomalies."},
-          {"speaker": "AI", "text": "Machine learning can indeed enhance threat detection capabilities."},
-          {"speaker": "User", "text": "Exactly. I'm also exploring the use of automation for incident response."},
-          {"speaker": "AI", "text": "Automation can streamline processes and improve response times."},
-          {"speaker": "User", "text": "Indeed. Continuous improvement is crucial in cybersecurity."},
-          {"speaker": "AI", "text": "Agreed. Keep up the great work!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to explore machine learning and automation in threat intelligence and incident response should be pursued."
-        }
-      },
-      {
-        "_id": 2,
-        "time": "2024-02-20 11:30 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been chosen to speak at the upcoming NetSPI event."},
-          {"speaker": "AI", "text": "Congratulations! What will your speech be about?"},
-          {"speaker": "User", "text": "I'll be discussing how AI, particularly MaxwellAI, is transforming cybersecurity practices."},
-          {"speaker": "AI", "text": "That's a fascinating topic! How do you plan to illustrate its impact?"},
-          {"speaker": "User", "text": "I'll share case studies highlighting how MaxwellAI has improved threat detection and incident response."},
-          {"speaker": "AI", "text": "Sounds compelling. I'm here to assist with any data or insights you may need."},
-          {"speaker": "User", "text": "Thanks, AI. Your support is invaluable."},
-          {"speaker": "AI", "text": "Always happy to help. Good luck with your speech!"}
-        ],
-        "takeaway": {
-          "project": "Preparing a keynote speech on the transformative impact of AI, particularly MaxwellAI, in cybersecurity should be pursued."
-        }
-      },
-      {
-        "_id": 3,
-        "time": "2024-02-25 02:00 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been exploring ways to enhance network security."},
-          {"speaker": "AI", "text": "That's a critical area. What measures are you considering?"},
-          {"speaker": "User", "text": "I'm implementing multi-factor authentication and tightening access controls."},
-          {"speaker": "AI", "text": "Those are effective steps to bolster security."},
-          {"speaker": "User", "text": "Indeed. I'm also conducting regular vulnerability assessments."},
-          {"speaker": "AI", "text": "Proactive measures like vulnerability assessments are essential."},
-          {"speaker": "User", "text": "Absolutely. Cybersecurity requires constant vigilance."},
-          {"speaker": "AI", "text": "Agreed. Keep up the great work!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to implement multi-factor authentication, tighten access controls, and conduct regular vulnerability assessments for enhanced network security should be pursued."
-        }
-      },
-      {
-        "_id": 4,
-        "time": "2024-03-02 03:45 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been researching advanced persistent threats."},
-          {"speaker": "AI", "text": "Advanced persistent threats pose significant challenges. What insights have you gained?"},
-          {"speaker": "User", "text": "I've been studying their tactics, techniques, and procedures."},
-          {"speaker": "AI", "text": "Understanding their TTPs is crucial for effective detection and response."},
-          {"speaker": "User", "text": "Exactly. I'm also analyzing threat intelligence feeds to stay updated."},
-          {"speaker": "AI", "text": "Staying abreast of the latest threat intelligence is essential for proactive defense."},
-          {"speaker": "User", "text": "Indeed. It's a constant cat-and-mouse game in cybersecurity."},
-          {"speaker": "AI", "text": "Agreed. Keep up the vigilant research!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to research advanced persistent threats, understanding their tactics, techniques, and procedures, and analyzing threat intelligence feeds for proactive defense should be pursued."
-        }
-      },
-      {
-        "_id": 5,
-        "time": "2024-03-10 04:30 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been analyzing endpoint security solutions."},
-          {"speaker": "AI", "text": "Endpoint security is crucial. What findings have you discovered?"},
-          {"speaker": "User", "text": "I've found that behavioral analysis is particularly effective in detecting anomalies."},
-          {"speaker": "AI", "text": "Behavioral analysis can indeed identify suspicious activities that signature-based methods might miss."},
-          {"speaker": "User", "text": "Exactly. I'm also evaluating endpoint detection and response platforms."},
-          {"speaker": "AI", "text": "EDR platforms can provide valuable insights into endpoint activities for rapid response."},
-          {"speaker": "User", "text": "Indeed. Proactive endpoint security measures are essential in today's threat landscape."},
-          {"speaker": "AI", "text": "Agreed. Keep up the thorough analysis!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to analyze endpoint security solutions, focusing on behavioral analysis and evaluating endpoint detection and response platforms for proactive defense should be pursued."
-        }
-      },
-      {
-        "_id": 6,
-        "time": "2024-03-15 02:15 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been exploring cloud security best practices."},
-          {"speaker": "AI", "text": "Cloud security is paramount. What best practices have you uncovered?"},
-          {"speaker": "User", "text": "I've found that encryption and access control are fundamental."},
-          {"speaker": "AI", "text": "Encrypting data and tightly controlling access help mitigate cloud security risks."},
-          {"speaker": "User", "text": "Exactly. I'm also examining identity and access management solutions."},
-          {"speaker": "AI", "text": "IAM solutions are essential for ensuring only authorized users access cloud resources."},
-          {"speaker": "User", "text": "Indeed. Cloud security requires a comprehensive and layered approach."},
-          {"speaker": "AI", "text": "Agreed. Keep up the thorough exploration!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to explore cloud security best practices, focusing on encryption, access control, and identity and access management solutions should be pursued."
-        }
-      },
-      {
-        "_id": 7,
-        "time": "2024-03-20 11:45 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been evaluating network intrusion detection systems."},
-          {"speaker": "AI", "text": "Intrusion detection is crucial. What systems have you been considering?"},
-          {"speaker": "User", "text": "I'm leaning towards systems with machine learning capabilities for anomaly detection."},
-          {"speaker": "AI", "text": "Machine learning can enhance the accuracy of anomaly detection in network traffic."},
-          {"speaker": "User", "text": "Exactly. I'm also examining open-source options for flexibility and customization."},
-          {"speaker": "AI", "text": "Open-source solutions can offer cost-effective alternatives with community support."},
-          {"speaker": "User", "text": "Indeed. Robust intrusion detection systems are essential for early threat detection."},
-          {"speaker": "AI", "text": "Agreed. Keep up the thorough evaluation!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to evaluate network intrusion detection systems, focusing on machine learning capabilities for anomaly detection and exploring open-source options for flexibility should be pursued."
-        }
-      },
-      {
-        "_id": 8,
-        "time": "2024-03-25 03:30 PM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been researching security orchestration and automation platforms."},
-          {"speaker": "AI", "text": "SOAR platforms can significantly streamline incident response. What have you found?"},
-          {"speaker": "User", "text": "I've discovered that integration with threat intelligence feeds is crucial for proactive response."},
-          {"speaker": "AI", "text": "Integration with threat intelligence enhances the platform's ability to automate response actions based on real-time threats."},
-          {"speaker": "User", "text": "Exactly. I'm also evaluating platforms with playbooks for standardized response procedures."},
-          {"speaker": "AI", "text": "Playbooks help ensure consistent and efficient incident handling across the organization."},
-          {"speaker": "User", "text": "Indeed. Effective security orchestration and automation are essential for rapid threat response."},
-          {"speaker": "AI", "text": "Agreed. Keep up the thorough research!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to research security orchestration and automation platforms, focusing on integration with threat intelligence feeds and evaluation of playbooks for standardized response procedures should be pursued."
-        }
-      },
-      {
-        "_id": 9,
-        "time": "2024-03-30 10:45 AM",
-        "speakers": [
-          {"speaker": "User"},
-          {"speaker": "AI"}
-        ],
-        "dialogue": [
-          {"speaker": "User", "text": "I've been studying social engineering tactics and countermeasures."},
-          {"speaker": "AI", "text": "Social engineering is a persistent threat. What countermeasures have you found effective?"},
-          {"speaker": "User", "text": "I've been conducting security awareness training to educate employees about phishing and other scams."},
-          {"speaker": "AI", "text": "Security awareness training is crucial for mitigating social engineering risks."},
-          {"speaker": "User", "text": "Exactly. I'm also implementing email filtering solutions to block malicious content."},
-          {"speaker": "AI", "text": "Email filtering helps prevent phishing emails from reaching users' inboxes, reducing the attack surface."},
-          {"speaker": "User", "text": "Indeed. Vigilance and education are key in defending against social engineering attacks."},
-          {"speaker": "AI", "text": "Agreed. Keep up the thorough defense!"}
-        ],
-        "takeaway": {
-          "project": "Continuing to study social engineering tactics and countermeasures, focusing on security awareness training and implementation of email filtering solutions should be pursued."
-        }
-      }
-    ]
-  }
-  
+  "_id": "maxwellai_project_feedback",
+  "takeaway_types": ["insight", "action"],
+  "feedback": [
+    {
+      "_id": 1,
+      "time": "2024-02-15 10:00 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm using machine learning for threat detection."},
+        {"speaker": "AI", "text": "Great approach. Automation can further enhance response."},
+        {"speaker": "User", "text": "Continuous improvement is key."},
+        {"speaker": "AI", "text": "Agreed. Keep it up!"}
+      ],
+      "takeaway": {"insight": "Exploring ML and automation for threat intelligence is beneficial."}
+    },
+    {
+      "_id": 2,
+      "time": "2024-02-20 11:30 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm presenting on AI in cybersecurity."},
+        {"speaker": "AI", "text": "Exciting topic. Need any assistance?"},
+        {"speaker": "User", "text": "Case studies on MaxwellAI's impact."},
+        {"speaker": "AI", "text": "I'm here to help. Good luck!"}
+      ],
+      "takeaway": {"insight": "Preparing a keynote on AI's impact is valuable."}
+    },
+    {
+      "_id": 3,
+      "time": "2024-02-25 02:00 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm enhancing network security."},
+        {"speaker": "AI", "text": "Good steps. Vigilance is crucial."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the great work!"}
+      ],
+      "takeaway": {"insight": "Improving network security measures is vital."}
+    },
+    {
+      "_id": 4,
+      "time": "2024-03-02 03:45 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Researching advanced persistent threats."},
+        {"speaker": "AI", "text": "Understanding their tactics is key."},
+        {"speaker": "User", "text": "Indeed."},
+        {"speaker": "AI", "text": "Keep researching diligently!"}
+      ],
+      "takeaway": {"insight": "Researching APTs is essential for defense strategies."}
+    },
+    {
+      "_id": 5,
+      "time": "2024-03-10 04:30 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Analyzing endpoint security."},
+        {"speaker": "AI", "text": "Behavioral analysis is promising."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the detailed analysis!"}
+      ],
+      "takeaway": {"insight": "Examining endpoint security solutions thoroughly is important."}
+    },
+    {
+      "_id": 6,
+      "time": "2024-03-15 02:15 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Exploring cloud security."},
+        {"speaker": "AI", "text": "Encryption and access control are fundamental."},
+        {"speaker": "User", "text": "Exactly."},
+        {"speaker": "AI", "text": "Keep up the comprehensive exploration!"}
+      ],
+      "takeaway": {"insight": "Researching cloud security practices is crucial."}
+    },
+    {
+      "_id": 7,
+      "time": "2024-03-20 11:45 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "Evaluating intrusion detection systems."},
+        {"speaker": "AI", "text": "Machine learning can enhance anomaly detection."},
+        {"speaker": "User", "text": "True."},
+        {"speaker": "AI", "text": "Keep evaluating diligently!"}
+      ],
+      "takeaway": {"insight": "Carefully assessing intrusion detection systems is important."}
+    },
+    {
+      "_id": 8,
+      "time": "2024-03-25 03:30 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Researching security orchestration platforms."},
+        {"speaker": "AI", "text": "Integration with threat intel is crucial."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the thorough research!"}
+      ],
+      "takeaway": {"insight": "Exploring SOAR platforms with threat intel integration is beneficial."}
+    },
+    {
+      "_id": 9,
+      "time": "2024-03-30 10:45 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "Studying social engineering tactics."},
+        {"speaker": "AI", "text": "Awareness training is effective."},
+        {"speaker": "User", "text": "Agreed."},
+        {"speaker": "AI", "text": "Keep up the vigilant study!"}
+      ],
+      "takeaway": {"insight": "Continuing social engineering studies with a focus on awareness training is vital."}
+    }
+  ]
+}

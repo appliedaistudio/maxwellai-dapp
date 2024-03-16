@@ -1,5 +1,6 @@
 {
     "_id": "notification_feedback",
+    "takeaway_types": ["insight", "action"],
     "feedback": [
       {
         "_id": 16,
@@ -17,7 +18,7 @@
           {"speaker": "AI", "text": "You're welcome!"}
         ],
         "takeaway": {
-          "notification": "Change the time of the Digital Environment Update notification to 9:00 AM. (conversation id: 16)"
+          "action": "Change the time of the Digital Environment Update notification to 9:00 AM. (conversation id: 16)"
         }
       },
       {
@@ -36,7 +37,7 @@
           {"speaker": "AI", "text": "You're welcome!"}
         ],
         "takeaway": {
-          "notification": "Adjust the actions for the Digital Environment Update notification: keep messaging open but close social media and entertainment. (conversation id: 17)"
+          "action": "Adjust the actions for the Digital Environment Update notification: keep messaging open but close social media and entertainment. (conversation id: 17)"
         }
       },
       {
@@ -55,7 +56,7 @@
           {"speaker": "AI", "text": "Of course!"}
         ],
         "takeaway": {
-          "notification": "Increase the warning time for the Digital Environment Update notification to 15 minutes. (conversation id: 18)"
+          "action": "Increase the warning time for the Digital Environment Update notification to 15 minutes. (conversation id: 18)"
         }
       },
       {
@@ -74,7 +75,7 @@
           {"speaker": "AI", "text": "You're welcome!"}
         ],
         "takeaway": {
-          "notification": "Change the priority of the Digital Environment Update notification to high. (conversation id: 19)"
+          "action": "Change the priority of the Digital Environment Update notification to high. (conversation id: 19)"
         }
       },
       {
@@ -93,7 +94,7 @@
           {"speaker": "AI", "text": "No problem!"}
         ],
         "takeaway": {
-          "notification": "Modify the actions for the Digital Environment Update notification: open messaging and research tools, but close social media and entertainment. (conversation id: 20)"
+          "action": "Modify the actions for the Digital Environment Update notification: open messaging and research tools, but close social media and entertainment. (conversation id: 20)"
         }
       }
     ]
