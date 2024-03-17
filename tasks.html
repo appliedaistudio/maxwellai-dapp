@@ -49,7 +49,7 @@
         // Check if service worker is already registered in local storage
         if (!localStorage.getItem('serviceWorkerRegistered')) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('./service-worker.mjs', { type: 'module' }).then(function(registration) {
                     console.log('Service Worker registration successful with scope:', registration.scope);
                     
                     // Sending a message to the service worker with the interval value.

@@ -1,3 +1,6 @@
+import './lib/pouchdb/pouchdb.min.js';
+import config from './js/dapp-config.js';
+
 const CACHE_NAME = 'cache-v1';
 const urlsToCache = [
     './index.html',
@@ -8,6 +11,47 @@ const urlsToCache = [
 let timeInterval = 10000; // Default time interval set to 10 seconds
 let notificationTimer = null; // Reference for the notification timer
 let latestNotificationBody = "Default notification message."; // Globally stores the latest notification body
+
+
+// Fetches action and insight takeaways from PouchDB using provided document IDs.
+async function takeaways() {
+  // List of document IDs
+  const documentIds = ["maxwellai_task_feedback", "maxwellai_project_feedback", "maxwellai_feed_feedback"];
+
+  // Initialize local PouchDB instance using the provided configuration
+  const localDb = new PouchDB(config.localDbName);
+
+  // Initialize lists to store action and insight takeaways
+  const actionTakeaways = [];
+  const insightTakeaways = [];
+
+  // Iterate over each document ID
+  for (const docId of documentIds) {
+      try {
+          // Fetch document from local PouchDB
+          const doc = await localDb.get(docId);
+
+          // Iterate over feedback entries in the document
+          for (const feedbackEntry of doc.feedback) {
+              // Extract takeaway
+              const takeaway = feedbackEntry.takeaway;
+
+              // Check if the takeaway is an action or insight and append to respective lists
+              if (doc.takeaway_types.includes("action")) {
+                  actionTakeaways.push(takeaway.action);
+              }
+              if (doc.takeaway_types.includes("insight")) {
+                  insightTakeaways.push(takeaway.insight || ""); // Assuming insight is present in data
+              }
+          }
+      } catch (error) {
+          console.error(`Error fetching document with ID ${docId}: ${error}`);
+      }
+  }
+
+  // Return the lists of action and insight takeaways
+  return [actionTakeaways, insightTakeaways];
+}
 
 // Install event handler
 self.addEventListener('install', event => {
@@ -72,6 +116,17 @@ function requestNotificationBodyAndSend() {
           clients[0].postMessage({ type: 'REQUEST_NOTIFICATION_BODY' });
       }
   });
+}
+
+function actOnExistingTakeaways() {
+  takeaways()
+    .then(([actionTakeaways, insightTakeaways]) => {
+        console.log("Action Takeaways:");
+        actionTakeaways.forEach(action => console.log(action));
+        console.log("\nInsight Takeaways:");
+        insightTakeaways.forEach(insight => console.log(insight));
+    })
+    .catch(error => console.error("Error in takeaways function:", error));
 }
 
 // Reset the timer for the next notification after sending one
