@@ -97,54 +97,6 @@
             }
         });
     </script>
-
-    <!-- Script for adding an event listener to receive messages from the service worker-->
-    <script type="module">
-        
-        import config from './js/dapp-config.js';
-    
-        // Initialize PouchDB
-        const db = new PouchDB(config.localDbName);
-    
-        // Listen for message from service worker
-        navigator.serviceWorker.addEventListener('message', async event => {
-            if (event.data && event.data.type === 'REQUEST_NOTIFICATION_BODY') {
-                try {
-                    // Fetch the document 'notifications' including the current _rev value
-                    const response = await db.get('notifications');
-                    // Extracting the first pending notification
-                    const notification = response.notifications.find(n => n.status === "pending");
-                    if (notification) {
-                        // Respond to the service worker with the latest notification body
-                        if (navigator.serviceWorker.controller) {
-                            navigator.serviceWorker.controller.postMessage({
-                                type: 'NOTIFICATION_BODY_RESPONSE',
-                                body: notification.body
-                            });
-                        }
-                        // Update the notification status as 'sent'
-                        notification.status = "sent";
-                        try {
-                            // Attempt to update the document with the new status
-                            await db.put(response);
-                        } catch (updateError) {
-                            // If there's a conflict error, fetch the latest document and retry the update
-                            if (updateError.name === 'conflict') {
-                                const latestResponse = await db.get('notifications');
-                                // Use the _rev value from the latest fetched document
-                                response._rev = latestResponse._rev;
-                                await db.put(response);
-                            } else {
-                                throw updateError; // For any other errors, rethrow them
-                            }
-                        }
-                    }
-                } catch (err) {
-                    console.error('Error fetching or updating notification from PouchDB:', err);
-                }
-            }
-        });
-    </script>
     
     <!-- App container -->
     <nav aria-label="Main Navigation" id="main-navigation">

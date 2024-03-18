@@ -8,18 +8,16 @@ const urlsToCache = [
     './js/dapp.js'
 ];
 
-let timeInterval = 10000; // Default time interval set to 10 seconds
-let notificationTimer = null; // Reference for the notification timer
-let latestNotificationBody = "Default notification message."; // Globally stores the latest notification body
+let timeIntervalBetweenServiceWorkerRunsInSeconds = 10; // Default time interval between runs of the service worker
+
+// Initialize local PouchDB instance using the provided configuration
+const localDb = new PouchDB(config.localDbName);
 
 
 // Fetches action and insight takeaways from PouchDB using provided document IDs.
 async function takeaways() {
   // List of document IDs
-  const documentIds = ["maxwellai_task_feedback", "maxwellai_project_feedback", "maxwellai_feed_feedback"];
-
-  // Initialize local PouchDB instance using the provided configuration
-  const localDb = new PouchDB(config.localDbName);
+  const documentIds = ["maxwellai_task_feedback", "maxwellai_project_feedback", "maxwellai_feed_feedback", "notification_feedback"];
 
   // Initialize lists to store action and insight takeaways
   const actionTakeaways = [];
@@ -27,31 +25,34 @@ async function takeaways() {
 
   // Iterate over each document ID
   for (const docId of documentIds) {
-      try {
-          // Fetch document from local PouchDB
-          const doc = await localDb.get(docId);
+    try {
+      // Fetch document from local PouchDB
+      const doc = await localDb.get(docId);
 
-          // Iterate over feedback entries in the document
-          for (const feedbackEntry of doc.feedback) {
-              // Extract takeaway
-              const takeaway = feedbackEntry.takeaway;
+      // Iterate over feedback entries in the document
+      for (const feedbackEntry of doc.feedback) {
+        // Extract takeaway
+        const takeaway = feedbackEntry.takeaway;
 
-              // Check if the takeaway is an action or insight and append to respective lists
-              if (doc.takeaway_types.includes("action")) {
-                  actionTakeaways.push(takeaway.action);
-              }
-              if (doc.takeaway_types.includes("insight")) {
-                  insightTakeaways.push(takeaway.insight || ""); // Assuming insight is present in data
-              }
-          }
-      } catch (error) {
-          console.error(`Error fetching document with ID ${docId}: ${error}`);
+        // Check if the takeaway is an action and add it to actionTakeaways
+        if (takeaway && takeaway.action) {
+          actionTakeaways.push(takeaway.action);
+        }
+
+        // Check if the takeaway is an insight and add it to insightTakeaways
+        if (takeaway && takeaway.insight) {
+          insightTakeaways.push(takeaway.insight);
+        }
       }
+    } catch (error) {
+      console.error(`Error fetching document with ID ${docId}: ${error}`);
+    }
   }
 
   // Return the lists of action and insight takeaways
   return [actionTakeaways, insightTakeaways];
 }
+
 
 // Install event handler
 self.addEventListener('install', event => {
@@ -91,64 +92,74 @@ self.addEventListener('fetch', event => {
 // Message event handler to handle all incoming messages in a consolidated manner
 self.addEventListener('message', (event) => {
   console.log('[Service Worker] Received message:', event.data);
-
-  if (event.data.type === 'SET_INTERVAL') {
-    timeInterval = event.data.interval;
-    console.log('[Service Worker] Time Interval has been set to:', timeInterval);
-    startTimer(); // Restart the timer with the new interval
-  } else if (event.data.type === 'NOTIFICATION_BODY_RESPONSE') {
-    // Save the notification body received from the main thread
-    latestNotificationBody = event.data.body || "Default notification message.";
-  }
 });
 
-// Adjusting startTimer to request the latest notification body from the main thread before sending notification
-function startTimer() {
-  console.log('[Service Worker] Starting timer');
-  requestNotificationBodyAndSend();
-}
-
-function requestNotificationBodyAndSend() {
-  // Ask the main thread for the latest notification body message
-  self.clients.matchAll({ type: 'window' }).then(clients => {
-      if (clients && clients.length) {
-          // Assuming you want to request the body from just one client
-          clients[0].postMessage({ type: 'REQUEST_NOTIFICATION_BODY' });
+async function sendNotifications() {
+    try {
+      // Fetch the document 'notifications' including the current _rev value
+      const response = await localDb.get('notifications');
+      // Extracting the first pending notification
+      const notification = response.notifications.find(n => n.status === "pending");
+      if (notification) {
+          // Show the pending notification
+          self.registration.showNotification("Title of Notification", {
+            body: notification.body
+            // Other options like `vibrate`, `badge`, `image`, etc., can also be specified
+          });
+          // Update the pending notification status as 'sent'
+          notification.status = "sent";
+          try {
+              // Attempt to update the document with the new status
+              await localDb.put(response);
+          } catch (updateError) {
+              // If there's a conflict error, fetch the latest document and retry the update
+              if (updateError.name === 'conflict') {
+                  const latestResponse = await localDb.get('notifications');
+                  // Use the _rev value from the latest fetched document
+                  response._rev = latestResponse._rev;
+                  await localDb.put(response);
+              } else {
+                  throw updateError; // For any other errors, rethrow them
+              }
+          }
       }
-  });
-}
-
-function actOnExistingTakeaways() {
-  takeaways()
-    .then(([actionTakeaways, insightTakeaways]) => {
-        console.log("Action Takeaways:");
-        actionTakeaways.forEach(action => console.log(action));
-        console.log("\nInsight Takeaways:");
-        insightTakeaways.forEach(insight => console.log(insight));
-    })
-    .catch(error => console.error("Error in takeaways function:", error));
-}
-
-// Reset the timer for the next notification after sending one
-function resetTimer() {
-  if (notificationTimer) {
-      clearTimeout(notificationTimer);
+  } catch (err) {
+      console.error('Error fetching or updating notification from PouchDB:', err);
   }
-  notificationTimer = setTimeout(requestNotificationBodyAndSend, timeInterval);
 }
 
-// Listen for messages from the main thread
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'NOTIFICATION_BODY_RESPONSE') {
-      const notificationBody = event.data.body || "No new notifications.";
-      self.registration.showNotification("New Notification", { body: notificationBody })
-          .then(() => console.log('[Service Worker] Notification displayed'))
-          .catch(err => console.error('[Service Worker] Error displaying notification:', err));
-      
-      // Reset the timer for the next notification
-      resetTimer();
-  }
-  // Handling other types like SET_INTERVAL remains the same
-});
+async function actOnExistingTakeaways() {
+  try {
+    const [actionTakeaways, insightTakeaways] = await takeaways();
 
-startTimer(); // Start the timer initially
+    console.log("Action Takeaways:");
+    actionTakeaways.forEach(action => console.log(action));
+
+    console.log("\nInsight Takeaways:");
+    insightTakeaways.forEach(insight => console.log(insight));
+  } catch (error) {
+    console.error("Error in takeaways function:", error);
+  }
+}
+
+async function serviceWorkerLoop(delayInSeconds) {
+  // Convert delayInSeconds to milliseconds
+  const delayInMilliseconds = delayInSeconds * 1000;
+
+  // Define an iteration of the service worker
+  async function serviceWorkerIteration() {
+    // Send out any outstanding notifications
+    sendNotifications();
+
+    // Take actions on existing takeaways
+    await actOnExistingTakeaways();
+
+    setTimeout(serviceWorkerIteration, delayInMilliseconds); // Schedule the next iteration after the specified delay
+  }
+
+  // Run an iteration of the service worker execution
+  await serviceWorkerIteration();
+}
+
+// Run the service worker with a delay in between worker runs
+serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);

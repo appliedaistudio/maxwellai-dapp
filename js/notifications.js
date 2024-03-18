@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Proceed with initializing UI components
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
-            loadNotifications();
+            loadNotificationsRegularly();
         }
     }).catch(err => {
         console.error('Error while checking if user is logged in:', err);
@@ -37,6 +37,14 @@ const loadNotifications = async () => {
     } catch (err) {
         console.error('Could not fetch notifications from PouchDB:', err);
     }
+};
+
+// Define a function to load notifications at regular intervals
+const loadNotificationsRegularly = () => {
+    loadNotifications(); // Load notifications immediately
+
+    // Set interval to reload notifications every 15 seconds
+    setInterval(loadNotifications, 15000); // 15 seconds = 15000 milliseconds
 };
 
 const renderNotifications = (notifications) => {
