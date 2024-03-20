@@ -1,13 +1,8 @@
 // Import configuration module
-import { formatJson } from '../utils/string-parse.js';
+import { formatJson, validateJson } from '../utils/string-parse.js';
 import config from './physarai-config.js';
 
-// Log a message with function name if the current verbosity level is equal to or higher than the specified minimum verbosity level
-function log(message, currentVerbosity, minVerbosity, functionName) {
-    if (currentVerbosity >= minVerbosity && config.debug) { // Log only if verbosity level is equal to or higher than the specified minimum verbosity level and debug mode is enabled in config
-        console.log(`[${functionName}] ${message}`);
-    }
-}
+import { log } from '../utils/logging.js';
 
 // Function to interact with the Language Model (LLM)
 async function promptLLM(parameters) {
@@ -310,7 +305,7 @@ async function formatResponseToHuman(output, schema) {
 };
 
 // Stream agent function
-async function PhysarAI(tools, prompt, outputSchema) {
+async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const functionName = "PhysarAI";
 
     // Enter PhysarAI function
@@ -321,12 +316,22 @@ async function PhysarAI(tools, prompt, outputSchema) {
         throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
     }
 
+    // convert the user interaction insights into a prompt context
+    const contextContent = JSON.stringify(insightTakeaways);
+
+    // Add insights collected from user interaactions as context for the prompt
+    const context = `
+        Consider, as context, the following insights collected from user interactions:
+        ${contextContent}
+        `;
+    const promptWithContext = context + prompt;
+
     // Generate the LLM prompt
     const System_prompt = generateLLMPrompt(tools);
 
     let messages = [
         { "role": "system", "content": System_prompt },
-        { "role": "user", "content": prompt },
+        { "role": "user", "content": promptWithContext },
     ];
 
     for (let i = 0; i < 5; i++) {
@@ -352,13 +357,14 @@ async function PhysarAI(tools, prompt, outputSchema) {
         // Extract action and input from the response
         const [action, action_input] = extract_action_and_input(response);
 
-        // Log the action
+        // Log the action and action input
         log(`Action: ${action}`, config.verbosityLevel, 1, functionName); // Log action with verbosity level 1
+        log(`Action Input: ${action_input}`, config.verbosityLevel, 1, functionName); // Log action input with verbosity level 1
 
         // Perform action based on extracted information
         const tool = tools.find(tool => tool.name === action);
         if (tool) {
-            const observation = tool.func(action_input);
+            const observation = await tool.func(action_input);
             // Log the observation
             log("Observation: " + observation, config.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
             messages.push({ "role": "system", "content": response });
@@ -374,8 +380,8 @@ async function PhysarAI(tools, prompt, outputSchema) {
             log("Formatted response to human: " + formatJson(formattedResponseToHuman), config.verbosityLevel, 1, functionName); // Log formatted response to human with verbosity level 1
 
             // Validate the final formatted response to human against the required output schema
-            const validationResult = tv4.validate(formattedResponseToHuman, outputSchema);
-            if (validationResult) {
+            const validationResult = validateJson(formattedResponseToHuman, outputSchema);
+            if (validationResult.valid) {
                 // Log the formatted final resppose to human validation success
                 log("Formatted final response to human validation succeeded", config.verbosityLevel, 1, functionName); // Log validation success with verbosity level 1
 
@@ -384,12 +390,12 @@ async function PhysarAI(tools, prompt, outputSchema) {
                 return formattedResponseToHuman;
             } else {
                 // Log validation error
-                log("Formatted final response to human validation error:" + tv4.error, config.verbosityLevel, 1, functionName); // Log validation error with verbosity level 1
+                log("Formatted final response to human validation error:" + validationResult.error, config.verbosityLevel, 1, functionName); // Log validation error with verbosity level 1
                 // Return a result conforming to the output schema with error information
                 const errorResult = {
                     "success": false,
                     "outputValue": null,
-                    "errorMessage": tv4.error.message || "Unknown validation error"
+                    "errorMessage": validationResult.error || "Unknown validation error"
                 };
                 return errorResult;
             }
@@ -458,7 +464,8 @@ async function testPhysarAI() {
     };    
 
     // Call PhysarAI function
-    const outcome = await PhysarAI(tools, prompt, outputSchema);
+    const userInteractionInsights = "";
+    const outcome = await PhysarAI(tools, userInteractionInsights, prompt, outputSchema);
 
     // Exit main function
     log("Exiting main function", config.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1

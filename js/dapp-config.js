@@ -7,6 +7,7 @@ const config = {
     backgroundImage: './images/background.jpg',
     homePage: './index.html',
     notificationCheckInterval: 360000, // X miliseconds
+    verbosityLevel: 2
 };
 
 export default config;

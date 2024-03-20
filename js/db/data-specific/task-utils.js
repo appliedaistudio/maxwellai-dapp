@@ -4,7 +4,7 @@ import config from '../dapp-config.js';
 const docId = 'maxwell_ai_tasks';
 
 // Initialize PouchlocalDb instance with the specified database name
-const localDb = new PouchlocalDb(localDbName);
+const localDb = new PouchlocalDb(config.localDbName);
 
 // Function to create a new task
 async function createTask(task) {

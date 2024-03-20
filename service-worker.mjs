@@ -1,6 +1,13 @@
 import './lib/pouchdb/pouchdb.min.js';
 import config from './js/dapp-config.js';
 
+// Functions needed for logging
+import { log } from './js/utils/logging.js';
+
+// Functions needed to interact with the AI
+import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
+import { PhysarAI } from './js/ai/physarai.js';
+
 const CACHE_NAME = 'cache-v1';
 const urlsToCache = [
     './index.html',
@@ -8,7 +15,7 @@ const urlsToCache = [
     './js/dapp.js'
 ];
 
-let timeIntervalBetweenServiceWorkerRunsInSeconds = 10; // Default time interval between runs of the service worker
+let timeIntervalBetweenServiceWorkerRunsInSeconds = 30; // Default time interval between runs of the service worker
 
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -16,6 +23,8 @@ const localDb = new PouchDB(config.localDbName);
 
 // Fetches action and insight takeaways from PouchDB using provided document IDs.
 async function takeaways() {
+  const functionName = "takeaways";
+
   // List of document IDs
   const documentIds = ["maxwellai_task_feedback", "maxwellai_project_feedback", "maxwellai_feed_feedback", "notification_feedback"];
 
@@ -45,22 +54,22 @@ async function takeaways() {
         }
       }
     } catch (error) {
-      console.error(`Error fetching document with ID ${docId}: ${error}`);
+      log(`Error fetching document with ID ${docId}: ${error}`, config.verbosityLevel, 3, functionName);
     }
   }
 
-  // Return the lists of action and insight takeaways
-  return [actionTakeaways, insightTakeaways];
+  // Return the lists of insight and action takeaways
+  return [insightTakeaways, actionTakeaways];
 }
 
 
 // Install event handler
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Install event');
+  const functionName = "Service Worker Install Event";
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[Service Worker] Caching app shell');
+        log('Caching app shell', config.verbosityLevel, 3, functionName);
         return cache.addAll(urlsToCache);
       })
   );
@@ -68,22 +77,23 @@ self.addEventListener('install', event => {
 
 // Activate event handler
 self.addEventListener('activate', event => {
-  console.log('[Service Worker] Activate event');
+  const functionName = "Service Worker Activate Event";
   clients.claim();
   startTimer(); // Start the timer when the service worker is activated
 });
 
 // Fetch event handler
 self.addEventListener('fetch', event => {
-  console.log(`[Service Worker] Fetch event for ${event.request.url}`);
+  const functionName = `Service Worker Fetch event for ${event.request.url}`;
+  log(`Fetch event for ${event.request.url}`, config.verbosityLevel, 3, functionName);
   event.respondWith(
     caches.match(event.request)
       .then(response => {
         if (response) {
-          console.log(`[Service Worker] Found ${event.request.url} in cache`);
+          log(`Found ${event.request.url} in cache`, config.verbosityLevel, 3, functionName);
           return response;
         }
-        console.log(`[Service Worker] Network request for ${event.request.url}`);
+        log(`Network request for ${event.request.url}`, config.verbosityLevel, 3, functionName);
         return fetch(event.request);
       })
   );
@@ -91,10 +101,12 @@ self.addEventListener('fetch', event => {
 
 // Message event handler to handle all incoming messages in a consolidated manner
 self.addEventListener('message', (event) => {
-  console.log('[Service Worker] Received message:', event.data);
+  const functionName = `Service Worker Message event ${event.request.url}`;
+  log('Caching app shell ' + event.data, config.verbosityLevel, 3, functionName);
 });
 
 async function sendNotifications() {
+  const functionName = "sendNotifications"
     try {
       // Fetch the document 'notifications' including the current _rev value
       const response = await localDb.get('notifications');
@@ -124,22 +136,33 @@ async function sendNotifications() {
           }
       }
   } catch (err) {
-      console.error('Error fetching or updating notification from PouchDB:', err);
+      log('Error fetching or updating notification from PouchDB: ' + err, config.verbosityLevel, 3, functionName);
   }
 }
 
-async function actOnExistingTakeaways() {
-  try {
-    const [actionTakeaways, insightTakeaways] = await takeaways();
+// Updates the notifications based on insights gained from user interactions
+async function updateNotifications(insightTakeaways) {
 
-    console.log("Action Takeaways:");
-    actionTakeaways.forEach(action => console.log(action));
+  // Define the required output schema for the PhysarAI call
+  const outputSchema = {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "outputValue": {
+        "type": "integer"
+      },
+      "errorMessage": {
+        "type": "string"
+      }
+    },
+    "required": ["outputValue", "success"]
+  };
 
-    console.log("\nInsight Takeaways:");
-    insightTakeaways.forEach(insight => console.log(insight));
-  } catch (error) {
-    console.error("Error in takeaways function:", error);
-  }
+  // Prompt PhysarAI to update the notifications
+  const outcome = await PhysarAI(notificationTools, insightTakeaways, updateNotificationsPrompt, outputSchema);
 }
 
 async function serviceWorkerLoop(delayInSeconds) {
@@ -149,10 +172,16 @@ async function serviceWorkerLoop(delayInSeconds) {
   // Define an iteration of the service worker
   async function serviceWorkerIteration() {
     // Send out any outstanding notifications
-    sendNotifications();
+    await sendNotifications();
 
-    // Take actions on existing takeaways
-    await actOnExistingTakeaways();
+    // Gather insights action items as a result of user interaction
+    const [insightTakeaways, actionTakeaways] = await takeaways();
+
+    // Update the notifications based on insights gained from user interactions
+    await updateNotifications(insightTakeaways);
+
+    // Act on the existing action takeaways
+    actionTakeaways.forEach(action => console.log(action));
 
     setTimeout(serviceWorkerIteration, delayInMilliseconds); // Schedule the next iteration after the specified delay
   }

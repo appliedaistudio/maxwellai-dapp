@@ -44,7 +44,7 @@ const loadNotificationsRegularly = () => {
     loadNotifications(); // Load notifications immediately
 
     // Set interval to reload notifications every 15 seconds
-    setInterval(loadNotifications, 15000); // 15 seconds = 15000 milliseconds
+    setInterval(loadNotifications, 10000); // 10 seconds = 10000 milliseconds
 };
 
 const renderNotifications = (notifications) => {

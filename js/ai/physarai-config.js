@@ -12,11 +12,10 @@ const localLLMendpoint = 'http://localhost:1234/v1/chat/completions';
 // Configuration details for the ai
 const config = {
     openAIapiKey: '',
-    LLMendpoint: localLLMendpoint,
+    LLMendpoint: remoteLLMendpoint,
     LLM: 'gpt-4',
-    debug: true,
-    verbosityLevel: 5,
+    verbosityLevel: 2,
     aiProfile: maxwellai
 };
 
-export default config;
+export default config
