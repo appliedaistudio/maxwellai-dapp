@@ -9,7 +9,7 @@ const notificationSchema = `
         "type": "object",
         "properties": {
         "_id": {
-            "type": "integer"
+            "type": "string"
         },
         "topic": {
             "type": "string"
@@ -62,15 +62,25 @@ function validateNotification(notification) {
 }
 
 // Function to create a new notification
-function createNotification(notification) {
+async function createNotification(notificationString) {
+
     try {
-        // Validate notification schema
-        validateNotification(notification);
-        // Insert the new notification document into the database
-        return localDb.post(notification)
-            .then(response => {
-                return response;
-            });
+        // Convert the string to a JSON object
+        const notificationJson = JSON.parse(notificationString);
+
+        // Validate notification Json agnainst the schema
+        //validateNotification(notification);
+
+        // Get existing notifications from the database
+        const existingNotifications = await localDb.get('notifications');
+
+        // Append the new notification to the existing notifications
+        existingNotifications.notifications.push(notificationJson);
+
+        // Update the notifications document in the database
+        const response = await localDb.put(existingNotifications);
+
+        return response;
     } catch (error) {
         throw error;
     }
@@ -164,12 +174,12 @@ const notificationTools = [
     {
         name: "Notification JSON Schema Validation",
         func: validateNotification,
-        description: `Validates notification data against a JSON schema to ensure conformity before performing CRUD operations. Requires a notification object as input. The notification object must adhere to the specified ${notificationSchema} schema.`
+        description: `Validates notification data against a JSON schema to ensure conformity before performing CRUD operations. Requires a notification object as input. The notification object must be valid JSON that adheres to the specified ${notificationSchema} schema.`
     },
     {
         name: "Create Notification",
         func: createNotification,
-        description: `Creates a new notification, validates its schema, and inserts it into the database. Requires, as input, an object representing a single notification. The notification object must adhere to the specified ${notificationSchema} schema.`
+        description: `Creates a new notification, validates its schema, and inserts it into the database. Requires, as input, an object representing a single notification. The notification object must be valid JSON that adheres to the specified ${notificationSchema} schema.`
     },
     {
         name: "Retrieve All Notifications",
@@ -184,7 +194,7 @@ const notificationTools = [
     {
         name: "Update Notification",
         func: updateNotification,
-        description: `Updates an existing notification, validates its schema, and saves the updated data back to the database. Requires a notification object with the updated data as input. The notification object must adhere to the specified ${notificationSchema} schema.`
+        description: `Updates an existing notification, validates its schema, and saves the updated data back to the database. Requires a notification object with the updated data as input. The notification object must be valid JSON that adheres to the specified ${notificationSchema} schema.`
     },
     {
         name: "Delete Notification",
@@ -193,7 +203,8 @@ const notificationTools = [
     }
 ];
 
-const updateNotificationsPrompt = "Revise notifications by integrating new notifications and refining existing ones using insights collected from user interactions"
+//const updateNotificationsPrompt = "Revise notifications by integrating new notifications and refining existing ones using insights collected from user interactions"
+const updateNotificationsPrompt = "Create a new notification with purely fictional dummy values"
 
 // Export CRUD functions and tools
 export {

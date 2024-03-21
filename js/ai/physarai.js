@@ -3,6 +3,7 @@ import { formatJson, validateJson } from '../utils/string-parse.js';
 import config from './physarai-config.js';
 
 import { log } from '../utils/logging.js';
+import { removeNonAlphanumeric, removeCharacter, replaceCharacter } from '../utils/string-parse.js';
 
 // Function to interact with the Language Model (LLM)
 async function promptLLM(parameters) {
@@ -209,31 +210,11 @@ function generateLLMPrompt(tools) {
     return prompt;
 };
 
-// Helper function to remove non-alphanumeric characters from text
-function removeNonAlphanumeric(text) {
-    const functionName = "removeNonAlphanumeric";
-
-    log("Entering removeNonAlphanumeric function", config.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-    log("Input text:", config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
-    log(text, config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
-    let result = '';
-    for (let char of text) {
-        // Check if the character is alphanumeric or a space
-        if (/[a-zA-Z0-9\s]/.test(char)) {
-            result += char;
-        }
-    }
-    log("Output text:", config.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
-    log(result, config.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
-    log("Exiting removeNonAlphanumeric function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-    return result;
-};
-
 // Helper function to extract action and input from text
-function extract_action_and_input(text) {
-    const functionName = "extract_action_and_input";
+function extractActionAndInput(text) {
+    const functionName = "extractActionAndInput";
 
-    log("Entering extract_action_and_input function", config.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
+    log("Entering function", config.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
     log("Input text:", config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
     log(text, config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
 
@@ -251,18 +232,19 @@ function extract_action_and_input(text) {
     }
 
     let input = null;
-    // If "Action Input:" is found in the text, extract the input substring and remove non-alphanumeric characters
+    // If "Action Input:" is found in the text, extract the input substring and clean up the string
     if (inputIndex !== -1) {
         const inputStart = inputIndex + "Action Input:".length;
         input = text.substring(inputStart).trim().replace(/^\"|\"$/g, '');
-        //input = removeNonAlphanumeric(input);
+        input = removeCharacter(input, '\\\\\\"');
+        input = replaceCharacter(input, '\\"', '"');
     }
 
     log("Action:", config.verbosityLevel, 4, functionName); // Log action with verbosity level 4
     log(action, config.verbosityLevel, 4, functionName); // Log action with verbosity level 4
     log("Input:", config.verbosityLevel, 4, functionName); // Log input with verbosity level 4
     log(input, config.verbosityLevel, 4, functionName); // Log input with verbosity level 4
-    log("Exiting extract_action_and_input function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
+    log("Exiting function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
     return [action, input];
 };
 
@@ -324,14 +306,14 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         Consider, as context, the following insights collected from user interactions:
         ${contextContent}
         `;
-    const promptWithContext = context + prompt;
+    const promptWithContextAndCaveats = context + prompt + config.caveats;
 
     // Generate the LLM prompt
     const System_prompt = generateLLMPrompt(tools);
 
     let messages = [
         { "role": "system", "content": System_prompt },
-        { "role": "user", "content": promptWithContext },
+        { "role": "user", "content": promptWithContextAndCaveats },
     ];
 
     for (let i = 0; i < 5; i++) {
@@ -355,7 +337,7 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         log("Response from LLM: " + formattedLLMpromptResponse, config.verbosityLevel, 1, functionName); // Log response from LLM with verbosity level 1
 
         // Extract action and input from the response
-        const [action, action_input] = extract_action_and_input(response);
+        const [action, action_input] = extractActionAndInput(response);
 
         // Log the action and action input
         log(`Action: ${action}`, config.verbosityLevel, 1, functionName); // Log action with verbosity level 1

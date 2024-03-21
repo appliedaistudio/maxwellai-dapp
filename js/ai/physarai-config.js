@@ -1,3 +1,9 @@
+
+// Caveats to be obbserved by the AI at all times
+const caveats = `
+    In your output JSON, do not use escapes to encode quotes"
+`;
+
 // MaxwellAI profile
 const maxwellai = `
     As MaxwellAI, you provide concise, straightforward assistance without corporate jargon. 
@@ -15,7 +21,8 @@ const config = {
     LLMendpoint: remoteLLMendpoint,
     LLM: 'gpt-4',
     verbosityLevel: 2,
-    aiProfile: maxwellai
+    aiProfile: maxwellai,
+    caveats: caveats
 };
 
 export default config

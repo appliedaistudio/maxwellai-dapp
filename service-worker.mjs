@@ -79,7 +79,6 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   const functionName = "Service Worker Activate Event";
   clients.claim();
-  startTimer(); // Start the timer when the service worker is activated
 });
 
 // Fetch event handler
@@ -181,7 +180,7 @@ async function serviceWorkerLoop(delayInSeconds) {
     await updateNotifications(insightTakeaways);
 
     // Act on the existing action takeaways
-    actionTakeaways.forEach(action => console.log(action));
+    //actionTakeaways.forEach(action => console.log(action));
 
     setTimeout(serviceWorkerIteration, delayInMilliseconds); // Schedule the next iteration after the specified delay
   }
