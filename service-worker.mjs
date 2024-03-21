@@ -100,7 +100,7 @@ self.addEventListener('fetch', event => {
 
 // Message event handler to handle all incoming messages in a consolidated manner
 self.addEventListener('message', (event) => {
-  const functionName = `Service Worker Message event ${event.request.url}`;
+  const functionName = `Service Worker Message event ${event.request}`;
   log('Caching app shell ' + event.data, config.verbosityLevel, 3, functionName);
 });
 

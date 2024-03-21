@@ -236,7 +236,7 @@ function extractActionAndInput(text) {
     if (inputIndex !== -1) {
         const inputStart = inputIndex + "Action Input:".length;
         input = text.substring(inputStart).trim().replace(/^\"|\"$/g, '');
-        input = removeCharacter(input, '\\\\\\"');
+        input = replaceCharacter(input, '\\\\\\"', '"');
         input = replaceCharacter(input, '\\"', '"');
     }
 
