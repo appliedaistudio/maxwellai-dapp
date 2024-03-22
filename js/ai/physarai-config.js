@@ -22,7 +22,7 @@ const config = {
     LLM: 'gpt-4',
     verbosityLevel: 2,
     aiProfile: maxwellai,
-    caveats: caveats
+    aiCaveats: caveats
 };
 
 export default config

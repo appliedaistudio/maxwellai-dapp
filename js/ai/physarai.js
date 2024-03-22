@@ -20,6 +20,9 @@ async function promptLLM(parameters) {
         // Destructure parameters object for easier access
         const { apiKey, prompt, endpoint, model } = parameters;
 
+        // Create a prompt that contains the ai profile and ai caveats
+        const promptWithProfileAndCaveats = config.aiProfile + prompt + config.aiCaveats;
+
         // Send a POST request to the LLM endpoint with the given parameters
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -29,7 +32,7 @@ async function promptLLM(parameters) {
             },
             body: JSON.stringify({
                 "model": model,
-                "messages": [{"role": "user", "content": prompt}]
+                "messages": [{"role": "user", "content": promptWithProfileAndCaveats}]
             })
         });
 
@@ -58,9 +61,7 @@ async function generateAIResponseToConversation(conversationData) {
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
 
         // Create a short AI prompt asking for the AI's response to the conversation
-        const aiPrompt = `
-            ${config.aiProfile} 
-            Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
+        const aiPrompt = `Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
 
         // Call promptLLM function to get the AI response
         const aiResponse = await promptLLM({
@@ -84,8 +85,6 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
 
         // Create a short AI prompt asking for suggested default and categorized user responses
         const aiPrompt = `
-            ${config.aiProfile}
-
             Given the following conversation:
             
             ${conversationString}
@@ -169,11 +168,11 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
     }
 }
 
-//TODO: RENAME THIS. MAKE IT MORE SPECIFIC
-function generateLLMPrompt(tools) {
-    const functionName = "generateLLMPrompt";
+// Creates the prompt that turns a normal LLM into a ReAct agent
+function generateReActAgentLLMPrompt(tools) {
+    const functionName = "generateReActAgentLLMPrompt";
 
-    log("Entering generateLLMPrompt function", config.verbosityLevel, 3, functionName); // Log function entry with verbosity level 3
+    log("Entering function", config.verbosityLevel, 3, functionName); // Log function entry with verbosity level 3
 
     // Define the prompt using a template
     const prompt = `
@@ -205,7 +204,7 @@ function generateLLMPrompt(tools) {
     Begin!`;
     
     log(`Generated LLM prompt: ${prompt}`, config.verbosityLevel, 3, functionName); // Log generated LLM prompt with verbosity level 3
-    log("Exiting generateLLMPrompt function", config.verbosityLevel, 3, functionName); // Log function exit with verbosity level 3
+    log("Exiting function", config.verbosityLevel, 3, functionName); // Log function exit with verbosity level 3
 
     return prompt;
 };
@@ -301,19 +300,19 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     // convert the user interaction insights into a prompt context
     const contextContent = JSON.stringify(insightTakeaways);
 
-    // Add insights collected from user interaactions as context for the prompt
+    // Add insights collected from user interactions as context for the prompt
     const context = `
         Consider, as context, the following insights collected from user interactions:
         ${contextContent}
         `;
-    const promptWithContextAndCaveats = context + prompt + config.caveats;
+    const promptWithContext = context + prompt;
 
-    // Generate the LLM prompt
-    const System_prompt = generateLLMPrompt(tools);
+    // Generate the ReAct Agent LLM prompt
+    const System_prompt = generateReActAgentLLMPrompt(tools);
 
     let messages = [
         { "role": "system", "content": System_prompt },
-        { "role": "user", "content": promptWithContextAndCaveats },
+        { "role": "user", "content": promptWithContext },
     ];
 
     for (let i = 0; i < 5; i++) {

@@ -6,6 +6,7 @@ import { log } from './js/utils/logging.js';
 
 // Functions needed to interact with the AI
 import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
+import { commonTools } from './js/utils/common.js';
 import { PhysarAI } from './js/ai/physarai.js';
 
 const CACHE_NAME = 'cache-v1';
@@ -160,8 +161,11 @@ async function updateNotifications(insightTakeaways) {
     "required": ["outputValue", "success"]
   };
 
+  // Create tools for PhysarAI to use
+  const physarAiTools = [...notificationTools, ...commonTools];
+
   // Prompt PhysarAI to update the notifications
-  const outcome = await PhysarAI(notificationTools, insightTakeaways, updateNotificationsPrompt, outputSchema);
+  const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateNotificationsPrompt, outputSchema);
 }
 
 async function serviceWorkerLoop(delayInSeconds) {
