@@ -3,7 +3,7 @@
   "takeaway_types": ["insight", "action"],
   "feedback": [
     {
-      "_id": 1,
+      "_id": "1",
       "time": "2024-07-18 10:30 AM",
       "dialogue": [
         {"speaker": "User", "text": "I've started gathering data on recent advancements in cybersecurity threat intelligence (Task ID: 1), but I'm having trouble finding comprehensive sources."},
@@ -22,7 +22,7 @@
       }
     },
     {
-      "_id": 3,
+      "_id": "3",
       "time": "2024-07-23 02:00 PM",
       "dialogue": [
         {"speaker": "User", "text": "I've outlined the keynote speech on AI in cybersecurity for the NetSPI event (Task ID: 3), but I'm unsure if I've covered everything."},
@@ -41,7 +41,7 @@
       }
     },
     {
-      "_id": 5,
+      "_id": "5",
       "time": "2024-08-05 11:45 AM",
       "dialogue": [
         {"speaker": "User", "text": "I've started compiling a report on the impact of AI, particularly MaxwellAI, on cybersecurity (Task ID: 5). I need help structuring it."},
@@ -59,7 +59,7 @@
       }
     },
     {
-      "_id": 7,
+      "_id": "7",
       "time": "2024-08-12 03:30 PM",
       "dialogue": [
         {"speaker": "User", "text": "I'm revising the first chapter (Task ID: 7) but unsure about changes."},
@@ -77,7 +77,7 @@
       }
     },
     {
-      "_id": 9,
+      "_id": "9",
       "time": "2024-08-17 09:00 AM",
       "dialogue": [
         {"speaker": "User", "text": "Researching historical context for the setting (Task ID: 9) tomorrow morning."},

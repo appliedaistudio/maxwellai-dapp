@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Proceed with initializing UI components
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
-            loadTasks();
+            loadTasksRegularly();
         }
     }).catch(err => {
         console.error('Error while checking if user is logged in:', err);
@@ -37,6 +37,14 @@ const loadTasks = async () => {
     } catch (err) {
         console.error('Could not fetch tasks from PouchDB:', err);
     }
+};
+
+// Define a function to load tasks at regular intervals
+const loadTasksRegularly = () => {
+    loadTasks(); // Load tasks immediately
+
+    // Set interval to reload tasks every 15 seconds
+    setInterval(loadTasks, 10000); // 10 seconds = 10000 milliseconds
 };
 
 const renderTasks = (tasks) => {

@@ -6,6 +6,7 @@ import { log } from './js/utils/logging.js';
 
 // Functions needed to interact with the AI
 import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
+import { updateTasksPrompt, taskTools } from './js/db/data-specific/task-utils.js';
 import { commonTools } from './js/utils/common.js';
 import { PhysarAI } from './js/ai/physarai.js';
 
@@ -168,6 +169,33 @@ async function updateNotifications(insightTakeaways) {
   const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateNotificationsPrompt, outputSchema);
 }
 
+// Updates the tasks based on insights gained from user interactions
+async function updateTasks(insightTakeaways) {
+  // Define the required output schema for the PhysarAI call
+  const outputSchema = {
+      "$schema": "http://json-schema.org/draft-07/schema",
+      "type": "object",
+      "properties": {
+          "success": {
+              "type": "boolean"
+          },
+          "outputValue": {
+              "type": "integer"
+          },
+          "errorMessage": {
+              "type": "string"
+          }
+      },
+      "required": ["outputValue", "success"]
+  };
+
+  // Create tools for PhysarAI to use
+  const physarAiTools = [...taskTools];
+
+  // Prompt PhysarAI to update the tasks
+  const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateTasksPrompt, outputSchema);
+}
+
 async function serviceWorkerLoop(delayInSeconds) {
   // Convert delayInSeconds to milliseconds
   const delayInMilliseconds = delayInSeconds * 1000;
@@ -181,7 +209,10 @@ async function serviceWorkerLoop(delayInSeconds) {
     const [insightTakeaways, actionTakeaways] = await takeaways();
 
     // Update the notifications based on insights gained from user interactions
-    await updateNotifications(insightTakeaways);
+    //await updateNotifications(insightTakeaways);
+
+    // Update the tasks based on insights gained from user interactions
+    await updateTasks(insightTakeaways);
 
     // Act on the existing action takeaways
     //actionTakeaways.forEach(action => console.log(action));
@@ -194,4 +225,4 @@ async function serviceWorkerLoop(delayInSeconds) {
 }
 
 // Run the service worker with a delay in between worker runs
-serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);
+//serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);
