@@ -17,7 +17,7 @@ const localLLMendpoint = 'http://localhost:1234/v1/chat/completions';
 
 // Configuration details for the ai
 const config = {
-    openAIapiKey: 'sk-',
+    openAIapiKey: '',
     LLMendpoint: remoteLLMendpoint,
     LLM: 'gpt-4',
     verbosityLevel: 2,

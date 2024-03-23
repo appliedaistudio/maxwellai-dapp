@@ -173,7 +173,7 @@ const taskTools = [
     {
         name: "Update Task",
         func: updateTask,
-        description: `Updates an existing task, validates its schema, and saves the updated data back to the database. Requires a task object with and existing task ID and the updated data as input. The task object must be valid JSON that adheres to the specified ${taskSchema} schema.`
+        description: `Updates an existing task, validates its schema, and saves the updated data back to the database. Requires a task object with an existing task ID and the updated data as input. The task object must be valid JSON that adheres to the specified ${taskSchema} schema.`
     },
     {
         name: "Delete Task",

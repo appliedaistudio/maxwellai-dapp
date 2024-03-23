@@ -33,7 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadMainContentControls(localDb, 'hello_world_controls');
                 // Get initial itemsPerPage based on screen size
                 updateItemsPerPage();
+                // Display feed data initially
                 displayFeedData(currentPage, itemsPerPage);
+                // Reload and display feed data every 10 seconds
+                setInterval(() => {
+                    displayFeedData(currentPage, itemsPerPage);
+                }, 10000);
             }
         })
         .catch(err => {

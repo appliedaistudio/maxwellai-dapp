@@ -2,7 +2,7 @@
     "_id": "maxwell_ai_feed",
     "urls_to_browse": [
       {
-        "_id": 1,
+        "_id": "1",
         "url": "https://www.ias.edu/ideas",
         "description": "Institute for Advanced Study",
         "usefulness_description": "Access academic papers and research on cybersecurity.",
@@ -11,7 +11,7 @@
         "thumbnail_url": "https://picsum.photos/seed/11/200"
       },
       {
-        "_id": 2,
+        "_id": "2",
         "url": "https://www.nsa.gov/Cybersecurity/",
         "description": "National Security Agency - Cybersecurity",
         "usefulness_description": "Explore cybersecurity guidelines and resources.",
@@ -20,7 +20,7 @@
         "thumbnail_url": "https://picsum.photos/seed/12/200"
       },
       {
-        "_id": 3,
+        "_id": "3",
         "url": "https://www.isc2.org/",
         "description": "International Information System Security Certification Consortium",
         "usefulness_description": "Access certification resources and industry insights.",
@@ -29,7 +29,7 @@
         "thumbnail_url": "https://picsum.photos/seed/13/200"
       },
       {
-        "_id": 4,
+        "_id": "4",
         "url": "https://www.ted.com/topics/cybersecurity",
         "description": "TED Talks on Cybersecurity",
         "usefulness_description": "Watch insightful talks on cybersecurity trends and innovations.",
@@ -38,7 +38,7 @@
         "thumbnail_url": "https://picsum.photos/seed/14/200"
       },
       {
-        "_id": 5,
+        "_id": "5",
         "url": "https://www.csoonline.com/",
         "description": "CSO Online - Security News, Features, and Analysis",
         "usefulness_description": "Stay updated on cybersecurity news and best practices.",
@@ -47,7 +47,7 @@
         "thumbnail_url": "https://picsum.photos/seed/15/200"
       },
       {
-        "_id": 6,
+        "_id": "6",
         "url": "https://www.sans.org/",
         "description": "SANS Institute - Cyber Security Training",
         "usefulness_description": "Enroll in online courses and training programs.",
@@ -56,7 +56,7 @@
         "thumbnail_url": "https://picsum.photos/seed/16/200"
       },
       {
-        "_id": 7,
+        "_id": "7",
         "url": "https://www.darkreading.com/",
         "description": "Dark Reading - Security",
         "usefulness_description": "Explore security-related news, analysis, and insights.",
@@ -65,7 +65,7 @@
         "thumbnail_url": "https://picsum.photos/seed/17/200"
       },
       {
-        "_id": 8,
+        "_id": "8",
         "url": "https://www.hackerone.com/",
         "description": "HackerOne - Hacker-Powered Security",
         "usefulness_description": "Engage with a global community of hackers for security testing.",
@@ -74,7 +74,7 @@
         "thumbnail_url": "https://picsum.photos/seed/18/200"
       },
       {
-        "_id": 9,
+        "_id": "9",
         "url": "https://www.cisecurity.org/",
         "description": "Center for Internet Security",
         "usefulness_description": "Access resources for securing systems and data.",
@@ -83,7 +83,7 @@
         "thumbnail_url": "https://picsum.photos/seed/19/200"
       },
       {
-        "_id": 10,
+        "_id": "10",
         "url": "https://www.securitymagazine.com/",
         "description": "Security Magazine",
         "usefulness_description": "Read articles on cybersecurity trends, strategies, and technologies.",

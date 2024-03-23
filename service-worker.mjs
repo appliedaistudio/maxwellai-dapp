@@ -7,6 +7,7 @@ import { log } from './js/utils/logging.js';
 // Functions needed to interact with the AI
 import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
 import { updateTasksPrompt, taskTools } from './js/db/data-specific/task-utils.js';
+import { updateExternalResourcesFeedPrompt, externalResourcesFeedTools } from './js/db/data-specific/feed-utils.js';
 import { commonTools } from './js/utils/common.js';
 import { PhysarAI } from './js/ai/physarai.js';
 
@@ -190,10 +191,37 @@ async function updateTasks(insightTakeaways) {
   };
 
   // Create tools for PhysarAI to use
-  const physarAiTools = [...taskTools];
+  const physarAiTools = [...taskTools, ...commonTools];
 
   // Prompt PhysarAI to update the tasks
   const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateTasksPrompt, outputSchema);
+}
+
+// Updates the external resources feed based on insights gained from user interactions
+async function updateExternalResourcesFeed(insightTakeaways) {
+  // Define the required output schema for the PhysarAI call
+  const outputSchema = {
+      "$schema": "http://json-schema.org/draft-07/schema",
+      "type": "object",
+      "properties": {
+          "success": {
+              "type": "boolean"
+          },
+          "outputValue": {
+              "type": "integer"
+          },
+          "errorMessage": {
+              "type": "string"
+          }
+      },
+      "required": ["outputValue", "success"]
+  };
+
+  // Create tools for PhysarAI to use
+  const physarAiTools = [...externalResourcesFeedTools, ...commonTools];
+
+  // Prompt PhysarAI to update the external resources feed
+  const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateExternalResourcesFeedPrompt, outputSchema);
 }
 
 async function serviceWorkerLoop(delayInSeconds) {
@@ -212,7 +240,10 @@ async function serviceWorkerLoop(delayInSeconds) {
     //await updateNotifications(insightTakeaways);
 
     // Update the tasks based on insights gained from user interactions
-    await updateTasks(insightTakeaways);
+    //await updateTasks(insightTakeaways);
+
+    // Update the external resources feed based on insights gained from user interactions
+    await updateExternalResourcesFeed(insightTakeaways);
 
     // Act on the existing action takeaways
     //actionTakeaways.forEach(action => console.log(action));
