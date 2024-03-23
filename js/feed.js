@@ -9,8 +9,6 @@ import { loadChatConversation } from './ui/ui-ai-chat.js';
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-let currentPage = 1; // Define currentPage globally
-
 // Define constant mapping between page size and items per page
 const PAGE_SIZE_MAPPING = {
     extraSmall: 2,
@@ -20,7 +18,8 @@ const PAGE_SIZE_MAPPING = {
     extraLarge: 6
 };
 
-let itemsPerPage = PAGE_SIZE_MAPPING.medium; // Default number of items per page for medium screens
+let PAGE_SIZE = PAGE_SIZE_MAPPING.medium; // Default number of items per page for medium screens
+let currentPage = 1; // Define currentPage globally
 
 document.addEventListener('DOMContentLoaded', () => {
     isLoggedIn(localDb)
@@ -29,16 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.replace('./login.html');
             } else {
                 console.log('User is logged in. Initializing DB and UI components...');
+
+                // Proceed with initializing UI components
                 loadMenu(localDb, 'hello_world_menu');
                 loadMainContentControls(localDb, 'hello_world_controls');
-                // Get initial itemsPerPage based on screen size
-                updateItemsPerPage();
-                // Display feed data initially
-                displayFeedData(currentPage, itemsPerPage);
-                // Reload and display feed data every 10 seconds
-                setInterval(() => {
-                    displayFeedData(currentPage, itemsPerPage);
-                }, 10000);
+                loadFeedRegurlarly();
             }
         })
         .catch(err => {
@@ -46,48 +40,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
-// Function to update itemsPerPage based on screen size
-const updateItemsPerPage = () => {
-    if (window.innerWidth < 576) {
-        itemsPerPage = PAGE_SIZE_MAPPING.extraSmall; // Extra Small screens
-    } else if (window.innerWidth < 768) {
-        itemsPerPage = PAGE_SIZE_MAPPING.small; // Small screens like phones
-    } else if (window.innerWidth < 992) {
-        itemsPerPage = PAGE_SIZE_MAPPING.medium; // Medium screens like tablets
-    } else if (window.innerWidth < 1200) {
-        itemsPerPage = PAGE_SIZE_MAPPING.large; // Large screens like desktops
-    } else {
-        itemsPerPage = PAGE_SIZE_MAPPING.extraLarge; // Extra Large screens
-    }
-};
-
-const displayFeedData = async (page, pageSize) => {
+const loadFeed = async () => {
     try {
         const feedData = await localDb.get('maxwell_ai_feed');
-        renderFeedItems(feedData.urls_to_browse, page, pageSize);
+        renderFeed(feedData.urls_to_browse);
     } catch (err) {
         console.error('Error loading feed data:', err);
     }
 };
 
-const renderFeedItems = (items, page, pageSize) => {
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedItems = items.slice(startIndex, endIndex);
+// Define a function to load feed at regular intervals
+const loadFeedRegurlarly = () => {
+    loadFeed(); // Load feed immediately
 
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = ''; // Clear existing content
+    // Set interval to reload feed every 10 seconds
+    setInterval(loadFeed, 10000); // 10 seconds = 10000 milliseconds
+};
 
+const renderFeed = (feed) => {
+    const feedContainer = document.getElementById('main-content');
+    feedContainer.innerHTML = ''; // Clear existing content
+
+    const paginatedFeed = paginate(feed, currentPage, PAGE_SIZE);
+    const cards = createFeedCards(paginatedFeed);
+    feedContainer.appendChild(cards);
+
+    renderPagination(feed.length);
+};
+
+const createFeedCards = (feed) => {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4';
 
-    paginatedItems.forEach((item, index) => {
+    feed.forEach((item, index) => {
         const colDiv = document.createElement('div');
         colDiv.className = 'col custom-card-col'; // Added custom class
 
         const card = document.createElement('div');
         card.className = 'card h-100 custom-card'; // Added custom class
-        card.id = `card-${startIndex + index + 1}`; // Unique ID for each card
+        card.id = `card-${index + 1}`; // Unique ID for each card
 
         const cardLink = document.createElement('a');
         cardLink.href = item.url;
@@ -138,14 +129,10 @@ const renderFeedItems = (items, page, pageSize) => {
         rowDiv.appendChild(colDiv);
     });
 
-    mainContent.appendChild(rowDiv);
-
-    renderPagination(items.length, page, pageSize);
+    return rowDiv;
 };
 
-const renderPagination = (totalItems, currentPage, pageSize) => {
-    const totalPages = Math.ceil(totalItems / pageSize);
-
+const renderPagination = (totalResources) => {
     let paginationContainer = document.getElementById('pagination-container');
     if (!paginationContainer) {
         paginationContainer = document.createElement('div');
@@ -153,72 +140,102 @@ const renderPagination = (totalItems, currentPage, pageSize) => {
     } else {
         paginationContainer.innerHTML = ''; // Clear existing pagination
     }
+    paginationContainer.id = 'pagination-container'; // Unique ID for the pagination container
 
-    const nav = document.createElement('nav');
-    nav.setAttribute('aria-label', 'Page navigation');
-    const ul = document.createElement('ul');
-    ul.className = 'pagination pagination-list';
-    ul.id = 'pagination-list'; // Updated ID to match CSS selector
+    const totalPages = Math.ceil(totalResources / PAGE_SIZE);
 
-    const prevLi = document.createElement('li');
-    prevLi.className = 'page-item';
-    prevLi.id = 'prev-page-item'; // Updated ID to match CSS selector
-    const prevLink = document.createElement('a');
-    prevLink.className = 'page-link';
-    prevLink.href = '#';
-    prevLink.textContent = 'Previous';
-    prevLink.title = 'Go to Previous Page'; // Tooltip for previous page button
-    prevLink.id = 'prev-page-link'; // Updated ID to match CSS selector
-    prevLink.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            displayFeedData(currentPage, pageSize);
-        }
-    });
-    prevLi.appendChild(prevLink);
-    ul.appendChild(prevLi);
+    if (totalPages > 1) {
+        const nav = document.createElement('nav');
+        nav.setAttribute('aria-label', 'Resource Pagination');
+        nav.id = 'pagination-navigation'; // Unique ID for the pagination navigation
 
-    for (let i = 1; i <= totalPages; i++) {
-        const li = document.createElement('li');
-        li.className = 'page-item';
-        li.id = `page-item-${i}`; // Unique ID for each page item
-        const link = document.createElement('a');
-        link.className = 'page-link';
-        link.href = '#';
-        link.textContent = i;
-        link.title = `Go to Page ${i}`; // Tooltip for each page button
-        link.id = `page-link-${i}`; // Unique ID for each page link
-        link.addEventListener('click', (event) => {
-            currentPage = parseInt(event.target.textContent);
-            displayFeedData(currentPage, pageSize);
+        const ul = document.createElement('ul');
+        ul.className = 'pagination pagination-list'; // Added class for styling
+        ul.id = 'pagination-list'; // Unique ID for the pagination list
+
+        // Previous button
+        const prevLi = document.createElement('li');
+        prevLi.className = 'page-item prev-page-item'; // Added class for styling
+        prevLi.id = 'prev-page-item'; // Unique ID for the previous page item
+        const prevLink = document.createElement('a');
+        prevLink.className = 'page-link prev-page-link'; // Added class for styling
+        prevLink.href = '#';
+        prevLink.innerHTML = 'Previous';
+        prevLink.title = 'Go to Previous Page'; // Tooltip
+        prevLink.setAttribute('aria-label', 'Go to Previous Page');
+        prevLink.id = 'prev-page-link'; // Unique ID for the previous page link
+        prevLink.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                loadFeed();
+            }
         });
-        li.appendChild(link);
-        ul.appendChild(li);
+        prevLi.appendChild(prevLink);
+        ul.appendChild(prevLi);
+
+        // Page buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.className = 'page-item'; // Added class for styling
+            li.id = `page-item-${i}`; // Unique ID for each page item
+            const link = document.createElement('a');
+            link.className = 'page-link page-link-item'; // Added class for styling
+            link.href = '#';
+            link.innerHTML = i;
+            link.title = `Go to Page ${i}`; // Tooltip
+            link.addEventListener('click', (event) => {
+                currentPage = parseInt(event.target.innerHTML);
+                loadFeed();
+            });
+            li.appendChild(link);
+            ul.appendChild(li);
+        }
+
+        // Next button
+        const nextLi = document.createElement('li');
+        nextLi.className = 'page-item next-page-item'; // Added class for styling
+        nextLi.id = 'next-page-item'; // Unique ID for the next page item
+        const nextLink = document.createElement('a');
+        nextLink.className = 'page-link next-page-link'; // Added class for styling
+        nextLink.href = '#';
+        nextLink.innerHTML = 'Next';
+        nextLink.title = 'Go to Next Page'; // Tooltip
+        nextLink.setAttribute('aria-label', 'Go to Next Page');
+        nextLink.id = 'next-page-link'; // Unique ID for the next page link
+        nextLink.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadFeed();
+            }
+        });
+        nextLi.appendChild(nextLink);
+        ul.appendChild(nextLi);
+
+        nav.appendChild(ul);
+        paginationContainer.appendChild(nav);
+        document.getElementById('main-content').insertAdjacentElement('afterend', paginationContainer);
+    }
+};
+
+const paginate = (array, currentPage, pageSize) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return array.slice(startIndex, startIndex + pageSize);
+};
+
+const adjustPageSize = () => {
+    if (window.innerWidth < 576) {
+        PAGE_SIZE = PAGE_SIZE_MAPPING.extraSmall; // Extra Small screens
+    } else if (window.innerWidth < 768) {
+        PAGE_SIZE = PAGE_SIZE_MAPPING.small; // Small screens like phones
+    } else if (window.innerWidth < 992) {
+        PAGE_SIZE = PAGE_SIZE_MAPPING.medium; // Medium screens like tablets
+    } else if (window.innerWidth < 1200) {
+        PAGE_SIZE = PAGE_SIZE_MAPPING.large; // Large screens like desktops
+    } else {
+        PAGE_SIZE = PAGE_SIZE_MAPPING.extraLarge; // Extra Large screens
     }
 
-    const nextLi = document.createElement('li');
-    nextLi.className = 'page-item';
-    nextLi.id = 'next-page-item'; // Updated ID to match CSS selector
-    const nextLink = document.createElement('a');
-    nextLink.className = 'page-link';
-    nextLink.href = '#';
-    nextLink.textContent = 'Next';
-    nextLink.title = 'Go to Next Page'; // Tooltip for next page button
-    nextLink.id = 'next-page-link'; // Updated ID to match CSS selector
-    nextLink.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayFeedData(currentPage, pageSize);
-        }
-    });
-    nextLi.appendChild(nextLink);
-    ul.appendChild(nextLi);
-
-    nav.appendChild(ul);
-    paginationContainer.appendChild(nav);
-
-    const mainContent = document.getElementById('main-content');
-    mainContent.insertAdjacentElement('afterend', paginationContainer);
+    loadFeed();
 };
 
 const openChatModal = (_id, category, description) => {
@@ -243,9 +260,7 @@ const openChatModal = (_id, category, description) => {
     chatModalInstance.show();
 };
 
-// Event listener for changing page size
-window.addEventListener('resize', () => {
-    // Update itemsPerPage based on screen size
-    updateItemsPerPage();
-    displayFeedData(currentPage, itemsPerPage);
-});
+adjustPageSize();
+window.addEventListener('resize', adjustPageSize);
+
+export {loadFeed}

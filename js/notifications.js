@@ -43,7 +43,7 @@ const loadNotifications = async () => {
 const loadNotificationsRegularly = () => {
     loadNotifications(); // Load notifications immediately
 
-    // Set interval to reload notifications every 15 seconds
+    // Set interval to reload notifications every 10 seconds
     setInterval(loadNotifications, 10000); // 10 seconds = 10000 milliseconds
 };
 

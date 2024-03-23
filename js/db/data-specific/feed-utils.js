@@ -53,7 +53,7 @@ function validateAnExternalResource(externalResource) {
 async function createExternalResource(externalResourceString) {
     try {
         const externalResourceJson = JSON.parse(externalResourceString);
-        validateAnExternalResource(feedJson);
+        validateAnExternalResource(externalResourceJson);
 
         const externalResourcesFeedDoc = await localDb.get(feedDocId);
         externalResourcesFeedDoc.urls_to_browse.push(externalResourceJson);
