@@ -61,8 +61,6 @@ const renderFeed = (feed) => {
     const feedContainer = document.getElementById('main-content');
     feedContainer.innerHTML = ''; // Clear existing content
 
-    console.log("rendering feed");
-
     const paginatedFeed = paginate(feed, currentPage, PAGE_SIZE);
     const cards = createFeedCards(paginatedFeed);
     feedContainer.appendChild(cards);

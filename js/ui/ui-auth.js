@@ -1,3 +1,5 @@
+import config from "../dapp-config.js";
+
 // User login and access level checks
 export const AccessLevels = Object.freeze({
     "GUEST": 0,
@@ -53,7 +55,7 @@ async function loginUser(db, username, password) {
 async function logoutUser(db) {
   try {
       // Fetch the current session document from PouchDB
-      const currentSession = await db.get('current_session');
+      const currentSession = await db.get(config.applicationSessionId);
       
       // Remove the session document to effectively log out the user
       await db.remove(currentSession);
@@ -71,7 +73,7 @@ async function logoutUser(db) {
 async function isLoggedIn(db) {
   try {
       // Attempt to fetch the current session document
-      const sessionDoc = await db.get('current_session');
+      const sessionDoc = await db.get(config.applicationSessionId);
       
       // If the session document exists and it has a userId, assume a user is logged in
       return sessionDoc.userId != null;
@@ -87,7 +89,7 @@ async function isLoggedIn(db) {
 }
 
 function updateCurrentSession(db, userId) {
-    const sessionId = 'current_session';
+    const sessionId = config.applicationSessionId;
     
     // First, fetch the current session document, or create one if it doesn't exist
     return db.get(sessionId).catch(err => {
@@ -154,7 +156,7 @@ function getCurrentUserAccessLevel(db) {
 // Retrieves the current user's ID from a "current_session" document in PouchDB
 function getCurrentUserId(db) {
   return new Promise((resolve, reject) => {
-    db.get('current_session').then(sessionDoc => {
+    db.get(config.applicationSessionId).then(sessionDoc => {
       // Assuming the session document has a "userId" field
       if (sessionDoc.userId) {
         resolve(sessionDoc.userId);
@@ -173,7 +175,7 @@ function getCurrentUserId(db) {
 async function getCurrentUsername(db) {
   try {
       // Fetch the current session document from the database
-      const sessionDoc = await db.get('current_session');
+      const sessionDoc = await db.get(config.applicationSessionId);
       
       // Extract the user ID from the session document
       const userId = sessionDoc.userId;

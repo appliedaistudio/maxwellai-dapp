@@ -18,8 +18,6 @@ const urlsToCache = [
     './js/dapp.js'
 ];
 
-let timeIntervalBetweenServiceWorkerRunsInSeconds = 30; // Default time interval between runs of the service worker
-
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
@@ -105,6 +103,13 @@ self.addEventListener('fetch', event => {
 self.addEventListener('message', (event) => {
   const functionName = `Service Worker Message event ${event.request}`;
   log('Caching app shell ' + event.data, config.verbosityLevel, 3, functionName);
+
+  // Check if the received message is to engage AI
+  if (event.data && event.data.action === 'engageAI') {
+    // Call a function to engage AI
+    engageAI();
+  }
+
 });
 
 async function sendNotifications() {
@@ -224,36 +229,22 @@ async function updateExternalResourcesFeed(insightTakeaways) {
   const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateExternalResourcesFeedPrompt, outputSchema);
 }
 
-async function serviceWorkerLoop(delayInSeconds) {
-  // Convert delayInSeconds to milliseconds
-  const delayInMilliseconds = delayInSeconds * 1000;
+async function engageAI() {
+   // Send out any outstanding notifications
+   await sendNotifications();
 
-  // Define an iteration of the service worker
-  async function serviceWorkerIteration() {
-    // Send out any outstanding notifications
-    await sendNotifications();
+   // Gather insights action items as a result of user interaction
+   const [insightTakeaways, actionTakeaways] = await takeaways();
 
-    // Gather insights action items as a result of user interaction
-    const [insightTakeaways, actionTakeaways] = await takeaways();
+   // Update the notifications based on insights gained from user interactions
+   await updateNotifications(insightTakeaways);
 
-    // Update the notifications based on insights gained from user interactions
-    //await updateNotifications(insightTakeaways);
+   // Update the tasks based on insights gained from user interactions
+   await updateTasks(insightTakeaways);
 
-    // Update the tasks based on insights gained from user interactions
-    //await updateTasks(insightTakeaways);
+   // Update the external resources feed based on insights gained from user interactions
+   await updateExternalResourcesFeed(insightTakeaways);
 
-    // Update the external resources feed based on insights gained from user interactions
-    await updateExternalResourcesFeed(insightTakeaways);
-
-    // Act on the existing action takeaways
-    //actionTakeaways.forEach(action => console.log(action));
-
-    setTimeout(serviceWorkerIteration, delayInMilliseconds); // Schedule the next iteration after the specified delay
-  }
-
-  // Run an iteration of the service worker execution
-  await serviceWorkerIteration();
+   // Act on the existing action takeaways
+   //actionTakeaways.forEach(action => console.log(action));
 }
-
-// Run the service worker with a delay in between worker runs
-serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);

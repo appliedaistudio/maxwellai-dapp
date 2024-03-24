@@ -333,6 +333,15 @@ function showUserResponseSuggestionLoadingIndicator() {
      suggestedResponseContainer.appendChild(loadingIcon);
 }
 
+// Sends a message to the service worker to engage AI
+function engageAI() {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ action: 'engageAI' });
+    } else {
+      console.error('Service Worker not supported or not yet active.');
+    }
+}  
+
 // Function to send a message
 window.sendMessage = async function() {
     const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
@@ -389,6 +398,9 @@ window.sendMessage = async function() {
                     // Set the tooltip for the chat header to be the concatenation of all takeaway contents
                     const chatHeader = document.getElementById('chat-header');
                     chatHeader.title = `Takeaway: ${takeaway}`;
+
+                    // Engage the AI to respond (update and seek goals) the new user interaction
+                    engageAI();
                     
                     // Load user response suggestions based on the updated conversation
                     showUserResponseSuggestionLoadingIndicator();
