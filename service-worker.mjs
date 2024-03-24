@@ -256,4 +256,4 @@ async function serviceWorkerLoop(delayInSeconds) {
 }
 
 // Run the service worker with a delay in between worker runs
-//serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);
+serviceWorkerLoop(timeIntervalBetweenServiceWorkerRunsInSeconds);

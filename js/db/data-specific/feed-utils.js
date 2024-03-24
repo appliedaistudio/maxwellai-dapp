@@ -51,6 +51,7 @@ function validateAnExternalResource(externalResource) {
 
 // Function to create a new external resource
 async function createExternalResource(externalResourceString) {
+    console.log("creating a new external resource");
     try {
         const externalResourceJson = JSON.parse(externalResourceString);
         validateAnExternalResource(externalResourceJson);
@@ -67,6 +68,7 @@ async function createExternalResource(externalResourceString) {
 
 // Function to retrieve the feed of all external resources
 async function getAllExternalResources() {
+    console.log("getting all external resources");
     try {
         const response = await localDb.get(feedDocId);
         const externalResourcesString = JSON.stringify(response.urls_to_browse);
@@ -78,6 +80,7 @@ async function getAllExternalResources() {
 
 // Function to retrieve an external resource by ID
 function getExternalResourceById(id) {
+    console.log("getting resources by id");
     try {
         return localDb.get(feedDocId)
             .then(response => {
@@ -95,6 +98,7 @@ function getExternalResourceById(id) {
 
 // Function to update an external resource
 function updateExternalResource(externalResourceString) {
+    console.log("updating external resource");
     try {
         const externalResourceJson = JSON.parse(externalResourceString);
         validateAnExternalResource(externalResourceJson);
@@ -119,6 +123,7 @@ function updateExternalResource(externalResourceString) {
 
 // Function to delete an external resource
 function deleteExternalResource(id) {
+    console.log("deleting external resource");
     try {
         return localDb.get(feedDocId)
             .then(response => {
@@ -173,11 +178,12 @@ const externalResourcesFeedTools = [
 
 const updateExternalResourcesFeedPrompt = `
     Refine the feed of external resources based on user interactions:
-    1. Introduce new external resources relevant to the insights collected from user interactions.
-    2. Regularly review existing external resources for relevance and update them accordingly.
-    3. Remove external resources that are no longer needed.
-    4. Ensure the usefulness description accurately reflects the content of the external resource for better user engagement.
-    5. Categorize external resources appropriately to facilitate easy navigation and access for users.`;
+    1. Get a list of the existing external resources
+    2. Introduce new external resources relevant to the insights collected from user interactions.
+    3. Regularly review existing external resources for relevance and update them accordingly.
+    4. Remove external resources that are no longer needed.
+    5. Ensure the usefulness description accurately reflects the content of the external resource for better user engagement.
+    6. Categorize external resources appropriately to facilitate easy navigation and access for users.`;
 
 // Export CRUD functions and tools for the feed of external resources
 export {
