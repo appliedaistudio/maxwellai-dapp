@@ -1,5 +1,6 @@
 import config from '../dapp-config.js';
 
+import { initializeDappSettings } from './db-init-dapp-settings.js';
 import { initializeUsers } from './db-init-users.js';
 import { initializeMenu } from './db-init-menu.js';
 import { initializeMainContent } from './db-init-main-content-controls.js'
@@ -43,6 +44,7 @@ function markDbAsLoadedInTheSession() {
 // Load the local PouchDB database and mark it as loaded in the session.
 function loadLocalDb() {
     // Initialize each part of the database
+    initializeDappSettings(localDb);
     initializeUsers(localDb);
     initializeMenu(localDb);
     initializeMainContent(localDb);

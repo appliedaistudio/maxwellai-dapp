@@ -1,0 +1,27 @@
+/* Configuration form styles */
+.modal-body form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.modal-body form .form-label {
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+.modal-body form .form-control {
+    margin-bottom: 15px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+#saveConfigBtn {
+    background-color: var(--neutral-color);
+    color: white;
+}
+
+#saveConfigBtn:hover {
+    background-color: var(--secondary-accent-color);
+}

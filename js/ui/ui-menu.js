@@ -1,5 +1,6 @@
 // Import functions from external libraries as needed
 import { logoutUser } from './ui-auth.js';
+import config from '../dapp-config.js';
 
 // Define a mapping from option names to objects containing function and params
 const optionFunctionMappings = {
@@ -18,9 +19,104 @@ const optionFunctionMappings = {
     'Helpful Interventions': {
         func: navigateToScreen, // The function to execute
         params: 'notifications.html' // Directly provide the URL string
+    },
+    'MaxwellAI Settings': {
+        func: openSettingsModal, // The function to execute
+        params: '' // No parameters needed
     }
     // Add other options here as needed
 };
+
+// Initialize local and remote PouchDB instances using the provided configuration
+const localDb = new PouchDB(config.localDbName);
+
+// Function to be called when the save button is clicked on the settings modal
+async function saveSettings() {
+    try {
+        // Fetch the existing settings document from localDb
+        const doc = await localDb.get('dapp_settings');
+        const settings = doc.settings;
+
+        // Get all input fields within the form
+        const inputFields = document.querySelectorAll('#configForm input');
+
+        // Update settings object with new values from input fields
+        inputFields.forEach(input => {
+            const key = input.id;
+            const value = input.value;
+            settings[key] = value;
+        });
+
+        // Update the settings document in localDb
+        await localDb.put({
+            _id: 'dapp_settings',
+            _rev: doc._rev, // Include the revision to avoid conflicts
+            settings: settings
+        });
+
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        // Optionally handle errors here, e.g., show an error message to the user
+    }
+}
+
+// Get the save button element on the settings modal dialog
+const saveButton = document.getElementById('saveSettingsBtn');
+
+// Add an event listener to the save button
+saveButton.addEventListener('click', function() {
+    saveSettings(); // Call the saveSettings function when the save button is clicked
+});
+
+// Update the openSettingsModal function
+async function openSettingsModal() {
+    const configModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+    try {
+        // Fetch settings from localDb
+        const doc = await localDb.get('dapp_settings');
+        const settings = doc.settings;
+
+        // Get the form element where settings will be populated
+        const configForm = document.getElementById('configForm');
+
+        // Clear any existing input fields
+        configForm.innerHTML = '';
+
+        // Iterate through each setting and create input fields
+        for (const key in settings) {
+            if (Object.hasOwnProperty.call(settings, key)) {
+                const value = settings[key];
+
+                // Create input field and label
+                const inputDiv = document.createElement('div');
+                inputDiv.classList.add('mb-3');
+
+                const label = document.createElement('label');
+                label.setAttribute('for', key);
+                label.classList.add('form-label');
+                label.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ');
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('class', 'form-control');
+                input.setAttribute('id', key);
+                input.setAttribute('value', value);
+
+                // Append label and input to form
+                inputDiv.appendChild(label);
+                inputDiv.appendChild(input);
+                configForm.appendChild(inputDiv);
+            }
+        }
+
+        // Show the modal
+        configModal.show();
+    } catch (error) {
+        console.error('Error fetching settings:', error);
+        // Optionally handle errors here, e.g., show an error message to the user
+    }
+}
 
 function navigateToScreen(url) {
     window.location.href = url; // Change the URL to navigate to the new screen

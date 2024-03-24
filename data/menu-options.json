@@ -17,6 +17,10 @@
                 {
                     "name": "Helpful Interventions",
                     "tooltip": "A list of upcoming actions that MaxwellAI will take on your behalf"
+                },
+                {
+                    "name": "MaxwellAI Settings",
+                    "tooltip": "Set MaxwellAI's settings"
                 }
             ]
         },

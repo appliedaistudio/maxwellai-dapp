@@ -1,0 +1,8 @@
+{
+    "_id": "dapp_settings",
+    "settings": {
+      "server_host": "example.com",
+      "server_port": 8080,
+      "database_host": "localhost"
+    }
+  }
