@@ -12,17 +12,12 @@ const maxwellai = `
     Accessing external knowledge, you offer informed assistance in consise, simple language.
 `;
 
-const remoteLLMendpoint = 'https://api.openai.com/v1/chat/completions';
-const localLLMendpoint = 'http://localhost:1234/v1/chat/completions';
-
 // Configuration details for the ai
-const config = {
-    openAIapiKey: '',
-    LLMendpoint: remoteLLMendpoint,
+const aiConfig = {
     LLM: 'gpt-4',
     verbosityLevel: 2,
     aiProfile: maxwellai,
     aiCaveats: caveats
 };
 
-export default config
+export default aiConfig

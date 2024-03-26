@@ -75,6 +75,12 @@
 }
 
 /* Styles for the chat header */
+.modal-header {
+    background-color: var(--neutral-color); /* Background color for the modal header */
+    color: var(--light-color); /* Text color for the modal header */
+}
+
+/* Styles for the chat header */
 .chat-header {
     background-color: var(--neutral-color); /* Background color for the chat header */
     color: var(--light-color); /* Text color for the chat header */

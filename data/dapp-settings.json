@@ -1,8 +1,7 @@
 {
-    "_id": "dapp_settings",
-    "settings": {
-      "server_host": "example.com",
-      "server_port": 8080,
-      "database_host": "localhost"
-    }
+  "_id": "dapp_settings",
+  "settings": {
+    "LLM_endpoint": "example.com",
+    "LLM_api_key": "NONE"
   }
+}

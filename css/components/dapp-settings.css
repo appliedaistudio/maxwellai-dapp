@@ -1,0 +1,34 @@
+/* Configuration form styles */
+.modal-content {
+    background-color: var(--light-color);
+}
+
+.modal-body form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.modal-body form .settings-form-label {
+    color: black;
+    float: left; /* Align messages to the left */
+}
+
+.modal-body form .settings-form-control {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+#saveSettingsBtn {
+    background-color: var(--neutral-color);
+    color: var(--font-color);
+    border-color: var(--accent-color);
+}
+
+#saveSettingsBtn:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}

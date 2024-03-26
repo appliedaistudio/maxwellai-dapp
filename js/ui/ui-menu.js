@@ -1,5 +1,6 @@
 // Import functions from external libraries as needed
 import { logoutUser } from './ui-auth.js';
+import { encryptValue, decryptValue } from '../utils/encryption.js';
 import config from '../dapp-config.js';
 
 // Define a mapping from option names to objects containing function and params
@@ -38,12 +39,12 @@ async function saveSettings() {
         const settings = doc.settings;
 
         // Get all input fields within the form
-        const inputFields = document.querySelectorAll('#configForm input');
+        const inputFields = document.querySelectorAll('#settingsForm input');
 
         // Update settings object with new values from input fields
         inputFields.forEach(input => {
             const key = input.id;
-            const value = input.value;
+            const value = encryptValue(input.value);
             settings[key] = value;
         });
 
@@ -78,7 +79,7 @@ async function openSettingsModal() {
         const settings = doc.settings;
 
         // Get the form element where settings will be populated
-        const configForm = document.getElementById('configForm');
+        const configForm = document.getElementById('settingsForm');
 
         // Clear any existing input fields
         configForm.innerHTML = '';
@@ -86,7 +87,7 @@ async function openSettingsModal() {
         // Iterate through each setting and create input fields
         for (const key in settings) {
             if (Object.hasOwnProperty.call(settings, key)) {
-                const value = settings[key];
+                const value = decryptValue(settings[key]);
 
                 // Create input field and label
                 const inputDiv = document.createElement('div');
@@ -94,12 +95,12 @@ async function openSettingsModal() {
 
                 const label = document.createElement('label');
                 label.setAttribute('for', key);
-                label.classList.add('form-label');
+                label.classList.add('settings-form-label');
                 label.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ');
 
                 const input = document.createElement('input');
                 input.setAttribute('type', 'text');
-                input.setAttribute('class', 'form-control');
+                input.setAttribute('class', 'settings-form-control');
                 input.setAttribute('id', key);
                 input.setAttribute('value', value);
 
