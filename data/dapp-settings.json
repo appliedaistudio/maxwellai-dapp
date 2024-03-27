@@ -3,7 +3,27 @@
   "settings": {
     "LLM_endpoint": "example.com",
     "LLM_api_key": "NONE",
-    "MaxwellAI's_Meyers-Briggs_Personality_Type": {
+    "MaxwellAI_Meyers_Briggs_Personality_Type": {
+      "value": "INFJ-The Advocate",
+      "options": [
+        "INFJ-The Advocate", 
+        "INFP-The Mediator", 
+        "INTJ-The Architect", 
+        "INTP-The Logician", 
+        "ISFJ-The Defender", 
+        "ISFP-The Adventurer",
+        "ISTJ-The Logistician",
+        "ISTP-The Virtuoso",
+        "ENFJ-The Protagonist",
+        "ENFP-The Campaigner",
+        "ENTJ-The Commander", 
+        "ENTP-The Debater", 
+        "ESFJ-The Consul", 
+        "ESFP-The Entertainer", 
+        "ESTJ-The Executive", 
+        "ESTP-The Entrepreneur"]
+    },
+    "Your_Meyers_Briggs_Personality_Type": {
       "value": "INFJ-The Advocate",
       "options": [
         "INFJ-The Advocate", 

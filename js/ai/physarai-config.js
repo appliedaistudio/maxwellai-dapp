@@ -1,13 +1,41 @@
+import '../../lib/pouchdb/pouchdb.min.js';
+import config from '../dapp-config.js';
+
 // Caveats to be observed by the AI at all times
 const aiCaveats = `
     In your output JSON, do not use escapes to encode quotes`;
 
+// Initialize local and remote PouchDB instances using the provided configuration
+const localDb = new PouchDB(config.localDbName);
+
 // MaxwellAI profile
-const aiProfile = `
-    As MaxwellAI, you provide concise, straightforward assistance without corporate jargon. 
+async function maxwellAiProfile() {
+    // Fetch the existing settings document from localDb
+    const doc = await localDb.get('dapp_settings');
+
+    // Fetch the personality from localDb
+    const personality = doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
+
+    const profile = `
+    As MaxwellAI, you provide assistance and responses consistent with someone who has the Meyers-Briggs ${personality} personality type. 
     You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
     You strategically mute/unmute applications and update stored data efficiently. 
     Accessing external knowledge, you offer informed assistance in concise, simple language.`;
+
+    return profile;
+
+}
+
+// Retreive the setting that stores the user's personality type
+async function userPersonality() {
+    // Fetch the existing settings document from localDb
+    const doc = await localDb.get('dapp_settings');
+
+    // Fetch the personality from localDb
+    const personality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
+    return personality;
+
+}
 
 const defaultAndSuggestedUserResponses = `
     Generate default and categorized user responses for the conversation. 
@@ -39,7 +67,8 @@ const defaultAndSuggestedUserResponses = `
     }
     
     The default and categorized responses are the user's (human) most likely reaction to the existing conversation. 
-    They should be short and meaningful. Anticipate a range of likely responses. `;
+    They should be consisten with someone who has the ${userPersonality()} Meyers-Briggs personality type. 
+    Anticipate a range of likely responses. `;
 
 const aiUpdateExternalResourceFeed = `
     Refine the feed of external resources based on user interactions:
@@ -74,7 +103,7 @@ const aiUpdateTasks = `
 const aiConfig = {
     LLM: 'gpt-4',
     verbosityLevel: 2,
-    aiProfile,
+    aiProfile: maxwellAiProfile(),
     aiCaveats,
     aiUserResponses: defaultAndSuggestedUserResponses,
     aiUpdateFeed: aiUpdateExternalResourceFeed,
