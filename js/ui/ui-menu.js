@@ -39,12 +39,24 @@ async function saveSettings() {
         const settings = doc.settings;
 
         // Get all input fields within the form
-        const inputFields = document.querySelectorAll('#settingsForm input');
+        const inputFields = document.querySelectorAll('#settingsForm select, #settingsForm input[type="text"]');
 
         // Update settings object with new values from input fields
         inputFields.forEach(input => {
             const key = input.id;
-            const value = encryptValue(input.value);
+            let value;
+
+            // Handle dropdowns differently
+            if (input.tagName === 'SELECT') {
+                const selectedIndex = input.selectedIndex;
+                const options = Array.from(input.options).map(option => option.value);
+                value = {
+                    value: input.options[selectedIndex].value,
+                    options: options
+                };
+            } else {
+                value = encryptValue(input.value);
+            }
             settings[key] = value;
         });
 
@@ -60,14 +72,6 @@ async function saveSettings() {
         // Optionally handle errors here, e.g., show an error message to the user
     }
 }
-
-// Get the save button element on the settings modal dialog
-const saveButton = document.getElementById('saveSettingsBtn');
-
-// Add an event listener to the save button
-saveButton.addEventListener('click', function() {
-    saveSettings(); // Call the saveSettings function when the save button is clicked
-});
 
 // Update the openSettingsModal function
 async function openSettingsModal() {
@@ -89,25 +93,56 @@ async function openSettingsModal() {
             if (Object.hasOwnProperty.call(settings, key)) {
                 const value = decryptValue(settings[key]);
 
-                // Create input field and label
-                const inputDiv = document.createElement('div');
-                inputDiv.classList.add('mb-3');
+                // Check if the setting should be rendered as a dropdown
+                if (typeof value === 'object' && value.options) {
+                    const inputDiv = document.createElement('div');
+                    inputDiv.classList.add('mb-3');
 
-                const label = document.createElement('label');
-                label.setAttribute('for', key);
-                label.classList.add('settings-form-label');
-                label.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ');
+                    const label = document.createElement('label');
+                    label.setAttribute('for', key);
+                    label.classList.add('settings-form-label');
+                    label.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); // Replace underscores with spaces and capitalize each word
 
-                const input = document.createElement('input');
-                input.setAttribute('type', 'text');
-                input.setAttribute('class', 'settings-form-control');
-                input.setAttribute('id', key);
-                input.setAttribute('value', value);
+                    const input = document.createElement('select');
+                    input.setAttribute('class', 'settings-form-control');
+                    input.setAttribute('id', key);
 
-                // Append label and input to form
-                inputDiv.appendChild(label);
-                inputDiv.appendChild(input);
-                configForm.appendChild(inputDiv);
+                    // Populate the dropdown options with the "options" property
+                    value.options.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        if (option === value.value) {
+                            optionElement.selected = true; // Select the current value
+                        }
+                        input.appendChild(optionElement);
+                    });
+
+                    // Append label and input to form
+                    inputDiv.appendChild(label);
+                    inputDiv.appendChild(input);
+                    configForm.appendChild(inputDiv);
+                } else {
+                    // Create a text input for other settings
+                    const inputDiv = document.createElement('div');
+                    inputDiv.classList.add('mb-3');
+
+                    const label = document.createElement('label');
+                    label.setAttribute('for', key);
+                    label.classList.add('settings-form-label');
+                    label.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); // Replace underscores with spaces and capitalize each word
+
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.setAttribute('class', 'settings-form-control');
+                    input.setAttribute('id', key);
+                    input.setAttribute('value', value);
+
+                    // Append label and input to form
+                    inputDiv.appendChild(label);
+                    inputDiv.appendChild(input);
+                    configForm.appendChild(inputDiv);
+                }
             }
         }
 
@@ -118,6 +153,14 @@ async function openSettingsModal() {
         // Optionally handle errors here, e.g., show an error message to the user
     }
 }
+
+// Get the save button element on the settings modal dialog
+const saveButton = document.getElementById('saveSettingsBtn');
+
+// Add an event listener to the save button
+saveButton.addEventListener('click', function() {
+    saveSettings(); // Call the saveSettings function when the save button is clicked
+});
 
 function navigateToScreen(url) {
     window.location.href = url; // Change the URL to navigate to the new screen
