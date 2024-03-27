@@ -117,36 +117,8 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
         // Create a short AI prompt asking for suggested default and categorized user responses
         const aiPrompt = `
             Given the following conversation:
-            
             ${conversationString}
-            
-            Generate default and categorized user responses for the conversation. 
-            Provide the output in the JSON format that follows this example:
-            
-            {
-                defaultUserResponses: [
-                    "Got new project ideas?",
-                    "Let's chat about projects.",
-                    "I'm considering new goals for myself."
-                ],
-                suggestedUserResponses: {
-                    "current projects": [
-                        "I want to update you on my progress.", 
-                        "I'd like feedback on my latest work.", 
-                        "I want to talk about a challenge I'm facing"
-                    ],
-                    "inspiration and ideas": [
-                        "I'd like to share a new writing prompt.", 
-                        "I'd like to explore a creative spark.", 
-                        "I want to brainstorm on plot twists and characters."
-                    ],
-                    "support and feedback": [
-                        "I need some encouragement.", 
-                        "I need help getting past my writer's block.", 
-                        "I need help staying motivated."
-                    ]
-                }
-            }`;
+            ${aiConfig.aiUserResponses}`;
 
         // Recall the LLM API key and endpoint from the settings data
         const aiApiKey = await llmApiKey();

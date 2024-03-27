@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="./css/components/ai-chat-button.css">
     <link rel="stylesheet" href="./css/components/ai-chat.css">
     <link rel="stylesheet" href="./css/components/pagination.css">
+    <link rel="stylesheet" href="./css/components/dapp-settings.css">
     <link rel="stylesheet" href="./css/utils/responsive.css">
 
     <!-- Script for password encryption -->
@@ -179,6 +180,32 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Configuration form -->
+                    <form id="settingsForm">
+                        <div class="mb-3">
+                            <label for="apiKey" class="form-label">API Key:</label>
+                            <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
+                        </div>
+                        <!-- Add more configuration fields as needed -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveSettingsBtn">Save changes</button>
                 </div>
             </div>
         </div>

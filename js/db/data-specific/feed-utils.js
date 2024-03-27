@@ -1,4 +1,5 @@
 import config from "../../dapp-config.js";
+import aiConfig from "../../ai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -176,14 +177,7 @@ const externalResourcesFeedTools = [
     }
 ];
 
-const updateExternalResourcesFeedPrompt = `
-    Refine the feed of external resources based on user interactions:
-    1. Get a list of the existing external resources
-    2. Introduce new external resources relevant to the insights collected from user interactions.
-    3. Regularly review existing external resources for relevance and update them accordingly.
-    4. Remove external resources that are no longer needed.
-    5. Ensure the usefulness description accurately reflects the content of the external resource for better user engagement.
-    6. Categorize external resources appropriately to facilitate easy navigation and access for users.`;
+const updateExternalResourcesFeedPrompt = aiConfig.aiUpdateFeed;
 
 // Export CRUD functions and tools for the feed of external resources
 export {

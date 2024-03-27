@@ -1,4 +1,5 @@
 import config from "../../dapp-config.js";
+import aiConfig from "../../ai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -225,12 +226,7 @@ const notificationTools = [
     }
 ];
 
-const updateNotificationsPrompt = `
-    Refine notifications based on user interactions:
-    1. Introduce notifications for actions MaxwellAI plans to take in the future, such as closing applications for focus or opening necessary apps for upcoming tasks.
-    2. Ensure notifications are limited to MaxwellAI's capabilities.
-    3. Revise existing notifications or introduce new ones only if insights from user interactions necessitate action not covered by current notifications.
-    4. It's acceptable to take no action if existing notifications cover user needs adequately.`;
+const updateNotificationsPrompt = aiConfig.aiUpdateNotifications;
 
 // Export CRUD functions and tools
 export {

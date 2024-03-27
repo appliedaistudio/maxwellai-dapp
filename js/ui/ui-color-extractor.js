@@ -51,6 +51,20 @@ function ensureContrast(lightRGB, darkRGB) {
     return lightRGB; // Return original if contrast is sufficient
 }
 
+// Adjusts the light color extracted from the image to skew even more toward white
+function adjustLightColor(lightRGB) {
+    // Define the off-white color
+    const offWhiteRGB = { r: 245, g: 245, b: 245 };
+
+    // Increase the weight of off-white in the calculation to skew toward white
+    const adjustedR = Math.round((3 * offWhiteRGB.r + lightRGB.r) / 4);
+    const adjustedG = Math.round((3 * offWhiteRGB.g + lightRGB.g) / 4);
+    const adjustedB = Math.round((3 * offWhiteRGB.b + lightRGB.b) / 4);
+
+    // Return the adjusted light color
+    return { r: adjustedR, g: adjustedG, b: adjustedB };
+}
+
 // Extracts and updates theme colors from an image, adjusting for WCAG-compliant contrast
 export function updateThemeColorsBasedOnImage(imagePath) {
     var img = new Image();
@@ -73,17 +87,20 @@ export function updateThemeColorsBasedOnImage(imagePath) {
             let lightColorRGB = hexToRGB(lightColorHex);
             let secondaryAccentColorRGB = hexToRGB(secondaryAccentColorHex);
 
+            // Adjust light color to be a variant of off-white
+            lightColorRGB = adjustLightColor(lightColorRGB);
+            let lightColorAdjusted = `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`;
+
             // Ensure contrast for accessibility, modifies lightColorRGB for compliance
             lightColorRGB = ensureContrast(lightColorRGB, neutralColorRGB);
-            let lightColorAdjusted = `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`;
 
             // Apply theme updates to CSS custom properties, with adjustments for contrast
             const rootStyle = document.documentElement.style;
             rootStyle.setProperty('--neutral-color', `rgb(${neutralColorRGB.r}, ${neutralColorRGB.g}, ${neutralColorRGB.b})`);
             rootStyle.setProperty('--accent-color', `rgb(${accentColorRGB.r}, ${accentColorRGB.g}, ${accentColorRGB.b})`);
             rootStyle.setProperty('--secondary-accent-color', `rgb(${secondaryAccentColorRGB.r}, ${secondaryAccentColorRGB.g}, ${secondaryAccentColorRGB.b})`);
-            rootStyle.setProperty('--light-color', lightColorAdjusted);
-            rootStyle.setProperty('--font-color', lightColorAdjusted);
+            rootStyle.setProperty('--light-color', `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`);
+            rootStyle.setProperty('--font-color', `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`);
 
             // Adding semi-transparent background color for more flexible design use
             rootStyle.setProperty('--neutral-color-bg', `rgba(${neutralColorRGB.r}, ${neutralColorRGB.g}, ${neutralColorRGB.b}, 0.8)`);

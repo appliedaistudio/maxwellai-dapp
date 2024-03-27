@@ -1,4 +1,5 @@
 import config from "../../dapp-config.js";
+import aiConfig from "../../ai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -182,17 +183,7 @@ const taskTools = [
     }
 ];
 
-const updateTasksPrompt = `
-    Refine tasks based on user interactions:
-    1. Get a list of the existing tasks
-    2. Review task priorities and take the initaitve to adjust them based on your analysis of changing project requirements.
-    3. Ensure tasks are categorized effectively for better organization and tracking.
-    4. Revise task descriptions to provide clearer instructions or include additional details as needed.
-    5. Update task statuses to reflect progress accurately, marking completed tasks and adjusting those in progress.
-    6. Identify and address dependencies between tasks, updating dependent tasks accordingly.
-    7. It's advisable to regularly review and update task deadlines to align with project timelines and goals.
-    8. Consider introducing new tasks or merging existing ones to streamline workflows and improve efficiency.
-    9. Take user feedback and project insights into account when updating tasks to enhance project management processes.`;
+const updateTasksPrompt = aiConfig.aiUpdateTasks;
 
 
 // Export CRUD functions for tasks
