@@ -7,7 +7,6 @@ function formatJson(obj, spaces) {
 }
 
 function validateJson(jsonData, schema) {
-    /*
     // Convert jsonData to object if it's a string
     if (typeof jsonData === 'string') {
         try {
@@ -53,7 +52,6 @@ function validateJson(jsonData, schema) {
             }; // Property type doesn't match
         }
     }
-    */
     return {
         valid: true,
         error: null

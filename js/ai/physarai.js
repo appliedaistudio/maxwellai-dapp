@@ -152,13 +152,9 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
         // Create a short AI prompt asking for the key takeaway of the conversation
         const aiPrompt = `
             ${aiConfig.aiProfile}
-
             Given the following conversation:
-
             ${conversationString}
-
-            What is the key takeaway from this conversation? 
-            If the takeaway involves updating data, include the document ID (${documentId}) and conversation ID (${conversationId}) in the directive for the AI to take action.`;
+            ${aiConfig.aiKeytakeaway(documentId, conversationId)}`;
 
         // Recall the LLM API key and endpoint from the settings data
         const aiApiKey = await llmApiKey();
@@ -329,8 +325,11 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         { "role": "system", "content": System_prompt },
         { "role": "user", "content": promptWithContext },
     ];
+    
+    // This is a safety measure to ensure that the ai does not get caught in an endless reasoning loop
+    const maximum_allowable_ai_reasoning_iterations = 25;
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
         // Log the current loop run number
         log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName); // Log current loop run number with verbosity level 1
 
@@ -370,35 +369,9 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
             messages.push({ "role": "system", "content": response });
             messages.push({ "role": "user", "content": "Observation: " + observation });
         } else if (action === "Response To Human") {
-            // Log the response to human
-            log("Raw response to Human: " + action_input, aiConfig.verbosityLevel, 1, functionName); // Log response to human with verbosity level 1
-
-            // Format the response to human
-            const formattedResponseToHuman = await formatResponseToHuman(action_input, outputSchema);
-
-            // Log the formatted final observation
-            log("Formatted response to human: " + formatJson(formattedResponseToHuman), aiConfig.verbosityLevel, 1, functionName); // Log formatted response to human with verbosity level 1
-
-            // Validate the final formatted response to human against the required output schema
-            const validationResult = validateJson(formattedResponseToHuman, outputSchema);
-            if (validationResult.valid) {
-                // Log the formatted final resppose to human validation success
-                log("Formatted final response to human validation succeeded", aiConfig.verbosityLevel, 1, functionName); // Log validation success with verbosity level 1
-
-                // Exit PhysarAI function
-                log("Exiting PhysarAI function", aiConfig.verbosityLevel, 1, functionName); // Log function exit with verbosity level 1
-                return formattedResponseToHuman;
-            } else {
-                // Log validation error
-                log("Formatted final response to human validation error:" + validationResult.error, aiConfig.verbosityLevel, 1, functionName); // Log validation error with verbosity level 1
-                // Return a result conforming to the output schema with error information
-                const errorResult = {
-                    "success": false,
-                    "outputValue": null,
-                    "errorMessage": validationResult.error || "Unknown validation error"
-                };
-                return errorResult;
-            }
+            // Log and return the response to human
+            log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName); // Log response to human with verbosity level 1
+            return action_input
 
         } else {
             // Log invalid action

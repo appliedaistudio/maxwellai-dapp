@@ -373,6 +373,29 @@ function extractChatConversation() {
     }
 }
 
+function speakText(text, voiceName = null) {
+    // Check if SpeechSynthesis API is available
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Configure voice
+      if (voiceName) {
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(voice => voice.name === voiceName);
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        } else {
+          console.warn('Voice not found. Using default voice.');
+        }
+      }
+      
+      speechSynthesis.speak(utterance);
+    } else {
+      console.error('Text-to-speech not supported in this browser.');
+    }
+  }
+
+  
 // Function to start voice-to-text
 window.startVoiceToText = function() {
     console.log("Voice-to-text entry started");

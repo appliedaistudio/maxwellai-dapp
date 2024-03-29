@@ -70,6 +70,12 @@ const defaultAndSuggestedUserResponses = `
     They should be consisten with someone who has the ${userPersonality()} Meyers-Briggs personality type. 
     Anticipate a range of likely responses. `;
 
+function aiKeytakeaway(documentId, conversationId){
+    const takeaway = `
+    What is the key takeaway from this conversation? 
+    If the takeaway involves updating data, include the document ID (${documentId}) and conversation ID (${conversationId}) in the directive for the AI to take action.`;
+};
+
 const aiUpdateExternalResourceFeed = `
     Refine the feed of external resources based on user interactions:
     1. Get a list of the existing external resources
@@ -105,6 +111,7 @@ const aiConfig = {
     verbosityLevel: 2,
     aiProfile: maxwellAiProfile(),
     aiCaveats,
+    aiKeytakeaway,
     aiUserResponses: defaultAndSuggestedUserResponses,
     aiUpdateFeed: aiUpdateExternalResourceFeed,
     aiUpdateNotifications,

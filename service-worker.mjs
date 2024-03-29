@@ -248,3 +248,15 @@ async function engageAI() {
    // Act on the existing action takeaways
    //actionTakeaways.forEach(action => console.log(action));
 }
+
+function realtimeAIEngagement() {
+  // Your code to be executed every 10 seconds goes here
+  console.log("Engaging AI in realtime...");
+}
+
+
+const realtimeInSeconds = 10; // Realtime interval in seconds
+const realtimeInMilliseconds = realtimeInSeconds * 1000; // Convert realtime interval to milliseconds
+
+// Set interval to engage the AI on a regular basis
+setInterval(realtimeAIEngagement, realtimeInMilliseconds);
