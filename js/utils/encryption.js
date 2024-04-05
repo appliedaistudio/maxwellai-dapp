@@ -1,3 +1,5 @@
+import config from '../dapp-config.js';
+import { log } from './logging.js'
 
 // Define a static constant key (for demonstration purposes only, not recommended for production)
 const staticKey = new Uint8Array([ // 256-bit (32 bytes) key
@@ -21,8 +23,8 @@ async function importStaticKey() {
 // Function to encrypt a string into another string using the static key
 async function encryptString(plaintext) {
   try {
-    console.log("encrypting:", plaintext);
-    
+    log("encrypting " + plaintext, config.verbosityLevel, 3, "encryptString");
+
     const encoder = new TextEncoder();
     const encodedPlaintext = encoder.encode(plaintext);
 
@@ -55,7 +57,7 @@ async function encryptString(plaintext) {
 // Function to decrypt an encrypted string using the static key
 async function decryptString(encryptedString) {
   try {
-    console.log("Decrypting:", encryptedString);
+    log("decrypting " + encryptedString, config.verbosityLevel, 3, "decryptString");
 
     // Decode Base64-encoded string and parse JSON
     const separatorIndex = encryptedString.indexOf("|");
@@ -65,15 +67,15 @@ async function decryptString(encryptedString) {
     const ivBase64 = encryptedString.substring(0, separatorIndex);
     const cipherTextBase64 = encryptedString.substring(separatorIndex + 1);
 
-    console.log("IV Base64:", ivBase64);
-    console.log("CipherText Base64:", cipherTextBase64);
+    log("IV Base64: " + ivBase64, config.verbosityLevel, 4, "decryptString");
+    log("CipherText Base64: " + cipherTextBase64, config.verbosityLevel, 4, "decryptString");
 
     // Convert Base64-encoded strings to Uint8Arrays
     const iv = new Uint8Array(Array.from(atob(ivBase64), c => c.charCodeAt(0)));
     const cipherText = new Uint8Array(Array.from(atob(cipherTextBase64), c => c.charCodeAt(0)));
 
-    console.log("IV Uint8Array:", iv);
-    console.log("CipherText Uint8Array:", cipherText);
+    log("IV Uint8Array:" + iv, config.verbosityLevel, 4, "decryptString");
+    log("CipherText Uint8Array:" + cipherText, config.verbosityLevel, 4, "decryptString");
 
     const key = await importStaticKey();
 
@@ -87,11 +89,11 @@ async function decryptString(encryptedString) {
     );
 
     const decoder = new TextDecoder();
-    console.log("Decrypted Data:", decryptedData);
+    log("Decrypted Data: " + decryptedData, config.verbosityLevel, 3, "decryptString");
     
     return decoder.decode(decryptedData);
   } catch (error) {
-    console.error("Decryption error:", error);
+    log("Decryption error: " + error, config.verbosityLevel, 1, "decryptString");
     throw new Error(`Decryption failed: ${error.message}`);
   }
 }
