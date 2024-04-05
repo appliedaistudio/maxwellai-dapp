@@ -1,6 +1,6 @@
 // Import functions from external libraries as needed
 import { logoutUser } from './ui-auth.js';
-import { encryptValue, decryptValue } from '../utils/encryption.js';
+import { encryptString, decryptString } from '../utils/encryption.js';
 import config from '../dapp-config.js';
 
 // Define a mapping from option names to objects containing function and params
@@ -49,13 +49,14 @@ async function saveSettings() {
             // Handle dropdowns differently
             if (input.tagName === 'SELECT') {
                 const selectedIndex = input.selectedIndex;
+                //TODO: HANDLE OPTIONS ENCRYPTION
                 const options = Array.from(input.options).map(option => option.value);
                 value = {
-                    value: input.options[selectedIndex].value,
+                    value: encryptString(input.options[selectedIndex].value),
                     options: options
                 };
             } else {
-                value = encryptValue(input.value);
+                value = encryptString(input.value);
             }
             settings[key] = value;
         });
@@ -91,7 +92,8 @@ async function openSettingsModal() {
         // Iterate through each setting and create input fields
         for (const key in settings) {
             if (Object.hasOwnProperty.call(settings, key)) {
-                const value = decryptValue(settings[key]);
+
+                const value = await decryptString(settings[key]);
 
                 // Check if the setting should be rendered as a dropdown
                 if (typeof value === 'object' && value.options) {

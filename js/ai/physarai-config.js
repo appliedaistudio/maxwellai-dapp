@@ -14,6 +14,7 @@ async function maxwellAiProfile() {
     const doc = await localDb.get('dapp_settings');
 
     // Fetch the personality from localDb
+    // TODO FIX
     const personality = doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
 
     const profile = `
@@ -32,6 +33,7 @@ async function userPersonality() {
     const doc = await localDb.get('dapp_settings');
 
     // Fetch the personality from localDb
+    //TODO FIX
     const personality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
     return personality;
 

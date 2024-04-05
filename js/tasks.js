@@ -238,9 +238,9 @@ const adjustPageSize = () => {
     if (window.innerWidth < 768) {
         PAGE_SIZE = 3; // Small screens like phones
     } else if (window.innerWidth < 992) {
-        PAGE_SIZE = 5; // Medium screens like tablets
+        PAGE_SIZE = 4; // Medium screens like tablets
     } else {
-        PAGE_SIZE = 5; // Large screens like computers
+        PAGE_SIZE = 4; // Large screens like computers
     }
 
     loadTasks();
