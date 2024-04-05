@@ -66,7 +66,7 @@ const createNotificationTable = (notifications) => {
     // Create table header
     const header = document.createElement('thead');
     const headerRow = document.createElement('tr');
-    const headers = ['Notification/Actions', 'Date', 'AI']; // Added table headers
+    const headers = ['Notification/Actions', 'AI']; // Updated table headers
     headers.forEach(headerText => {
         const th = document.createElement('th');
         th.textContent = headerText;
@@ -97,17 +97,22 @@ const createNotificationTable = (notifications) => {
         actionsList.textContent += actionsText;
         actionsCell.appendChild(actionsList);
         actionsCell.setAttribute('title', 'Actions');
-        row.appendChild(actionsCell);
 
-        // Create cell for date
-        const dateCell = document.createElement('td');
+        // Create date badge
+        const dateBadge = document.createElement('span');
         const date = new Date(notification.created_at).toLocaleDateString('en-US', {
             month: 'short',
             day: '2-digit',
             year: 'numeric'
         });
-        dateCell.textContent = date;
-        row.appendChild(dateCell);
+        dateBadge.textContent = date;
+        dateBadge.className = 'badge bg-info date-badge'; // Added class for styling
+        dateBadge.setAttribute('title', 'Date');
+
+        // Append date badge to actions cell
+        actionsCell.appendChild(dateBadge);
+
+        row.appendChild(actionsCell);
 
         // Create cell for AI chat button
         const aiChatCell = document.createElement('td');
@@ -123,9 +128,6 @@ const createNotificationTable = (notifications) => {
         aiChatCell.appendChild(aiChatButton);
         row.appendChild(aiChatCell);
 
-        // Append row to table body
-        body.appendChild(row);
-
         // Create cell for topic badge
         const topicBadge = document.createElement('span');
         topicBadge.textContent = notification.topic;
@@ -139,6 +141,9 @@ const createNotificationTable = (notifications) => {
         statusBadge.className = 'badge bg-secondary status-badge'; // Added class for styling
         statusBadge.setAttribute('title', 'Status');
         actionsCell.appendChild(statusBadge);
+
+        // Append row to table body
+        body.appendChild(row);
     });
     table.appendChild(body);
 

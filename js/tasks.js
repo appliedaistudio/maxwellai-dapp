@@ -65,7 +65,7 @@ const createTaskTable = (tasks) => {
 
     // Create table header
     const headerRow = document.createElement('tr');
-    const headers = ['Description', 'Target Completion', 'AI']; // Table headers
+    const headers = ['Description', 'AI']; // Table headers
     headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
         headerCell.textContent = headerText;
@@ -95,31 +95,30 @@ const createTaskTable = (tasks) => {
         priorityBadge.className = 'badge bg-primary priority-badge me-1'; // Added class for styling
         priorityBadge.setAttribute('title', 'Priority');
 
+        // Create completion date
+        const completionDate = document.createElement('span');
+        completionDate.textContent = new Date(task.target_date_and_time_completion).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+        completionDate.className = 'badge bg-info completion-date'; // Added class for styling
+
         // Create category badge
         const categoryBadge = document.createElement('span');
         categoryBadge.textContent = task.category;
         categoryBadge.className = 'badge bg-secondary category-badge'; // Added class for styling
-        categoryBadge.setAttribute('title', 'Category');
 
-        // Append badges to description cell
+        // Append completion date, priority, and category badges to a container
+        const descriptionDetails = document.createElement('div');
+        descriptionDetails.appendChild(completionDate);
+        descriptionDetails.appendChild(priorityBadge);
+        descriptionDetails.appendChild(categoryBadge);
+
+        // Append description and details to description cell
         descriptionCell.appendChild(taskDescription);
-        descriptionCell.appendChild(priorityBadge);
-        descriptionCell.appendChild(categoryBadge);
+        descriptionCell.appendChild(descriptionDetails);
 
         descriptionCell.setAttribute('title', 'Description');
         descriptionCell.className = 'description-cell'; // Added class for styling
         descriptionCell.id = `description-cell-${index + 1}`; // Unique ID for each description cell
         row.appendChild(descriptionCell);
-
-        // Create target completion date cell
-        const completionDateCell = document.createElement('td');
-        const completionDate = new Date(task.target_date_and_time_completion);
-        const formattedCompletionDate = completionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-        completionDateCell.textContent = formattedCompletionDate;
-        completionDateCell.setAttribute('title', 'Target Completion Date');
-        completionDateCell.className = 'completion-date-cell'; // Added class for styling
-        completionDateCell.id = `completion-date-cell-${index + 1}`; // Unique ID for each completion date cell
-        row.appendChild(completionDateCell);
 
         // Create AI chat button cell
         const aiChatCell = document.createElement('td');
@@ -240,7 +239,7 @@ const adjustPageSize = () => {
     } else if (window.innerWidth < 992) {
         PAGE_SIZE = 4; // Medium screens like tablets
     } else {
-        PAGE_SIZE = 4; // Large screens like computers
+        PAGE_SIZE = 5; // Large screens like computers
     }
 
     loadTasks();
