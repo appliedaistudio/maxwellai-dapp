@@ -124,6 +124,8 @@ async function openSettingsModal() {
                     inputDiv.appendChild(input);
                     configForm.appendChild(inputDiv);
                 } else {
+                    const decryptedValue = await decryptString(value);
+
                     // Create a text input for other settings
                     const inputDiv = document.createElement('div');
                     inputDiv.classList.add('mb-3');
@@ -137,7 +139,7 @@ async function openSettingsModal() {
                     input.setAttribute('type', 'text');
                     input.setAttribute('class', 'settings-form-control');
                     input.setAttribute('id', key);
-                    input.setAttribute('value', value);
+                    input.setAttribute('value', decryptedValue);
 
                     // Append label and input to form
                     inputDiv.appendChild(label);
