@@ -108,11 +108,12 @@ async function openSettingsModal() {
                     input.setAttribute('class', 'settings-form-control');
                     input.setAttribute('id', key);
 
-                    // Populate the dropdown options with the "options" property
-                    value.options.forEach(option => {
+                    // Populate the dropdown options with the decrypted "options" property
+                    value.options.forEach(async option => {
                         const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.textContent = option;
+                        const decryptedOption = await decryptString(option)
+                        optionElement.value = decryptedOption;
+                        optionElement.textContent = decryptedOption;
                         if (option === value.value) {
                             optionElement.selected = true; // Select the current value
                         }
@@ -124,6 +125,7 @@ async function openSettingsModal() {
                     inputDiv.appendChild(input);
                     configForm.appendChild(inputDiv);
                 } else {
+                    // Decrypt the encrypted settings value
                     const decryptedValue = await decryptString(value);
 
                     // Create a text input for other settings
