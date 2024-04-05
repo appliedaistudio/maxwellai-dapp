@@ -1,29 +1,19 @@
 import '../../lib/pouchdb/pouchdb.min.js';
 import config from '../dapp-config.js';
-
-// Caveats to be observed by the AI at all times
-const aiCaveats = `
-    In your output JSON, do not use escapes to encode quotes`;
+import { decryptString } from '../utils/encryption.js';
 
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-// MaxwellAI profile
-async function maxwellAiProfile() {
+// Retreive the setting that stores MaxwellAI's personality type
+async function maxwellaiPersonality() {
     // Fetch the existing settings document from localDb
     const doc = await localDb.get('dapp_settings');
 
-    // Fetch the personality from localDb
-    // TODO FIX
-    const personality = doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
-
-    const profile = `
-    As MaxwellAI, you provide assistance and responses consistent with someone who has the Meyers-Briggs ${personality} personality type. 
-    You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
-    You strategically mute/unmute applications and update stored data efficiently. 
-    Accessing external knowledge, you offer informed assistance in concise, simple language.`;
-
-    return profile;
+    // Fetch and decrypt the personality from localDb
+    const encryptedPersonality = await doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
+    const personality = await decryptString(encryptedPersonality);
+    return personality;
 
 }
 
@@ -32,12 +22,22 @@ async function userPersonality() {
     // Fetch the existing settings document from localDb
     const doc = await localDb.get('dapp_settings');
 
-    // Fetch the personality from localDb
-    //TODO FIX
-    const personality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
+    // Fetch and decrypt the personality from localDb
+    const encryptedPersonality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
+    const personality = await decryptString(encryptedPersonality);
     return personality;
-
 }
+
+// Caveats to be observed by the AI at all times
+const aiCaveats = `
+    In your output JSON, do not use escapes to encode quotes`;
+
+// MaxwellAI profile
+const maxwellaiProfile = `
+    As MaxwellAI, you provide assistance and responses consistent with someone who has the Meyers-Briggs ${maxwellaiPersonality()} personality type. 
+    You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
+    You strategically mute/unmute applications and update stored data efficiently. 
+    Accessing external knowledge, you offer informed assistance in concise, simple language.`;
 
 const defaultAndSuggestedUserResponses = `
     Generate default and categorized user responses for the conversation. 
@@ -111,7 +111,7 @@ const aiUpdateTasks = `
 const aiConfig = {
     LLM: 'gpt-4',
     verbosityLevel: 2,
-    aiProfile: maxwellAiProfile(),
+    aiProfile: maxwellaiProfile,
     aiCaveats,
     aiKeytakeaway,
     aiUserResponses: defaultAndSuggestedUserResponses,
