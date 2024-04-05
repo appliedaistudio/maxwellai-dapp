@@ -31,7 +31,7 @@ const optionFunctionMappings = {
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-// Function to be called when the save button is clicked on the settings modal
+// Function to save settings to local database
 async function saveSettings() {
     try {
         // Fetch the existing settings document from localDb
@@ -41,24 +41,38 @@ async function saveSettings() {
         // Get all input fields within the form
         const inputFields = document.querySelectorAll('#settingsForm select, #settingsForm input[type="text"]');
 
-        // Update settings object with new values from input fields
-        inputFields.forEach(input => {
+        // Iterate over each input field
+        for (const input of inputFields) {
             const key = input.id;
             let value;
 
             // Handle dropdowns differently
             if (input.tagName === 'SELECT') {
                 const selectedIndex = input.selectedIndex;
-                const options = Array.from(input.options).map(option => option.value);
+                const optionsArray = Array.from(input.options);
+                const options = [];
+
+                // Iterate over each option of the dropdown
+                for (const optionElement of optionsArray) {
+                    // Encrypt the option value and add to options array
+                    const encryptedValue = await encryptString(optionElement.value);
+                    options.push(encryptedValue);
+                }
+
+                // Encrypt the selected value of the dropdown
+                const encryptedValue = await encryptString(input.options[selectedIndex].value);
                 value = {
-                    value: input.options[selectedIndex].value,
+                    value: encryptedValue,
                     options: options
                 };
             } else {
-                value = input.value;
+                // Encrypt scalar settings values
+                const encryptedValue = await encryptString(input.value);
+                value = encryptedValue;
             }
+            // Update settings with encrypted value
             settings[key] = value;
-        });
+        }
 
         // Update the settings document in localDb
         await localDb.put({

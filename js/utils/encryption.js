@@ -21,6 +21,8 @@ async function importStaticKey() {
 // Function to encrypt a string into another string using the static key
 async function encryptString(plaintext) {
   try {
+    console.log("encrypting:", plaintext);
+    
     const encoder = new TextEncoder();
     const encodedPlaintext = encoder.encode(plaintext);
 
