@@ -1,5 +1,3 @@
-import config from '../dapp-config.js';
-
 
 // Define a static constant key (for demonstration purposes only, not recommended for production)
 const staticKey = new Uint8Array([ // 256-bit (32 bytes) key

@@ -49,14 +49,13 @@ async function saveSettings() {
             // Handle dropdowns differently
             if (input.tagName === 'SELECT') {
                 const selectedIndex = input.selectedIndex;
-                //TODO: HANDLE OPTIONS ENCRYPTION
                 const options = Array.from(input.options).map(option => option.value);
                 value = {
-                    value: encryptString(input.options[selectedIndex].value),
+                    value: input.options[selectedIndex].value,
                     options: options
                 };
             } else {
-                value = encryptString(input.value);
+                value = input.value;
             }
             settings[key] = value;
         });
@@ -93,7 +92,7 @@ async function openSettingsModal() {
         for (const key in settings) {
             if (Object.hasOwnProperty.call(settings, key)) {
 
-                const value = await decryptString(settings[key]);
+                const value = settings[key];
 
                 // Check if the setting should be rendered as a dropdown
                 if (typeof value === 'object' && value.options) {
