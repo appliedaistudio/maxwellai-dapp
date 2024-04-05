@@ -20,7 +20,7 @@ async function llmApiKey() {
     const settingsDoc = await localDb.get('dapp_settings');
     
     // Access and decrypt the LLM API key from the settings object
-    const decryptedApiKey = decryptString(settingsDoc.settings.LLM_api_key);
+    const decryptedApiKey = await decryptString(settingsDoc.settings.LLM_api_key);
     return decryptedApiKey;
 }
 
@@ -31,7 +31,7 @@ async function llmEndpoint() {
     const settingsDoc = await localDb.get('dapp_settings');
     
     // Access and decrypt the LLM endpoint from the settings object
-    const decryptedLlmEndpoint = decryptString(settingsDoc.settings.LLM_endpoint);
+    const decryptedLlmEndpoint = await decryptString(settingsDoc.settings.LLM_endpoint);
     return decryptedLlmEndpoint;
 }
 

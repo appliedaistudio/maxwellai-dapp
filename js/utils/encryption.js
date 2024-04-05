@@ -1,38 +1,68 @@
 import config from '../dapp-config.js';
 import { log } from './logging.js'
 
-// Define a static constant key (for demonstration purposes only, not recommended for production)
-const staticKey = new Uint8Array([ // 256-bit (32 bytes) key
-  0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f, 0x70, 0x81,
-  0x92, 0xa3, 0xb4, 0xc5, 0xd6, 0xe7, 0xf8, 0x09,
-  0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f, 0x70, 0x81,
-  0x92, 0xa3, 0xb4, 0xc5, 0xd6, 0xe7, 0xf8, 0x09
-]);
+// Define the static key globally
+const staticKeyHex = "00112233445566778899aabbccddeeff";
+const staticKey = new Uint8Array(staticKeyHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
 // Convert the static key to a CryptoKey
 async function importStaticKey() {
-  return await window.crypto.subtle.importKey(
-    "raw", 
-    staticKey,
-    { name: "AES-GCM" },
-    true,
-    ["encrypt", "decrypt"]
-  );
+  try {
+    const key = await self.crypto.subtle.importKey(
+      "raw", 
+      staticKey,
+      { name: "AES-GCM" },
+      true,
+      ["encrypt", "decrypt"]
+    );
+    return key;
+  } catch (error) {
+    throw new Error(`Importing static key failed: ${error.message}`);
+  }
+}
+
+// Function to decrypt an encrypted string using the static key
+async function decryptString(encryptedString) {
+  try {
+    const separatorIndex = encryptedString.indexOf("|");
+    if (separatorIndex === -1) {
+      throw new Error("Invalid encrypted string format: Separator '|' not found.");
+    }
+    const ivBase64 = encryptedString.substring(0, separatorIndex);
+    const cipherTextBase64 = encryptedString.substring(separatorIndex + 1);
+
+    const iv = new Uint8Array(Array.from(atob(ivBase64), c => c.charCodeAt(0)));
+    const cipherText = new Uint8Array(Array.from(atob(cipherTextBase64), c => c.charCodeAt(0)));
+
+    const key = await importStaticKey();
+
+    const decryptedData = await self.crypto.subtle.decrypt(
+      {
+        name: "AES-GCM",
+        iv: iv
+      },
+      key,
+      cipherText
+    );
+
+    const decoder = new TextDecoder();
+    return decoder.decode(decryptedData);
+  } catch (error) {
+    throw new Error(`Decryption failed: ${error.message}`);
+  }
 }
 
 // Function to encrypt a string into another string using the static key
 async function encryptString(plaintext) {
   try {
-    log("encrypting " + plaintext, config.verbosityLevel, 3, "encryptString");
-
     const encoder = new TextEncoder();
     const encodedPlaintext = encoder.encode(plaintext);
 
-    const iv = window.crypto.getRandomValues(new Uint8Array(12)); // Generate a random initialization vector
+    const iv = self.crypto.getRandomValues(new Uint8Array(12)); // Generate a random initialization vector
 
     const key = await importStaticKey();
 
-    const cipherText = await window.crypto.subtle.encrypt(
+    const cipherText = await self.crypto.subtle.encrypt(
       {
         name: "AES-GCM",
         iv: iv
@@ -41,7 +71,6 @@ async function encryptString(plaintext) {
       encodedPlaintext
     );
 
-    // Convert encrypted data to Base64-encoded string
     const encryptedData = {
       iv: iv,
       cipherText: new Uint8Array(cipherText)
@@ -54,56 +83,12 @@ async function encryptString(plaintext) {
   }
 }
 
-// Function to decrypt an encrypted string using the static key
-async function decryptString(encryptedString) {
-  try {
-    log("decrypting " + encryptedString, config.verbosityLevel, 3, "decryptString");
-
-    // Decode Base64-encoded string and parse JSON
-    const separatorIndex = encryptedString.indexOf("|");
-    if (separatorIndex === -1) {
-      throw new Error("Invalid encrypted string format: Separator '|' not found.");
-    }
-    const ivBase64 = encryptedString.substring(0, separatorIndex);
-    const cipherTextBase64 = encryptedString.substring(separatorIndex + 1);
-
-    log("IV Base64: " + ivBase64, config.verbosityLevel, 4, "decryptString");
-    log("CipherText Base64: " + cipherTextBase64, config.verbosityLevel, 4, "decryptString");
-
-    // Convert Base64-encoded strings to Uint8Arrays
-    const iv = new Uint8Array(Array.from(atob(ivBase64), c => c.charCodeAt(0)));
-    const cipherText = new Uint8Array(Array.from(atob(cipherTextBase64), c => c.charCodeAt(0)));
-
-    log("IV Uint8Array:" + iv, config.verbosityLevel, 4, "decryptString");
-    log("CipherText Uint8Array:" + cipherText, config.verbosityLevel, 4, "decryptString");
-
-    const key = await importStaticKey();
-
-    const decryptedData = await window.crypto.subtle.decrypt(
-      {
-        name: "AES-GCM",
-        iv: iv
-      },
-      key,
-      cipherText
-    );
-
-    const decoder = new TextDecoder();
-    log("Decrypted Data: " + decryptedData, config.verbosityLevel, 3, "decryptString");
-    
-    return decoder.decode(decryptedData);
-  } catch (error) {
-    log("Decryption error: " + error, config.verbosityLevel, 1, "decryptString");
-    throw new Error(`Decryption failed: ${error.message}`);
-  }
-}
-
 export { encryptString, decryptString }
 
 async function testEncryption() {
   console.log("testing encryption");
 
-  const password = "password";
+  const password = "ESTP-The Entrepreneur";
   console.log(`the password is ${password}`);
 
   const encryptedPassword = await encryptString(password);
@@ -113,4 +98,4 @@ async function testEncryption() {
   console.log(`the decrypted password is ${decryptedPassword}`);
 }
 
-testEncryption();
+//testEncryption();

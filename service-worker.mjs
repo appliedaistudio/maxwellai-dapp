@@ -251,15 +251,16 @@ async function engageAI() {
 
 // Code executed by regular AI engagement
 function regularAIEngagement() {
-  console.log("Engaging AI regularly...");
+  engageAI();
 }
 
 // Code executed by realtime AI engagement
 function realtimeAIEngagement() {
-  console.log("Engaging AI in realtime...");
+  //console.log("Engaging AI in realtime...");
 }
 
-const regularIntervalInSeconds = 60; // Regular interval in seconds
+const regularIntervalInMinutes = 3; // Regular interval in minutes
+const regularIntervalInSeconds = regularIntervalInMinutes * 60; // Regular interval in seconds
 const regularIntervaInMilliseconds = regularIntervalInSeconds * 1000; // Convert regular interval to milliseconds
 
 // Engage the AI on a regular basis
