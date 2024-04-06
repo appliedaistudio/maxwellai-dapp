@@ -143,6 +143,8 @@ const createTaskTable = (tasks) => {
     return table;
 };
 
+const MAX_VISIBLE_PAGES = 5; // Maximum number of visible page buttons
+
 const renderPagination = (totalTasks) => {
     let paginationContainer = document.getElementById('pagination-container');
     if (!paginationContainer) {
@@ -185,7 +187,10 @@ const renderPagination = (totalTasks) => {
         ul.appendChild(prevLi);
 
         // Page buttons
-        for (let i = 1; i <= totalPages; i++) {
+        const startPage = Math.max(1, currentPage - Math.floor(MAX_VISIBLE_PAGES / 2));
+        const endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1);
+        
+        for (let i = startPage; i <= endPage; i++) {
             const li = document.createElement('li');
             li.className = 'page-item'; // Added class for styling
             li.id = `page-item-${i}`; // Unique ID for each page item

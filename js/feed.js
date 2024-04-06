@@ -69,6 +69,8 @@ const renderFeed = (feed) => {
 };
 
 const createFeedCards = (feed) => {
+    const maxDescriptionLength = 75; // Global variable defining the maximum length of the description
+
     const rowDiv = document.createElement('div');
     rowDiv.className = 'row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4';
 
@@ -98,7 +100,23 @@ const createFeedCards = (feed) => {
 
         const usefulnessDescription = document.createElement('p');
         usefulnessDescription.className = 'card-text';
-        usefulnessDescription.textContent = item.usefulness_description;
+        
+        // Truncate the description only at the end of a word
+        if (item.usefulness_description.length > maxDescriptionLength) {
+            let truncatedDescription = item.usefulness_description.substring(0, maxDescriptionLength);
+            // Find the last space within the first `maxDescriptionLength` characters
+            const lastSpaceIndex = truncatedDescription.lastIndexOf(' ');
+            if (lastSpaceIndex !== -1) {
+                truncatedDescription = truncatedDescription.substring(0, lastSpaceIndex) + '...';
+            } else {
+                truncatedDescription += '...';
+            }
+            usefulnessDescription.textContent = truncatedDescription;
+            usefulnessDescription.title = item.usefulness_description; // Tooltip for the truncated description
+        } else {
+            usefulnessDescription.textContent = item.usefulness_description;
+        }
+        
         cardBody.appendChild(usefulnessDescription);
 
         card.appendChild(cardLink);
