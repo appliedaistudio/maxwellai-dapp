@@ -106,7 +106,7 @@ const createNotificationTable = (notifications) => {
             year: 'numeric'
         });
         dateBadge.textContent = date;
-        dateBadge.className = 'badge bg-info date-badge'; // Added class for styling
+        dateBadge.className = 'badge bg-info bg-primary date-badge'; // Added class for styling
         dateBadge.setAttribute('title', 'Date');
 
         // Append date badge to actions cell
@@ -131,14 +131,14 @@ const createNotificationTable = (notifications) => {
         // Create cell for topic badge
         const topicBadge = document.createElement('span');
         topicBadge.textContent = notification.topic;
-        topicBadge.className = 'badge bg-primary topic-badge'; // Added class for styling
+        topicBadge.className = 'badge bg-secondary topic-badge'; // Added class for styling
         topicBadge.setAttribute('title', 'Topic');
         actionsCell.appendChild(topicBadge);
 
         // Create cell for status badge
         const statusBadge = document.createElement('span');
         statusBadge.textContent = notification.status;
-        statusBadge.className = 'badge bg-secondary status-badge'; // Added class for styling
+        statusBadge.className = 'badge bg-tertiary status-badge'; // Added class for styling
         statusBadge.setAttribute('title', 'Status');
         actionsCell.appendChild(statusBadge);
 

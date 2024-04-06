@@ -18,12 +18,23 @@
     color: var(--light-color);
 }
 
+/* Style for date badge */
+.date-badge {
+    margin-top: 3px; /* Adjust spacing between actions list and badge */
+    margin-right: 3px; /* Adjust spacing between badges */
+    color: var(--light-color); /* Use light color for badge text */
+    background-color: var(--accent-color); /* Use accent color for badge background */
+    padding: 2px 6px; /* Adjust padding to make badge smaller */
+    border-radius: 3px; /* Round the corners */
+    font-size: 12px; /* Adjust font size */
+}
+
 /* Style for topic badge */
 .topic-badge {
     margin-top: 3px; /* Adjust spacing between actions list and badge */
     margin-right: 3px; /* Adjust spacing between badges */
     color: var(--light-color); /* Use light color for badge text */
-    background-color: var(--primary-color); /* Use primary color for badge background */
+    background-color: var(--accent-color); /* Use accent color for badge background */
     padding: 2px 6px; /* Adjust padding to make badge smaller */
     border-radius: 3px; /* Round the corners */
     font-size: 12px; /* Adjust font size */

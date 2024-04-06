@@ -92,18 +92,18 @@ const createTaskTable = (tasks) => {
         // Create priority badge
         const priorityBadge = document.createElement('span');
         priorityBadge.textContent = task.priority;
-        priorityBadge.className = 'badge bg-primary priority-badge me-1'; // Added class for styling
+        priorityBadge.className = 'badge bg-secondary priority-badge me-1'; // Added class for styling
         priorityBadge.setAttribute('title', 'Priority');
 
         // Create completion date
         const completionDate = document.createElement('span');
         completionDate.textContent = new Date(task.target_date_and_time_completion).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-        completionDate.className = 'badge bg-info completion-date'; // Added class for styling
+        completionDate.className = 'badge bg-primary completion-date-badge'; // Added class for styling
 
         // Create category badge
         const categoryBadge = document.createElement('span');
         categoryBadge.textContent = task.category;
-        categoryBadge.className = 'badge bg-secondary category-badge'; // Added class for styling
+        categoryBadge.className = 'badge bg-tertiary category-badge'; // Added class for styling
 
         // Append completion date, priority, and category badges to a container
         const descriptionDetails = document.createElement('div');
