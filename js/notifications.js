@@ -1,8 +1,10 @@
-// Imports necessary configurations and modules
 import config from './dapp-config.js';
+
 import { isLoggedIn } from './ui/ui-auth.js';
 import { loadMenu } from './ui/ui-menu.js';
 import { loadMainContentControls } from './ui/ui-controls.js';
+
+import { loadChatConversation } from './ui/ui-ai-chat.js';
 
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -13,9 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.replace('./login.html');
         } else {
             console.log('User is logged in. Initializing DB and UI components...');
+
+            // Proceed with initializing UI components
             loadMenu(localDb, 'hello_world_menu');
             loadMainContentControls(localDb, 'hello_world_controls');
-            loadNotifications(); // Load notifications
+            loadNotificationsRegularly();
         }
     }).catch(err => {
         console.error('Error while checking if user is logged in:', err);
@@ -29,6 +33,14 @@ const loadNotifications = async () => {
     } catch (err) {
         console.error('Could not fetch notifications from PouchDB:', err);
     }
+};
+
+// Define a function to load notifications at regular intervals
+const loadNotificationsRegularly = () => {
+    loadNotifications(); // Load notifications immediately
+
+    // Set interval to reload notifications every 10 seconds
+    setInterval(loadNotifications, 10000); // 10 seconds = 10000 milliseconds
 };
 
 const renderNotifications = (notifications) => {
@@ -108,3 +120,27 @@ const renderNotifications = (notifications) => {
         notificationsContainer.appendChild(card); // Append each card to the container
     });
 };
+
+const openChatModal = (_id, category, description) => {
+    console.log("Opening chat for task:", _id, category, description); // Example usage of the passed parameters
+
+    // Here you can use the _id, category, and description to adjust the modal content or behavior.
+    // Let's set these as the modal's title or part of its body content.
+    
+    const chatModal = document.getElementById('chatModal');
+    const modalTitle = chatModal.querySelector('.modal-title');
+    const modalBody = chatModal.querySelector('.modal-body');
+
+    // Set modal title and body.
+    // Note: This will replace any existing content in the title.
+    modalTitle.textContent = `We're talking about ${category}`;
+    
+    // Load the existing chat conversation
+    loadChatConversation('notification_feedback', _id);
+
+    // Open the modal using Bootstrap's JavaScript API.
+    const chatModalInstance = new bootstrap.Modal(chatModal);
+    chatModalInstance.show();
+};
+
+export {loadNotifications}

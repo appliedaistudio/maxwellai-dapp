@@ -14,6 +14,7 @@
 .chat-window {
     border: 1px solid var(--accent-color); /* Set border color for the chat window */
     width: 100%; /* Ensure the chat window occupies the full width */
+    background-color: var(--light-color); /* Background color for AI messages */
 }
 
 /* Styles for the chat body container */
