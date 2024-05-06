@@ -110,7 +110,7 @@ const aiUpdateTasks = `
 // Configuration details for the AI
 const aiConfig = {
     LLM: 'gpt-4',
-    verbosityLevel: 2,
+    verbosityLevel: 1,
     aiProfile: maxwellaiProfile,
     aiCaveats,
     aiKeytakeaway,

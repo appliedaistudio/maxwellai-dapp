@@ -193,24 +193,28 @@ function generateReActAgentLLMPrompt(tools) {
     
     Response To Human: When you need to respond to the human you are talking to.
     
-    You will receive a message from the human, then you should start a loop and do one of two things
+    You will receive a message from the human, then you should start a loop and do one of two things:
     
-    Option 1: You use a tool to answer the question.
+    Option 1: use a tool to answer the question.
     For this, you should use the following format:
-    Thought: you should always think about what to do
-    Action: the action to take, should be one of [${tools.map(tool => tool.name).join(', ')}]
-    Action Input: "the input to the action, to be sent to the tool"
+    Thought: always think about what to do
+    Action: tool name, must be one of [${tools.map(tool => tool.name).join(', ')}]
+    Action Input: "input to the tool"
     
     After this, the human will respond with an observation, and you will continue.
     
-    Option 2: You respond to the human.
+    Option 2: respond to the human.
     For this, you should use the following format:
     Action: Response To Human
     Action Input: "your response to the human, summarizing what you did and what you learned"
     
-    Preface action with "Action:" place the alphanumeric name of the action immediately after followed by a line feed
-    Preface action input with "Action Input:". place the input value in quotes immediately after followed by a line feed
+    Make sure your response follows this format:
+    Action: [Action Name]
+    Action Input: [Input Value]
     
+    For each response, include only one action and its corresponding input.
+    Keep the loop concise and direct.
+
     Begin!`;
     
     log(`Generated LLM prompt: ${prompt}`, aiConfig.verbosityLevel, 3, functionName); // Log generated LLM prompt with verbosity level 3
@@ -223,38 +227,47 @@ function generateReActAgentLLMPrompt(tools) {
 function extractActionAndInput(text) {
     const functionName = "extractActionAndInput";
 
-    log("Entering function", aiConfig.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-    log("Input text:", aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
-    log(text, aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
+    try {
+        log("Entering function", aiConfig.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
+        log("Input text:", aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
+        log(text, aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
 
-    // Find the index of "Action:" and "Action Input:" in the text
-    const actionIndex = text.indexOf("Action:");
-    const inputIndex = text.indexOf("Action Input:");
+        // Find the index of "Action:" and "Action Input:" in the text
+        const actionIndex = text.indexOf("Action:");
+        const inputIndex = text.indexOf("Action Input:");
 
-    let action = null;
-    // If "Action:" is found in the text, extract the action substring and remove non-alphanumeric characters
-    if (actionIndex !== -1) {
-        const actionStart = actionIndex + "Action:".length;
-        const actionEnd = inputIndex !== -1 ? inputIndex : text.length;
-        action = text.substring(actionStart, actionEnd).trim();
-        action = removeNonAlphanumeric(action);
+        let action = null;
+        // If "Action:" is found in the text, extract the action substring and remove non-alphanumeric characters
+        if (actionIndex !== -1) {
+            const actionStart = actionIndex + "Action:".length;
+            const actionEnd = inputIndex !== -1 ? inputIndex : text.length;
+            action = text.substring(actionStart, actionEnd).trim();
+            action = removeNonAlphanumeric(action);
+        }
+
+        let input = null;
+        // If "Action Input:" is found in the text, extract the input substring and clean up the string
+        // TODO: REPLACE THE REGEX AND FIX THE CASE OF \N
+        if (inputIndex !== -1) {
+            const inputStart = inputIndex + "Action Input:".length;
+            input = text.substring(inputStart).trim().replace(/^\"|\"$/g, '');
+            input = replaceCharacter(input, '\\\\\\"', '"');
+            input = replaceCharacter(input, '\\"', '"');
+        }
+
+        log("Action:", aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
+        log(action, aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
+        log("Input:", aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
+        log(input, aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
+        log("Exiting function", aiConfig.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
+
+        return [action, input];
+    } catch (error) {
+        // Log the error
+        log("Error in extractActionAndInput: " + error, aiConfig.verbosityLevel, 1, functionName);
+        // Return an empty list
+        return [null, null];
     }
-
-    let input = null;
-    // If "Action Input:" is found in the text, extract the input substring and clean up the string
-    if (inputIndex !== -1) {
-        const inputStart = inputIndex + "Action Input:".length;
-        input = text.substring(inputStart).trim().replace(/^\"|\"$/g, '');
-        input = replaceCharacter(input, '\\\\\\"', '"');
-        input = replaceCharacter(input, '\\"', '"');
-    }
-
-    log("Action:", aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
-    log(action, aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
-    log("Input:", aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
-    log(input, aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
-    log("Exiting function", aiConfig.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-    return [action, input];
 };
 
 // Function to format the response to human
@@ -299,91 +312,104 @@ async function formatResponseToHuman(output, schema) {
     }
 };
 
-// Stream agent function
+// AI function that processes user inputs through interaction with tools, handles errors, and logs information.
 async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const functionName = "PhysarAI";
 
-    // Enter PhysarAI function
-    log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName); // Log function entry with verbosity level 1
+    try {
+        // Enter PhysarAI function
+        log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName); // Log function entry with verbosity level 1
 
-    // Check if the output schema contains required fields
-    if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
-        throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
-    }
-
-    // convert the user interaction insights into a prompt context
-    const contextContent = JSON.stringify(insightTakeaways);
-
-    // Add insights collected from user interactions as context for the prompt
-    const context = `
-        Consider, as context, the following insights collected from user interactions:
-        ${contextContent}
-        `;
-    const promptWithContext = context + prompt;
-
-    // Generate the ReAct Agent LLM prompt
-    const System_prompt = generateReActAgentLLMPrompt(tools);
-
-    let messages = [
-        { "role": "system", "content": System_prompt },
-        { "role": "user", "content": promptWithContext },
-    ];
-    
-    // This is a safety measure to ensure that the ai does not get caught in an endless reasoning loop
-    const maximum_allowable_ai_reasoning_iterations = 25;
-
-    for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
-        // Log the current loop run number
-        log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName); // Log current loop run number with verbosity level 1
-
-        // Get response from LLM
-        const requestMessage = formatJson(messages); // Log the exact message sent to LLM
-        log("Request Message sent to LLM:", aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
-        log(requestMessage, aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
-
-        // Recall the LLM API key and endpoint from the settings data
-        const aiApiKey = await llmApiKey();
-        const aiEndpoint = await llmEndpoint();
-
-        const response = await promptLLM({
-            apiKey: aiApiKey,
-            prompt: JSON.stringify(messages),
-            endpoint: aiEndpoint,
-            model: aiConfig.LLM,
-        });
-
-        // Log the response from LLM
-        const formattedLLMpromptResponse = formatJson(response);
-        log("Response from LLM: " + formattedLLMpromptResponse, aiConfig.verbosityLevel, 1, functionName); // Log response from LLM with verbosity level 1
-
-        // Extract action and input from the response
-        const [action, action_input] = extractActionAndInput(response);
-
-        // Log the action and action input
-        log(`Action: ${action}`, aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level 1
-        log(`Action Input: ${action_input}`, aiConfig.verbosityLevel, 1, functionName); // Log action input with verbosity level 1
-
-        // Perform action based on extracted information
-        const tool = tools.find(tool => tool.name === action);
-        if (tool) {
-            const observation = await tool.func(action_input);
-            // Log the observation
-            log("Observation: " + observation, aiConfig.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
-            messages.push({ "role": "system", "content": response });
-            messages.push({ "role": "user", "content": "Observation: " + observation });
-        } else if (action === "Response To Human") {
-            // Log and return the response to human
-            log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName); // Log response to human with verbosity level 1
-            return action_input
-
-        } else {
-            // Log invalid action
-            log("Invalid action: " + action, aiConfig.verbosityLevel, 1, functionName); // Log invalid action with verbosity level 1
-            break;
+        // Check if the output schema contains required fields
+        if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
+            throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
         }
 
-        // Pause for 1 seconds between loops
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // convert the user interaction insights into a prompt context
+        const contextContent = JSON.stringify(insightTakeaways);
+
+        // Add insights collected from user interactions as context for the prompt
+        const context = `
+            Consider, as context, the following insights collected from user interactions:
+            ${contextContent}
+            `;
+        const promptWithContext = context + prompt;
+
+        // Generate the ReAct Agent LLM prompt
+        const System_prompt = generateReActAgentLLMPrompt(tools);
+
+        let messages = [
+            { "role": "system", "content": System_prompt },
+            { "role": "user", "content": promptWithContext },
+        ];
+
+        // This is a safety measure to ensure that the ai does not get caught in an endless reasoning loop
+        const maximum_allowable_ai_reasoning_iterations = 25;
+
+        for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
+            // Log the current loop run number
+            log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName); // Log current loop run number with verbosity level 1
+
+            // Get response from LLM
+            const requestMessage = formatJson(messages); // Log the exact message sent to LLM
+            log("Request Message sent to LLM:", aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
+            log(requestMessage, aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
+
+            // Recall the LLM API key and endpoint from the settings data
+            const aiApiKey = await llmApiKey();
+            const aiEndpoint = await llmEndpoint();
+
+            const response = await promptLLM({
+                apiKey: aiApiKey,
+                prompt: JSON.stringify(messages),
+                endpoint: aiEndpoint,
+                model: aiConfig.LLM,
+            });
+
+           // Extract action and input from the response
+            const [action, action_input] = extractActionAndInput(response);
+
+            // Log the action and action input
+            log(`Action: ${action}`, aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level 1
+            log(`Action Input: ${action_input}`, aiConfig.verbosityLevel, 1, functionName); // Log action input with verbosity level 1
+
+            // Perform action based on extracted information
+            const tool = tools.find(tool => tool.name === action);
+            if (tool) {
+                const observation = await tool.func(action_input);
+                // Log the observation
+                log("Observation: " + observation, aiConfig.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
+                messages.push({ "role": "system", "content": response });
+                messages.push({ "role": "user", "content": "Observation: " + observation });
+            } else if (action === "Response To Human") {
+                // Log and return the response to human
+                log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName); // Log response to human with verbosity level 1
+                return action_input;
+            } else if (!action && !action_input) {
+                // Handle case where both action and input are null
+                const observation = `
+                Make sure your response follows this format:
+                Action: [Action Name]
+                Action Input: [Input Value]
+                For each response, include only one action and its corresponding input.`;
+
+                log("Observation: " + observation, aiConfig.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
+                messages.push({ "role": "system", "content": response });
+                messages.push({ "role": "user", "content": "Observation: " + observation });
+            } else {
+                // Log invalid action
+                log("Invalid action: " + action, aiConfig.verbosityLevel, 1, functionName); // Log invalid action with verbosity level 1
+                break;
+            }
+
+            // Pause for 2 seconds between loops
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    } catch (error) {
+        // Log the error message
+        log("Error in PhysarAI function: " + error.message, aiConfig.verbosityLevel, 1, functionName); // Log error message with verbosity level 0
+        // Log the stack trace
+        log("Stack Trace: " + error.stack, aiConfig.verbosityLevel, 1, functionName); // Log stack trace with verbosity level 0
     }
 };
 

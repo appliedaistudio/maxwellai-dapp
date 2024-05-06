@@ -56,25 +56,39 @@ const localDb = new PouchDB(config.localDbName);
 
 // Function to validate task against JSON schema
 function validateTask(task) {
+    // Validate task against JSON schema
     const validationResult = validateJson(task, taskSchema);
-    if (!validationResult.valid) {
-        throw new Error('Task schema validation failed: ' + validationResult.error);
+    // Return validation result
+    if (validationResult.valid) {
+        return "Task schema validation successful.";
+    } else {
+        return "Task schema validation failed: " + validationResult.error;
     }
 }
 
 // Function to create a new task
 async function createTask(taskString) {
     try {
+        // Parse task string into JSON
         const taskJson = JSON.parse(taskString);
-        validateTask(taskJson);
+        // Validate task schema
+        const validationOutcome = validateTask(taskJson);
 
-        const existingTasks = await localDb.get(docId);
-        existingTasks.tasks.push(taskJson);
-        const response = await localDb.put(existingTasks);
+        if (validationOutcome.includes("successful")) {
+            // Get existing tasks from the database
+            const existingTasks = await localDb.get(docId);
+            // Append new task to existing tasks
+            existingTasks.tasks.push(taskJson);
+            // Update tasks document in the database
+            const response = await localDb.put(existingTasks);
 
-        return response;
+            return "Task created successfully.";
+        } else {
+            return validationOutcome; // Return validation failure message
+        }
     } catch (error) {
         log(error, config.verbosityLevel, 3, 'createTask');
+        return "Error creating task: " + error.message;
     }
 }
 
@@ -85,6 +99,7 @@ async function getAllTasks() {
         return JSON.stringify(response.tasks);
     } catch (error) {
         log(error, config.verbosityLevel, 3, 'getAllTasks');
+        return "Error retrieving tasks: " + error.message;
     }
 }
 
@@ -97,56 +112,73 @@ function getTaskById(id) {
                 if (task) {
                     return task;
                 } else {
-                    throw new Error('Task not found');
+                    return "Task not found";
                 }
             });
     } catch (error) {
         log(error, config.verbosityLevel, 3, 'getTaskById');
+        return "Error retrieving task by ID: " + error.message;
     }
 }
 
 // Function to update a task
 function updateTask(taskString) {
     try {
+        // Parse task string into JSON
         const taskJson = JSON.parse(taskString);
-        validateTask(taskJson);
+        // Validate task schema
+        const validationOutcome = validateTask(taskJson);
 
-        return localDb.get(docId)
-            .then(response => {
-                const index = response.tasks.findIndex(t => t._id === taskJson._id);
-                if (index !== -1) {
-                    response.tasks[index] = taskJson;
-                    return localDb.put(response)
-                        .then(() => {
-                            return { updated: true };
-                        });
-                } else {
-                    throw new Error('Task not found');
-                }
-            });
+        if (validationOutcome.includes("successful")) {
+            // Retrieve tasks document from the database
+            return localDb.get(docId)
+                .then(response => {
+                    // Find task index by ID
+                    const index = response.tasks.findIndex(t => t._id === taskJson._id);
+                    if (index !== -1) {
+                        // Update task in tasks array
+                        response.tasks[index] = taskJson;
+                        // Save updated tasks document to the database
+                        return localDb.put(response)
+                            .then(() => {
+                                return "Task updated successfully.";
+                            });
+                    } else {
+                        return "Task not found.";
+                    }
+                });
+        } else {
+            return validationOutcome; // Return validation failure message
+        }
     } catch (error) {
         log(error, config.verbosityLevel, 3, 'updateTask');
+        return "Error updating task: " + error.message;
     }
 }
 
 // Function to delete a task
 function deleteTask(id) {
     try {
+        // Retrieve tasks document from the database
         return localDb.get(docId)
             .then(response => {
+                // Find task index by ID
                 const index = response.tasks.findIndex(task => task._id === id);
                 if (index !== -1) {
+                    // Remove task from tasks array
                     response.tasks.splice(index, 1);
+                    // Save updated tasks document to the database
                     return localDb.put(response)
                         .then(() => {
-                            return { deleted: true };
+                            return "Task deleted successfully.";
                         });
                 } else {
-                    throw new Error('Task not found');
+                    return "Task not found.";
                 }
             });
     } catch (error) {
         log(error, config.verbosityLevel, 3, 'deleteTask');
+        return "Error deleting task: " + error.message;
     }
 }
 

@@ -237,13 +237,13 @@ async function engageAI() {
    const [insightTakeaways, actionTakeaways] = await takeaways();
 
    // Update the notifications based on insights gained from user interactions
-   await updateNotifications(insightTakeaways);
+   //await updateNotifications(insightTakeaways);
 
    // Update the tasks based on insights gained from user interactions
    await updateTasks(insightTakeaways);
 
    // Update the external resources feed based on insights gained from user interactions
-   await updateExternalResourcesFeed(insightTakeaways);
+   //await updateExternalResourcesFeed(insightTakeaways);
 
    // Act on the existing action takeaways
    //actionTakeaways.forEach(action => console.log(action));

@@ -57,38 +57,41 @@ const localDb = new PouchDB(config.localDbName);
 
 // Function to validate notification against JSON schema using tv4
 function validateNotification(notification) {
-    const functionName = "validateNotification";
-
     const validationResult = validateJson(notification, notificationSchema);
-    if (!validationResult.valid) {
-        throw new Error('Notification schema validation failed: ' + validationResult.error);
+    if (validationResult.valid) {
+        return "Notification schema validation successful.";
+    } else {
+        return "Notification schema validation failed: " + validationResult.error;
     }
 }
 
 // Function to create a new notification
 async function createNotification(notificationString) {
-    const functionName = "createNotification";
-    log("Entering function", config.verbosityLevel, 4, functionName);
-
     try {
-        // Convert the string to a JSON object
         const notificationJson = JSON.parse(notificationString);
+        const validationResult = validateNotification(notificationJson);
+        if (validationResult.includes("successful")) {
+            // Proceed with creating notification
+            log("Entering function", config.verbosityLevel, 4, "createNotification");
 
-        // Validate notification Json agnainst the schema
-        validateNotification(notificationJson);
+            // Validate notification Json against the schema
+            validateNotification(notificationJson);
 
-        // Get existing notifications from the database
-        const existingNotifications = await localDb.get('notifications');
+            // Get existing notifications from the database
+            const existingNotifications = await localDb.get('notifications');
 
-        // Append the new notification to the existing notifications
-        existingNotifications.notifications.push(notificationJson);
+            // Append the new notification to the existing notifications
+            existingNotifications.notifications.push(notificationJson);
 
-        // Update the notifications document in the database
-        const response = await localDb.put(existingNotifications);
+            // Update the notifications document in the database
+            const response = await localDb.put(existingNotifications);
 
-        return response;
+            return "Notification created successfully.";
+        } else {
+            return validationResult; // Return validation failure message
+        }
     } catch (error) {
-        log(error, config.verbosityLevel, 3, functionName);
+        return "Error creating notification: " + error.message;
     }
 }
 
@@ -105,6 +108,7 @@ async function getAllNotifications() {
         return notificationsString;
     } catch (error) {
         log(error, config.verbosityLevel, 3, functionName);
+        return "Error retrieving notifications: " + error.message;
     }
 }
 
@@ -122,53 +126,54 @@ function getNotificationById(id) {
                 if (notification) {
                     return notification;
                 } else {
-                    throw new Error('Notification not found');
+                    return "Notification not found";
                 }
             });
     } catch (error) {
         log(error, config.verbosityLevel, 3, functionName);
+        return "Error retrieving notification by ID: " + error.message;
     }
 }
 
 // Function to update a notification
 function updateNotification(notificationString) {
-    const functionName = "updateNotification";
-    log("Entering function", config.verbosityLevel, 4, functionName);
-
     try {
-        // Convert the string to a JSON object
         const notificationJson = JSON.parse(notificationString);
+        const validationResult = validateNotification(notificationJson);
+        if (validationResult.includes("successful")) {
+            // Proceed with updating notification
+            log("Entering function", config.verbosityLevel, 4, "updateNotification");
 
-        // Validate notification schema
-        validateNotification(notificationJson);
-        // Retrieve the document containing notifications from the database
-        return localDb.get(docId)
-            .then(response => {
-                // Find the index of the notification to be updated in the notifications array
-                console.log('Notification to update ID:', notificationJson._id);
-                const index = response.notifications.findIndex(n => n._id === notificationJson._id);
-                if (index !== -1) {
-                    // Update the notification in the notifications array
-                    response.notifications[index] = notificationJson;
-                    // Save the updated document back to the database
-                    return localDb.put(response)
-                        .then(() => {
-                            return { updated: true };
-                        });
-                } else {
-                    throw new Error('Notification not found');
-                }
-            });
+            // Validate notification schema
+            validateNotification(notificationJson);
+            // Retrieve the document containing notifications from the database
+            return localDb.get(docId)
+                .then(response => {
+                    // Find the index of the notification to be updated in the notifications array
+                    console.log('Notification to update ID:', notificationJson._id);
+                    const index = response.notifications.findIndex(n => n._id === notificationJson._id);
+                    if (index !== -1) {
+                        // Update the notification in the notifications array
+                        response.notifications[index] = notificationJson;
+                        // Save the updated document back to the database
+                        return localDb.put(response)
+                            .then(() => {
+                                return "Notification updated successfully.";
+                            });
+                    } else {
+                        return "Notification not found";
+                    }
+                });
+        } else {
+            return validationResult; // Return validation failure message
+        }
     } catch (error) {
-        log(error, config.verbosityLevel, 3, functionName);
+        return "Error updating notification: " + error.message;
     }
 }
 
 // Function to delete a notification
 function deleteNotification(id) {
-    const functionName = "deleteNotification";
-    log("Entering function", config.verbosityLevel, 4, functionName);
-
     try {
         // Retrieve the document containing notifications from the database
         return localDb.get(docId)
@@ -181,14 +186,14 @@ function deleteNotification(id) {
                     // Save the updated document back to the database
                     return localDb.put(response)
                         .then(() => {
-                            return { deleted: true };
+                            return "Notification deleted successfully.";
                         });
                 } else {
-                    throw new Error('Notification not found');
+                    return "Notification not found";
                 }
             });
     } catch (error) {
-        log(error, config.verbosityLevel, 3, functionName);
+        return "Error deleting notification: " + error.message;
     }
 }
 
