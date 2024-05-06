@@ -41,7 +41,7 @@ const renderNotifications = (notifications) => {
         const card = document.createElement('div');
         card.className = 'card task-card'; // Reuse task card styles
         card.style.borderRadius = '15px'; // Consistent styling with task cards
-        card.title = 'Click to view more details'; // Tooltip for the entire card
+        card.title = 'A helpful intervention'; // Tooltip for the entire card
 
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body d-flex';
@@ -73,7 +73,7 @@ const renderNotifications = (notifications) => {
         actionsList.textContent = "Actions: ";
         const actionsText = notification.actions.close.map(action => `Close ${action}`).concat(notification.actions.open.map(action => `Open ${action}`)).join(", ");
         actionsList.textContent += actionsText;
-        actionsList.title = 'Available actions for this notification'; // Tooltip
+        actionsList.title = 'Actions that will be taken by the AI'; // Tooltip
         textColumn.appendChild(actionsList);
 
         // Notification date
