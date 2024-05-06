@@ -40,4 +40,6 @@
 /* Main content spacing */
 #main-content {
     margin-bottom: 2rem; /* Adds bottom margin for spacing below the main content area */
+    max-height: 55vh; /* Limits the maximum height to prevent overflow of the screen height */
+    overflow: auto; /* Enables scrolling for the content area if the content exceeds the box size */
 }

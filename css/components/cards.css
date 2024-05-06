@@ -1,0 +1,57 @@
+.card {
+    background-color: var(--light-color); /* Use light color variable for card background */
+    color: var(--accent-color); /* Use accent color variable for general text in the card */
+    border-radius: 15px; /* Rounded corners for the card */
+    margin: 10px 0; /* Vertical spacing between cards */
+    padding: 15px; /* Padding inside the card for spacing around content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border: 2px solid var(--accent-color); /* Adds a solid border using secondary accent color */
+}
+
+.card-text {
+    color: var(--neutral-color); /* Use neutral color variable for card text */
+    margin-bottom: 10px; /* Space below the text */
+}
+
+/* Additional styles for elements inside the card */
+.chat-column {
+    flex: 0 0 auto; /* Flex basis of auto to not grow or shrink */
+    margin-right: 20px; /* Right margin to create space between the chat icon and the text column */
+}
+
+.text-column {
+    flex: 1; /* Flex grow to take remaining space */
+    text-align: left; /* Align text to the left */
+}
+
+.details, .badge {
+    text-align: left; /* Align text and badges to the left */
+}
+
+.badge {
+    margin-right: 5px; /* Space between badges if there are multiple */
+    background-color: var(--neutral-color-bg); /* Use neutral background color variable for badges */
+    color: var(--font-color); /* Use font color variable for badge text */
+}
+
+/* Styling for scrollbar as previously defined */
+#main-content::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--light-color);
+}
+
+#main-content::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+#main-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-accent-color);
+}
+
+#main-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--light-color);
+}
