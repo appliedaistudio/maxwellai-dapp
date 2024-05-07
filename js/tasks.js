@@ -53,8 +53,7 @@ const renderTasksAsCards = (tasks) => {
 
     tasks.forEach((task, index) => {
         const card = document.createElement('div');
-        card.className = 'card task-card'; // Style the card
-        card.style.borderRadius = '15px'; // Set rounded edges for cards
+        card.className = 'card'; // Style the card
         card.title = 'A small, meaningful task'; // Tooltip for the entire card
 
         // Create a flex container to hold columns
@@ -83,6 +82,10 @@ const renderTasksAsCards = (tasks) => {
         description.title = 'Description of the task'; // Tooltip for description
         textColumn.appendChild(description);
 
+        // Shaded information region for badges
+        const cardFooter = document.createElement('div');
+        cardFooter.className = 'card-footer';
+
         // Display task details like priority, completion date, and category
         const details = document.createElement('div');
         details.className = 'details';
@@ -105,7 +108,8 @@ const renderTasksAsCards = (tasks) => {
         categoryBadge.title = 'Category of the task'; // Tooltip for category
         details.appendChild(categoryBadge);
 
-        textColumn.appendChild(details);
+        cardFooter.appendChild(details);
+        textColumn.appendChild(cardFooter);
         
         // Append columns to card body
         cardBody.appendChild(chatColumn);

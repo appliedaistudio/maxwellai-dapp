@@ -51,8 +51,7 @@ const renderNotifications = (notifications) => {
 
     notifications.forEach((notification, index) => {
         const card = document.createElement('div');
-        card.className = 'card task-card'; // Reuse task card styles
-        card.style.borderRadius = '15px'; // Consistent styling with task cards
+        card.className = 'card'; // Reuse task card styles
         card.title = 'A helpful intervention'; // Tooltip for the entire card
 
         const cardBody = document.createElement('div');
@@ -88,6 +87,10 @@ const renderNotifications = (notifications) => {
         actionsList.title = 'Actions that will be taken by the AI'; // Tooltip
         textColumn.appendChild(actionsList);
 
+        // Card footer for badges
+        const cardFooter = document.createElement('div');
+        cardFooter.className = 'card-footer';
+        
         // Notification date
         const dateBadge = document.createElement('span');
         dateBadge.className = 'badge bg-primary date-badge';
@@ -97,21 +100,24 @@ const renderNotifications = (notifications) => {
             year: 'numeric'
         });
         dateBadge.title = 'Date of notification'; // Tooltip
-        textColumn.appendChild(dateBadge);
+        cardFooter.appendChild(dateBadge);
 
         // Notification topic
         const topicBadge = document.createElement('span');
         topicBadge.className = 'badge bg-secondary topic-badge';
         topicBadge.textContent = notification.topic;
         topicBadge.title = 'Topic of notification'; // Tooltip
-        textColumn.appendChild(topicBadge);
+        cardFooter.appendChild(topicBadge);
 
         // Notification status
         const statusBadge = document.createElement('span');
         statusBadge.className = 'badge bg-info status-badge';
         statusBadge.textContent = notification.status;
         statusBadge.title = 'Current status of notification'; // Tooltip
-        textColumn.appendChild(statusBadge);
+        cardFooter.appendChild(statusBadge);
+
+        // Add card footer to the text column
+        textColumn.appendChild(cardFooter);
 
         // Append columns to card body
         cardBody.appendChild(chatColumn);

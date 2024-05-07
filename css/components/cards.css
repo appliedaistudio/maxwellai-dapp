@@ -1,7 +1,7 @@
 .card {
     background-color: var(--light-color); /* Use light color variable for card background */
     color: var(--accent-color); /* Use accent color variable for general text in the card */
-    border-radius: 15px; /* Rounded corners for the card */
+    border-radius: 8px 8px 8px 8px; /* Rounded corners at the top, sharp corners at the bottom */
     margin: 10px 0; /* Vertical spacing between cards */
     padding: 15px; /* Padding inside the card for spacing around content */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
@@ -10,7 +10,7 @@
 }
 
 .card-img-top {
-    height: 15vh;
+    height: 12vh;
     width: 100%; /* ensures the image is responsive and fits the card */
     object-fit: cover; /* Ensures the image covers the area without distorting */
 }
@@ -24,7 +24,7 @@
 
 .card-text {
     color: var(--neutral-color); /* Use neutral color variable for card text */
-    margin-bottom: 10px; /* Space below the text */
+    margin-bottom: 20px; /* Space below the text */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
