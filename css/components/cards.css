@@ -6,11 +6,29 @@
     padding: 15px; /* Padding inside the card for spacing around content */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
     border: 2px solid var(--accent-color); /* Adds a solid border using secondary accent color */
+    height: 95%; /* Ensures the card stretches to take up all available vertical space */
+}
+
+.card-img-top {
+    width: 100%; /* ensures the image is responsive and fits the card */
+    height: auto; /* maintains aspect ratio */
+}
+
+.card-body {
+    padding-top: 5px;    /* Top padding */
+    padding-right: 10px; /* Right padding */
+    padding-bottom: 5px; /* Bottom padding */
+    padding-left: 10px;  /* Left padding */
 }
 
 .card-text {
     color: var(--neutral-color); /* Use neutral color variable for card text */
     margin-bottom: 10px; /* Space below the text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* limits to 3 lines of text */
+    -webkit-box-orient: vertical;
 }
 
 /* Additional styles for elements inside the card */
@@ -34,6 +52,13 @@
     color: var(--font-color); /* Use font color variable for badge text */
 }
 
+.card-footer {
+    padding-top: 5px;    /* Top padding */
+    padding-right: 10px; /* Right padding */
+    padding-bottom: 5px; /* Bottom padding */
+    padding-left: 10px;  /* Left padding */
+}
+
 /* Styling for scrollbar as previously defined */
 #main-content::-webkit-scrollbar {
     width: 8px;
@@ -54,4 +79,14 @@
 #main-content {
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) var(--light-color);
+}
+
+.row-spacing {
+    margin-bottom: 20px; /* Adjust the spacing as needed */
+}
+
+/* Adds horizontal space between cards */
+.col {
+    padding-right: 15px; /* Space on the right */
+    padding-left: 15px;  /* Space on the left */
 }
