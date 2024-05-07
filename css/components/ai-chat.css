@@ -50,8 +50,7 @@
 /* Styles for the chat message input */
 .chat-message-input {
     resize: none; /* Disable resizing of the input field */
-    background-color: var(--light-color); /* Background color for the input field */
-    color: var(--dark-color); /* Text color for the input field */
+    background-color: white; /* Background color for the input field */
     border-top: none; /* Remove top border of the input field */
     border-bottom-right-radius: 0; /* Ensure bottom-right border radius is 0 */
     border-bottom-left-radius: 0; /* Ensure bottom-left border radius is 0 */
