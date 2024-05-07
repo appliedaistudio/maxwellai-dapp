@@ -66,7 +66,7 @@ async function saveChatConversation() {
         const data = await localDb.get(documentId);
         
         // Find the conversation corresponding to the given conversationId
-        const conversation = data.feedback.find(conversation => conversation._id === parseInt(conversationId));
+        const conversation = data.feedback.find(conversation => conversation._id === conversationId);
         
         if (!conversation) {
             console.error('Conversation not found.');
