@@ -10,8 +10,9 @@
 }
 
 .card-img-top {
+    height: 15vh;
     width: 100%; /* ensures the image is responsive and fits the card */
-    height: auto; /* maintains aspect ratio */
+    object-fit: cover; /* Ensures the image covers the area without distorting */
 }
 
 .card-body {
