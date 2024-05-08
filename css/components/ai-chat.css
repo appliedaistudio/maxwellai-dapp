@@ -89,7 +89,7 @@
 
 /* Styles for suggested messages */
 .chat-suggested-messages button {
-    background-color: var(--neutral-color); /* Background color for suggested messages buttons */
+    background-color: var(--secondary-accent-color); /* Background color for suggested messages buttons */
     color: var(--light-color); /* Text color for suggested messages buttons */
     border: 1px solid var(--accent-color); /* Add border to suggested messages buttons */
     cursor: pointer; /* Set cursor style to pointer for suggested messages buttons */
@@ -97,12 +97,14 @@
 
 /* Hover styles for suggested messages buttons */
 .chat-suggested-messages button:hover {
-    background-color: var(--accent-color); /* Hover background color for suggested messages buttons */
+    background-color: var(--neutral-color); /* Hover background color for suggested messages buttons */
     color: var(--light-color); /* Hover text color for suggested messages buttons */
 }
 
 /* Styles for chat input group */
 .chat-input-group {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
     border-top: 1px solid var(--accent-color); /* Add top border to the chat input group */
 }
 

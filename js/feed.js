@@ -53,7 +53,7 @@ const loadFeedRegurlarly = () => {
     loadFeed(); // Load feed immediately
 
     // Set interval to reload feed every 10 seconds
-    setInterval(loadFeed, 10000); // 10 seconds = 10000 milliseconds
+    setInterval(loadFeed, 1000000); // 10 seconds = 10000 milliseconds
 };
 
 const renderFeed = (feed) => {

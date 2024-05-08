@@ -1,5 +1,5 @@
 .card {
-    background-color: var(--light-color); /* Use light color variable for card background */
+    background-color: var(--neutral-color); /* Use light color variable for card background */
     color: var(--accent-color); /* Use accent color variable for general text in the card */
     border-radius: 8px 8px 8px 8px; /* Rounded corners at the top, sharp corners at the bottom */
     margin: 10px 0; /* Vertical spacing between cards */
@@ -20,10 +20,11 @@
     padding-right: 10px; /* Right padding */
     padding-bottom: 5px; /* Bottom padding */
     padding-left: 10px;  /* Left padding */
+    text-align: left; /* Align text to the left */
 }
 
 .card-text {
-    color: var(--neutral-color); /* Use neutral color variable for card text */
+    color: var(--light-color); /* Use neutral color variable for card text */
     margin-bottom: 20px; /* Space below the text */
     overflow: hidden;
     text-overflow: ellipsis;
