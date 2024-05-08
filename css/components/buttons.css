@@ -1,5 +1,6 @@
 .menu-group .menu-button {
     font-family: inherit;
+    font-size: 1.25rem;
     color: var(--font-color);
     border-color: var(--neutral-color);
     border: none; /* Set border to none for menu buttons */
@@ -31,23 +32,3 @@
     color: inherit; /* Icon color inherits from the button text color */
 }
 
-/* Smaller screens (e.g., phones) */
-@media (max-width: 600px) {
-    .menu-group .menu-button {
-        font-size: 18px;
-    }
-}
-
-/* Medium screens (e.g., tablets) */
-@media (min-width: 601px) and (max-width: 1024px) {
-    .menu-group .menu-button {
-        font-size: 20px;
-    }
-}
-
-/* Larger screens (e.g., desktops) */
-@media (min-width: 1025px) {
-    .menu-group .menu-button {
-        font-size: 20px;
-    }
-}

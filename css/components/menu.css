@@ -6,7 +6,7 @@
 }
 
 .menu-dropdown-item {
-    font-size: inherit;
+    font-size: 1rem;
     color: var(--neutral-color); /* Ensure text color contrasts well against white */
     background-color: #fff; /* Dropdown item background matches the menu background */
     border-bottom: 1px solid var(--accent-color); /* Separates the items visually */
