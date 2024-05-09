@@ -1,0 +1,106 @@
+{
+  "_id": "maxwellai_network",
+  "network": {
+    "metadata": {
+      "node_types": ["Websites", "Contacts", "Devices"],
+      "categories": [
+        "Research & Reference",
+        "Cybersecurity Resources",
+        "Networking",
+        "Utility",
+        "Personal"
+      ],
+      "review_statuses": ["Pending", "Reviewed", "Not Suitable"]
+    },
+    "data": {
+      "websites": {
+        "metadata": {
+          "categories": ["Research & Reference", "Cybersecurity Resources"],
+          "review_statuses": ["Pending", "Reviewed"]
+        },
+        "data": [
+          {
+            "_id": "1",
+            "url": "https://www.ias.edu/ideas",
+            "description": "Institute for Advanced Study",
+            "usefulness_description": "Access academic papers and research on cybersecurity.",
+            "category": "Research & Reference",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/seed/11/200"
+          },
+          {
+            "_id": "2",
+            "url": "https://www.nsa.gov/Cybersecurity/",
+            "description": "National Security Agency - Cybersecurity",
+            "usefulness_description": "Explore cybersecurity guidelines and resources.",
+            "category": "Cybersecurity Resources",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/seed/12/200"
+          }
+        ]
+      },
+      "contacts": {
+        "metadata": {
+          "categories": ["Networking", "Personal"],
+          "review_statuses": ["Reviewed", "Not Suitable"]
+        },
+        "data": [
+          {
+            "_id": "3",
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "123-456-7890",
+            "relationship": "Colleague",
+            "category": "Networking",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/seed/12/200"
+          },
+          {
+            "_id": "4",
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "phone": "987-654-3210",
+            "relationship": "Friend",
+            "category": "Personal",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/seed/13/200"
+          }
+        ]
+      },
+      "devices": {
+        "metadata": {
+          "categories": ["Utility"],
+          "review_statuses": ["Pending", "Reviewed"]
+        },
+        "data": [
+          {
+            "_id": "5",
+            "name": "Smart Thermostat",
+            "type": "Thermostat",
+            "location": "Living Room",
+            "api_info": {
+              "url": "https://api.example.com/thermostat",
+              "auth_token": "XXXXXXXXXXXXXXXX"
+            },
+            "category": "Utility",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/seed/14/200"
+          },
+          {
+            "_id": "6",
+            "name": "Security Camera",
+            "type": "Camera",
+            "location": "Front Door",
+            "api_info": {
+              "url": "https://api.example.com/camera",
+              "auth_token": "YYYYYYYYYYYYYYYY"
+            },
+            "category": "Utility",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/seed/15/200"
+          }
+        ]
+      }
+    }
+  }
+}

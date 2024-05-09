@@ -6,8 +6,8 @@ import { initializeMenu } from './db-init-menu.js';
 import { initializeMainContent } from './db-init-main-content-controls.js'
 import { initializeNotifications } from './db-init-notifications.js'
 import { initializeTasks } from './db-init-tasks.js';
-import { initializeFeed } from './db-init-feed.js';
-import { initializeFeedFeedback } from './db-init-feed-feedback.js';
+import { initializeNetwork } from './db-init-nerwork.js';
+import { initializeNetworkFeedback } from './db-init-network-feedback.js';
 import { initializeTaskFeedback } from './db-init-task-feedback.js';
 import { initializeProjectFeedback } from './db-init-project-feedback.js';
 import { initializeNotificationFeedback } from './db-init-notification-feedback.js';
@@ -50,8 +50,8 @@ function loadLocalDb() {
     initializeMainContent(localDb);
     initializeNotifications(localDb);
     initializeTasks(localDb);
-    initializeFeed(localDb);
-    initializeFeedFeedback(localDb);
+    initializeNetwork(localDb);
+    initializeNetworkFeedback(localDb);
     initializeTaskFeedback(localDb);
     initializeProjectFeedback(localDb);
     initializeNotificationFeedback(localDb);
