@@ -11,8 +11,8 @@
                     "tooltip": "Your goals broken down into attainable tasks"
                 },
                 {
-                    "name": "Resources and Ideas",
-                    "tooltip": "A set of resource suggestions tailored to your goals"
+                    "name": "Resource Network",
+                    "tooltip": "A network of resource suggestions tailored to your goals"
                 },
                 {
                     "name": "Helpful Interventions",
@@ -29,14 +29,6 @@
             "name": "You",
             "tooltip": "Access user options",
             "items": [
-                {
-                    "name": "Add User",
-                    "tooltip": "Add a new user"
-                },
-                {
-                    "name": "User Info",
-                    "tooltip": "View your user information"
-                },
                 {
                     "name": "Logout",
                     "tooltip": "Sign out of your account"
