@@ -84,20 +84,28 @@ async function promptLLM(parameters) {
     }
 };
 
-// Generate AI response to conversation based on the extracted conversation data.
+// Function specifically for handling degraded mode in AI conversation response scenarios
+function degradedModeAIConversationResponse() {
+    // Return a response tailored to the context of AI conversation failures
+    return "I'm sorry, I can't provide a tailored response right now. Please try again later.";
+};
+
+// Function to generate AI response based on the conversation data.
 async function generateAIResponseToConversation(conversationData) {
     try {
-        // Condense conversationData into a string listing what AI and user said to each other
+        // Convert conversationData into a formatted string of dialogue
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
 
-        // Create a short AI prompt asking for the AI's response to the conversation
+        // Prepare AI prompt based on the conversation history
         const aiPrompt = `Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
 
-        // Recall the LLM API key and endpoint from the settings data
+        // Retrieve the AI API key from settings
         const aiApiKey = await llmApiKey();
+
+        // Retrieve the AI endpoint from settings
         const aiEndpoint = await llmEndpoint();
 
-        // Call promptLLM function to get the AI response
+        // Call AI service to generate a response based on the conversation
         const aiResponse = await promptLLM({
             apiKey: aiApiKey,
             prompt: aiPrompt,
@@ -105,29 +113,66 @@ async function generateAIResponseToConversation(conversationData) {
             model: aiConfig.LLM
         });
 
+        // Check if the AI service is unavailable and trigger the specific degraded mode for AI conversation response
+        if (aiResponse === null) {
+            return degradedModeAIConversationResponse();
+        }
+
         return aiResponse;
     } catch (error) {
+        // Log the error if something goes wrong during the process
         console.error('Error generating AI response to conversation:', error);
-        return null;
     }
-}
+};
 
+// Function to handle degraded mode for generating user responses
+function degradedModeUserResponses() {
+    // Return a predefined JSON structure with default and suggested responses
+    return {
+        defaultUserResponses: [
+            "Got new project ideas?",
+            "Let's chat about projects.",
+            "I'm considering new goals for myself."
+        ],
+        suggestedUserResponses: {
+            "current projects": [
+                "I want to update you on my progress.", 
+                "I'd like feedback on my latest work.", 
+                "I want to talk about a challenge I'm facing"
+            ],
+            "inspiration and ideas": [
+                "I'd like to share a new writing prompt.", 
+                "I'd like to explore a creative spark.", 
+                "I want to brainstorm on plot twists and characters."
+            ],
+            "support and feedback": [
+                "I need some encouragement.", 
+                "I need help getting past my writer's block.", 
+                "I need help staying motivated."
+            ]
+        }
+    };
+};
+
+// Function to generate default and suggested responses based on conversation data
 async function generateDefaultAndSuggestedUserResponses(conversationData) {
     try {
-        // Condense conversationData into a string listing what AI and user said to each other
+        // Convert conversation data into a formatted string of dialogue
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
 
-        // Create a short AI prompt asking for suggested default and categorized user responses
+        // Create an AI prompt asking for suggested user responses
         const aiPrompt = `
             Given the following conversation:
             ${conversationString}
             ${aiConfig.aiUserResponses}`;
 
-        // Recall the LLM API key and endpoint from the settings data
+        // Retrieve the AI API key from settings
         const aiApiKey = await llmApiKey();
+
+        // Retrieve the AI endpoint from settings
         const aiEndpoint = await llmEndpoint();
 
-        // Call promptLLM function to get the LLM response
+        // Request the AI to generate default and suggested user responses
         const aiResponse = await promptLLM({
             apiKey: aiApiKey,
             prompt: aiPrompt,
@@ -135,18 +180,31 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
             model: aiConfig.LLM
         });
 
-        // Convert the ai response to JSON
+        // Check if the AI response is null and handle degraded mode
+        if (aiResponse === null) {
+            return degradedModeUserResponses();
+        }
+
+        // Parse and return the AI response as JSON
         const aiResponseJson = JSON.parse(aiResponse);
-        console.log("generating default responses");
+        console.log("Generating default responses");
         console.log(aiResponseJson);
         return aiResponseJson;
-
     } catch (error) {
+        // Log the error encountered during AI response generation
         console.error('Error generating AI response to conversation:', error);
-        return null;
+        // Return the degraded mode response due to error
+        return degradedModeUserResponses();
     }
-}
+};
 
+// Specific function for handling degraded mode when fetching key takeaways
+function enterDegradedModeKeyTakeaway() {
+    // Return a degraded mode response tailored to the context of key takeaway failures
+    return "Unable to fetch key takeaways at the moment. Please try again later.";
+};
+
+// Function to extract key takeaways from a conversation using AI.
 async function getKeyTakeaway(conversationData, documentId, conversationId) {
     try {
         // Condense conversationData into a string listing what AI and user said to each other
@@ -159,11 +217,13 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
             ${conversationString}
             ${aiConfig.aiKeytakeaway(documentId, conversationId)}`;
 
-        // Recall the LLM API key and endpoint from the settings data
+        // Retrieve the AI API key from settings
         const aiApiKey = await llmApiKey();
+
+        // Retrieve the AI endpoint from settings
         const aiEndpoint = await llmEndpoint();
 
-        // Call promptLLM function to get the AI response
+        // Call AI service to generate a response for the key takeaway
         const aiResponse = await promptLLM({
             apiKey: aiApiKey,
             prompt: aiPrompt,
@@ -171,12 +231,18 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
             model: aiConfig.LLM
         });
 
-        return aiResponse.toString(); // Convert the AI response to a string
+        // Check if the AI service response is null and enter degraded mode if so
+        if (aiResponse === null) {
+            return enterDegradedModeKeyTakeaway();
+        }
+
+        // Convert the AI response to a string and return it
+        return aiResponse.toString();
     } catch (error) {
+        // Log the error if something goes wrong during the process
         console.error('Error getting key takeaway:', error);
-        return null;
     }
-}
+};
 
 // Creates the prompt that turns a normal LLM into a ReAct agent
 function generateReActAgentLLMPrompt(tools) {
@@ -312,105 +378,110 @@ async function formatResponseToHuman(output, schema) {
     }
 };
 
-// AI function that processes user inputs through interaction with tools, handles errors, and logs information.
+// Prepares context for AI operation based on interaction insights
+function prepareContext(insightTakeaways) {
+    const contextContent = JSON.stringify(insightTakeaways);
+    return `
+        Consider, as context, the following insights collected from user interactions:
+        ${contextContent}
+        `;
+};
+
+// Generates initial messages for AI interaction
+function prepareMessages(System_prompt, promptWithContext) {
+    return [
+        { "role": "system", "content": System_prompt },
+        { "role": "user", "content": promptWithContext },
+    ];
+};
+
+// Interacts with the LLM using the provided configuration
+async function interactWithLLM(aiApiKey, aiEndpoint, messages) {
+    return await promptLLM({
+        apiKey: aiApiKey,
+        prompt: JSON.stringify(messages),
+        endpoint: aiEndpoint,
+        model: aiConfig.LLM,
+    });
+};
+
+// Executes actions determined by the LLM
+async function executeAction(tool, action, action_input) {
+    if (tool) {
+        return await tool.func(action_input);
+    }
+    return null;
+};
+
+// Handles situations where LLM is unavailable by entering degraded mode
+function handleDegradedMode() {
+    return {
+        action: "Response to Human",
+        action_input: "The AI model is currently unavailable, and we have entered a degraded mode."
+    };
+};
+
+// Main AI function that manages user inputs, tool interactions, and logging
 async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const functionName = "PhysarAI";
 
-    try {
-        // Enter PhysarAI function
-        log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName); // Log function entry with verbosity level 1
+    // Enter the function and log the entry
+    log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName);
 
-        // Check if the output schema contains required fields
-        if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
-            throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
-        }
-
-        // convert the user interaction insights into a prompt context
-        const contextContent = JSON.stringify(insightTakeaways);
-
-        // Add insights collected from user interactions as context for the prompt
-        const context = `
-            Consider, as context, the following insights collected from user interactions:
-            ${contextContent}
-            `;
-        const promptWithContext = context + prompt;
-
-        // Generate the ReAct Agent LLM prompt
-        const System_prompt = generateReActAgentLLMPrompt(tools);
-
-        let messages = [
-            { "role": "system", "content": System_prompt },
-            { "role": "user", "content": promptWithContext },
-        ];
-
-        // This is a safety measure to ensure that the ai does not get caught in an endless reasoning loop
-        const maximum_allowable_ai_reasoning_iterations = 25;
-
-        for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
-            // Log the current loop run number
-            log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName); // Log current loop run number with verbosity level 1
-
-            // Get response from LLM
-            const requestMessage = formatJson(messages); // Log the exact message sent to LLM
-            log("Request Message sent to LLM:", aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
-            log(requestMessage, aiConfig.verbosityLevel, 5, functionName); // Log message sent to LLM with verbosity level 5
-
-            // Recall the LLM API key and endpoint from the settings data
-            const aiApiKey = await llmApiKey();
-            const aiEndpoint = await llmEndpoint();
-
-            const response = await promptLLM({
-                apiKey: aiApiKey,
-                prompt: JSON.stringify(messages),
-                endpoint: aiEndpoint,
-                model: aiConfig.LLM,
-            });
-
-           // Extract action and input from the response
-            const [action, action_input] = extractActionAndInput(response);
-
-            // Log the action and action input
-            log(`Action: ${action}`, aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level 1
-            log(`Action Input: ${action_input}`, aiConfig.verbosityLevel, 1, functionName); // Log action input with verbosity level 1
-
-            // Perform action based on extracted information
-            const tool = tools.find(tool => tool.name === action);
-            if (tool) {
-                const observation = await tool.func(action_input);
-                // Log the observation
-                log("Observation: " + observation, aiConfig.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
-                messages.push({ "role": "system", "content": response });
-                messages.push({ "role": "user", "content": "Observation: " + observation });
-            } else if (action === "Response To Human") {
-                // Log and return the response to human
-                log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName); // Log response to human with verbosity level 1
-                return action_input;
-            } else if (!action && !action_input) {
-                // Handle case where both action and input are null
-                const observation = `
-                Make sure your response follows this format:
-                Action: [Action Name]
-                Action Input: [Input Value]
-                For each response, include only one action and its corresponding input.`;
-
-                log("Observation: " + observation, aiConfig.verbosityLevel, 1, functionName); // Log observation with verbosity level 1
-                messages.push({ "role": "system", "content": response });
-                messages.push({ "role": "user", "content": "Observation: " + observation });
-            } else {
-                // Log invalid action
-                log("Invalid action: " + action, aiConfig.verbosityLevel, 1, functionName); // Log invalid action with verbosity level 1
-                break;
-            }
-
-            // Pause for 2 seconds between loops
-            await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-    } catch (error) {
-        // Log the error message
-        log("Error in PhysarAI function: " + error.message, aiConfig.verbosityLevel, 1, functionName); // Log error message with verbosity level 0
-        // Log the stack trace
-        log("Stack Trace: " + error.stack, aiConfig.verbosityLevel, 1, functionName); // Log stack trace with verbosity level 0
+    // Validate the presence of required properties in output schema
+    if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
+        throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
     }
+
+    // Prepare context from insights
+    const context = prepareContext(insightTakeaways);
+    const promptWithContext = context + prompt;
+    const System_prompt = generateReActAgentLLMPrompt(tools);
+    let messages = prepareMessages(System_prompt, promptWithContext);
+
+    const maximum_allowable_ai_reasoning_iterations = 2;
+
+    // Process interactions up to the maximum iterations
+    for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
+        log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName);
+
+        // Retrieve API key and endpoint for the LLM
+        const aiApiKey = await llmApiKey();
+        const aiEndpoint = await llmEndpoint();
+
+        // Interact with LLM and receive response
+        const response = await interactWithLLM(aiApiKey, aiEndpoint, messages);
+
+        // Check for null response to determine if LLM is unavailable
+        if (!response) {
+            const degradedResponse = handleDegradedMode();
+
+            // Exit the function and log the exit
+            log("Exiting PhysarAI function in degraded mode", aiConfig.verbosityLevel, 1, functionName);
+
+            return degradedResponse.action_input; // Return degraded mode message
+        }
+
+        // Extract action and input from the LLM response
+        const [action, action_input] = extractActionAndInput(response);
+        const tool = tools.find(tool => tool.name === action);
+        const observation = await executeAction(tool, action, action_input);
+
+        if (observation) {
+            messages.push({ "role": "system", "content": response });
+            messages.push({ "role": "user", "content": "Observation: " + observation });
+        } else if (action === "Response To Human") {
+            return action_input; // Return response directly to human
+        } else {
+            break; // Exit loop if action is invalid or not actionable
+        }
+
+        // Wait for 2 seconds before the next iteration to prevent overload
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+
+    // Exit the function and log the exit
+    log("Exiting PhysarAI function", aiConfig.verbosityLevel, 1, functionName);
 };
 
 // Example usage of PhysarAI function
