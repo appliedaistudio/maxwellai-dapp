@@ -1,4 +1,5 @@
 import config from "../../dapp-config.js";
+import aiConfig from "../../ai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -220,6 +221,8 @@ const networkTools = [
     }
 ];
 
+const updateNetworkPrompt = aiConfig.aiUpdateNetwork;
+
 // Export CRUD functions and tools for the network data
 export {
     validateNetworkEntity,
@@ -228,5 +231,6 @@ export {
     getNetworkEntityById,
     updateNetworkEntity,
     deleteNetworkEntity,
-    networkTools
+    networkTools,
+    updateNetworkPrompt
 };

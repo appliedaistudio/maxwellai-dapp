@@ -76,36 +76,37 @@ function aiKeytakeaway(documentId, conversationId){
     const takeaway = `
     What is the key takeaway from this conversation? 
     If the takeaway involves updating data, include the document ID (${documentId}) and conversation ID (${conversationId}) in the directive for the AI to take action.`;
+
+    return takeaway;
 };
 
-const aiUpdateExternalResourceFeed = `
-    Refine the feed of external resources based on user interactions:
-    1. Get a list of the existing external resources
-    2. Introduce new external resources relevant to the insights collected from user interactions.
-    3. Regularly review existing external resources for relevance and update them accordingly.
-    4. Remove external resources that are no longer needed.
-    5. Ensure the usefulness description accurately reflects the content of the external resource for better user engagement.
-    6. Categorize external resources appropriately to facilitate easy navigation and access for users.`;
+const aiUpdateNetwork = `
+    Optimize the feed of external resources within the MaxwellAI Network by leveraging user interactions while keeping the network minimal yet functional:
+    1. Inventory Existing Resources: List all resources under the categories of Websites, Contacts, and Devices, assessing their utility and relevance.
+    2. Introduce Relevant Resources: Based on user interactions, identify and integrate new resources that fill essential gaps, ensuring no redundancy.
+    3. Evaluate Resource Relevance: Periodically review the relevance of each resource, updating descriptions and statuses to maintain a streamlined and effective network.
+    4. Prune Outdated Resources: Actively remove resources that are redundant or no longer provide value, aiming to keep the network lean and focused.
+    5. Maintain Accurate Descriptions: Ensure that all resource descriptions accurately reflect their content, increasing user trust and engagement.
+    6. Efficient Categorization: Organize resources effectively within the existing categories to ensure ease of access and navigation, enhancing user experience while maintaining a minimal network structure.`;
 
 const aiUpdateNotifications = `
-    Refine notifications based on user interactions:
-    1. Introduce notifications for actions MaxwellAI plans to take in the future, such as closing applications for focus or opening necessary apps for upcoming tasks.
-    2. Ensure notifications are limited to MaxwellAI's capabilities.
-    3. Revise existing notifications or introduce new ones only if insights from user interactions necessitate action not covered by current notifications.
-    4. It's acceptable to take no action if existing notifications cover user needs adequately.`;
+    Minimize notifications while ensuring effectiveness:
+    1. Introduce notifications only for critical actions MaxwellAI plans to take, such as managing applications to enhance focus or preparing essential apps for imminent tasks.
+    2. Limit notifications strictly to actions within MaxwellAI's capabilities.
+    3. Adjust or add notifications solely based on essential insights from user interactions that require actions not already covered by existing notifications.
+    4. Avoid sending notifications when current ones sufficiently meet user needs.`;
 
 const aiUpdateTasks = `
-    Refine tasks based on user interactions:
-    1. Get a list of the existing tasks
-    2. Review task priorities and take the initiative to adjust them based on your analysis of changing project requirements.
-    3. Ensure tasks are categorized effectively for better organization and tracking.
-    4. Revise task descriptions to provide clearer instructions or include additional details as needed.
-    5. Update task statuses to reflect progress accurately, marking completed tasks and adjusting those in progress.
-    6. Identify and address dependencies between tasks, updating dependent tasks accordingly.
-    7. It's advisable to regularly review and update task deadlines to align with project timelines and goals.
-    8. Consider introducing new tasks or merging existing ones to streamline workflows and improve efficiency.
-    9. Take user feedback and project insights into account when updating tasks to enhance project management processes.`;
-
+    Streamline tasks for efficiency based on user interactions:
+    1. Review the list of existing tasks to identify essential actions only.
+    2. Prioritize and adjust tasks dynamically based on essential changes in project requirements.
+    3. Categorize tasks effectively to simplify tracking and management.
+    4. Revise task descriptions for clarity and necessity, removing non-essential details.
+    5. Accurately update task statuses to reflect progress, focusing on essential updates.
+    6. Address critical dependencies between tasks to ensure smooth workflow.
+    7. Adjust task deadlines only when necessary to align strictly with project goals.
+    8. Streamline workflows by merging tasks or introducing new ones only when they significantly enhance efficiency.
+    9. Incorporate crucial user feedback and project insights to maintain and improve task relevance and effectiveness.`;
 
 // Configuration details for the AI
 const aiConfig = {
@@ -115,7 +116,7 @@ const aiConfig = {
     aiCaveats,
     aiKeytakeaway,
     aiUserResponses: defaultAndSuggestedUserResponses,
-    aiUpdateFeed: aiUpdateExternalResourceFeed,
+    aiUpdateNetwork: aiUpdateNetwork,
     aiUpdateNotifications,
     aiUpdateTasks
 };

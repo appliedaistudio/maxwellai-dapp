@@ -7,7 +7,7 @@ import { log } from './js/utils/logging.js';
 // Functions needed to interact with the AI
 import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
 import { updateTasksPrompt, taskTools } from './js/db/data-specific/task-utils.js';
-import { updateExternalResourcesFeedPrompt, externalResourcesFeedTools } from './js/db/data-specific/feed-utils.js';
+import { updateNetworkPrompt, networkTools } from './js/db/data-specific/network-utils.js';
 import { commonTools } from './js/utils/common.js';
 import { PhysarAI } from './js/ai/physarai.js';
 
@@ -147,27 +147,26 @@ async function sendNotifications() {
   }
 }
 
-// Updates the notifications based on insights gained from user interactions
-async function updateNotifications(insightTakeaways) {
-
-  // Define the required output schema for the PhysarAI call
-  const outputSchema = {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "type": "object",
-    "properties": {
+// Define the required output schema for the PhysarAI call
+const outputSchema = {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
       "success": {
-        "type": "boolean"
+          "type": "boolean"
       },
       "outputValue": {
-        "type": "integer"
+          "type": "integer"
       },
       "errorMessage": {
-        "type": "string"
+          "type": "string"
       }
-    },
-    "required": ["outputValue", "success"]
-  };
+  },
+  "required": ["outputValue", "success"]
+};
 
+// Updates the notifications based on insights gained from user interactions
+async function updateNotifications(insightTakeaways) {
   // Create tools for PhysarAI to use
   const physarAiTools = [...notificationTools, ...commonTools];
 
@@ -177,24 +176,6 @@ async function updateNotifications(insightTakeaways) {
 
 // Updates the tasks based on insights gained from user interactions
 async function updateTasks(insightTakeaways) {
-  // Define the required output schema for the PhysarAI call
-  const outputSchema = {
-      "$schema": "http://json-schema.org/draft-07/schema",
-      "type": "object",
-      "properties": {
-          "success": {
-              "type": "boolean"
-          },
-          "outputValue": {
-              "type": "integer"
-          },
-          "errorMessage": {
-              "type": "string"
-          }
-      },
-      "required": ["outputValue", "success"]
-  };
-
   // Create tools for PhysarAI to use
   const physarAiTools = [...taskTools, ...commonTools];
 
@@ -203,30 +184,12 @@ async function updateTasks(insightTakeaways) {
 }
 
 // Updates the external resources feed based on insights gained from user interactions
-async function updateExternalResourcesFeed(insightTakeaways) {
-  // Define the required output schema for the PhysarAI call
-  const outputSchema = {
-      "$schema": "http://json-schema.org/draft-07/schema",
-      "type": "object",
-      "properties": {
-          "success": {
-              "type": "boolean"
-          },
-          "outputValue": {
-              "type": "integer"
-          },
-          "errorMessage": {
-              "type": "string"
-          }
-      },
-      "required": ["outputValue", "success"]
-  };
-
+async function updateNetwork(insightTakeaways) {
   // Create tools for PhysarAI to use
-  const physarAiTools = [...externalResourcesFeedTools, ...commonTools];
+  const physarAiTools = [...networkTools, ...commonTools];
 
   // Prompt PhysarAI to update the external resources feed
-  const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateExternalResourcesFeedPrompt, outputSchema);
+  const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateNetworkPrompt, outputSchema);
 }
 
 async function engageAI() {
@@ -237,13 +200,13 @@ async function engageAI() {
    const [insightTakeaways, actionTakeaways] = await takeaways();
 
    // Update the notifications based on insights gained from user interactions
-   //await updateNotifications(insightTakeaways);
+   await updateNotifications(insightTakeaways);
 
    // Update the tasks based on insights gained from user interactions
-   await updateTasks(insightTakeaways);
+   //await updateTasks(insightTakeaways);
 
    // Update the external resources feed based on insights gained from user interactions
-   //await updateExternalResourcesFeed(insightTakeaways);
+   //await updateNetwork(insightTakeaways);
 
    // Act on the existing action takeaways
    //actionTakeaways.forEach(action => console.log(action));
