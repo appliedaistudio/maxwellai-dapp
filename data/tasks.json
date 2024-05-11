@@ -12,19 +12,7 @@
         "date_and_time_start": "2024-07-17T09:00:00",
         "target_date_and_time_completion": "2024-07-22T12:00:00",
         "status": "Not Started",
-        "description": "Gather data on recent advancements in cybersecurity threat intelligence.",
-        "dependent_tasks": [2]
-      },
-      {
-        "_id": "2",
-        "category": "Research",
-        "priority": "High",
-        "date_identified": "2024-07-17",
-        "date_and_time_start": "2024-07-22T13:00:00",
-        "target_date_and_time_completion": "2024-07-27T16:00:00",
-        "status": "Not Started",
-        "description": "Analyze case studies illustrating the effectiveness of AI in cybersecurity threat detection.",
-        "dependent_tasks": [3]
+        "description": "Gather data on recent advancements in cybersecurity threat intelligence."
       },
       {
         "_id": "3",
@@ -34,19 +22,7 @@
         "date_and_time_start": "2024-07-27T13:00:00",
         "target_date_and_time_completion": "2024-08-02T16:00:00",
         "status": "Not Started",
-        "description": "Outline the structure and key points of the keynote speech on AI in cybersecurity for the NetSPI event.",
-        "dependent_tasks": [4]
-      },
-      {
-        "_id": "4",
-        "category": "Presentation Preparation",
-        "priority": "High",
-        "date_identified": "2024-07-27",
-        "date_and_time_start": "2024-08-02T17:00:00",
-        "target_date_and_time_completion": "2024-08-07T18:00:00",
-        "status": "Not Started",
-        "description": "Create visual aids and slides to accompany the keynote speech.",
-        "dependent_tasks": []
+        "description": "Outline the structure and key points of the keynote speech on AI in cybersecurity for the NetSPI event."
       },
       {
         "_id": "5",
@@ -56,19 +32,7 @@
         "date_and_time_start": "2024-08-07T09:00:00",
         "target_date_and_time_completion": "2024-08-12T12:00:00",
         "status": "Not Started",
-        "description": "Compile a detailed report on the impact of AI, particularly MaxwellAI, on cybersecurity practices.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "6",
-        "category": "Skill Development",
-        "priority": "Medium",
-        "date_identified": "2024-08-07",
-        "date_and_time_start": "2024-08-12T13:00:00",
-        "target_date_and_time_completion": "2024-08-17T16:00:00",
-        "status": "Not Started",
-        "description": "Enroll in an online course on public speaking to enhance presentation skills.",
-        "dependent_tasks": []
+        "description": "Compile a detailed report on the impact of AI, particularly MaxwellAI, on cybersecurity practices."
       },
       {
         "_id": "7",
@@ -78,19 +42,7 @@
         "date_and_time_start": "2024-08-17T17:00:00",
         "target_date_and_time_completion": "2024-08-22T18:00:00",
         "status": "Not Started",
-        "description": "Participate in a workshop on cybersecurity trends and AI integration.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "8",
-        "category": "Skill Development",
-        "priority": "Medium",
-        "date_identified": "2024-08-17",
-        "date_and_time_start": "2024-08-22T09:00:00",
-        "target_date_and_time_completion": "2024-08-27T12:00:00",
-        "status": "Not Started",
-        "description": "Practice delivering the keynote speech in front of a small audience for feedback.",
-        "dependent_tasks": []
+        "description": "Participate in a workshop on cybersecurity trends and AI integration."
       },
       {
         "_id": "9",
@@ -100,74 +52,7 @@
         "date_and_time_start": "2024-08-27T13:00:00",
         "target_date_and_time_completion": "2024-09-01T16:00:00",
         "status": "Not Started",
-        "description": "Document lessons learned and insights gained from preparing and delivering the keynote speech.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "10",
-        "category": "Skill Development",
-        "priority": "Low",
-        "date_identified": "2024-08-27",
-        "date_and_time_start": "2024-09-01T17:00:00",
-        "target_date_and_time_completion": "2024-09-06T18:00:00",
-        "status": "Not Started",
-        "description": "Attend a seminar on AI applications in cybersecurity to stay updated on industry trends.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "11",
-        "category": "Documentation",
-        "priority": "Low",
-        "date_identified": "2024-09-01",
-        "date_and_time_start": "2024-09-06T09:00:00",
-        "target_date_and_time_completion": "2024-09-11T12:00:00",
-        "status": "Not Started",
-        "description": "Prepare a summary report highlighting the success of the keynote speech and its impact on the audience.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "12",
-        "category": "Research",
-        "priority": "Low",
-        "date_identified": "2024-09-06",
-        "date_and_time_start": "2024-09-11T13:00:00",
-        "target_date_and_time_completion": "2024-09-16T16:00:00",
-        "status": "Not Started",
-        "description": "Explore potential collaborations with AI research institutions for future cybersecurity projects.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "13",
-        "category": "Documentation",
-        "priority": "Low",
-        "date_identified": "2024-09-11",
-        "date_and_time_start": "2024-09-16T17:00:00",
-        "target_date_and_time_completion": "2024-09-21T18:00:00",
-        "status": "Not Started",
-        "description": "Publish a blog post summarizing the experience of delivering the keynote speech and key takeaways.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "14",
-        "category": "Skill Development",
-        "priority": "Low",
-        "date_identified": "2024-09-16",
-        "date_and_time_start": "2024-09-21T09:00:00",
-        "target_date_and_time_completion": "2024-09-26T12:00:00",
-        "status": "Not Started",
-        "description": "Participate in a mock interview session to refine communication skills and articulate key points effectively.",
-        "dependent_tasks": []
-      },
-      {
-        "_id": "15",
-        "category": "Skill Development",
-        "priority": "Low",
-        "date_identified": "2024-09-21",
-        "date_and_time_start": "2024-09-26T13:00:00",
-        "target_date_and_time_completion": "2024-10-01T16:00:00",
-        "status": "Not Started",
-        "description": "Enroll in a course on AI ethics and cybersecurity to deepen understanding of ethical implications.",
-        "dependent_tasks": []
+        "description": "Document lessons learned and insights gained from preparing and delivering the keynote speech."
       }
     ]
   }

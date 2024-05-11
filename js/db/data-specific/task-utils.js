@@ -39,13 +39,9 @@ const taskSchema = `
             },
             "description": {
                 "type": "string"
-            },
-            "dependent_tasks": {
-                "type": "array",
-                "items": { "type": "integer" }
             }
         },
-        "required": ["_id", "category", "priority", "date_identified", "date_and_time_start", "target_date_and_time_completion", "status", "description", "dependent_tasks"]
+        "required": ["_id", "category", "priority", "date_identified", "date_and_time_start", "target_date_and_time_completion", "status", "description"]
     }`;
 
 // Initialize document ID

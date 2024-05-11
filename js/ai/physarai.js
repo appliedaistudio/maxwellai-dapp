@@ -68,7 +68,8 @@ async function promptLLM(parameters) {
 
         // Check if the response is successful
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json(); // Parse error response
+            throw new Error(`API Error: ${errorData.error.message}`); // Use API error message
         }
 
         // Parse the response JSON and return the generated text
@@ -79,7 +80,7 @@ async function promptLLM(parameters) {
         return data.choices[0].message.content;
     } catch (error) {
         // Log and handle errors
-        log('PromptLLM error: ' + error, aiConfig.verbosityLevel, 2, functionName); // Log error with verbosity level 2
+        log('PromptLLM error: ' + error, aiConfig.verbosityLevel, 1, functionName); // Log error with verbosity level 1
         return null;
     }
 };
@@ -92,6 +93,8 @@ function degradedModeAIConversationResponse() {
 
 // Function to generate AI response based on the conversation data.
 async function generateAIResponseToConversation(conversationData) {
+    const functionName = "generateAIResponseToConversation";
+
     try {
         // Convert conversationData into a formatted string of dialogue
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
@@ -121,7 +124,7 @@ async function generateAIResponseToConversation(conversationData) {
         return aiResponse;
     } catch (error) {
         // Log the error if something goes wrong during the process
-        console.error('Error generating AI response to conversation:', error);
+        log("Error generating AI response to conversation:" + error, aiConfig.verbosityLevel, 1, functionName);
     }
 };
 
@@ -156,6 +159,8 @@ function degradedModeUserResponses() {
 
 // Function to generate default and suggested responses based on conversation data
 async function generateDefaultAndSuggestedUserResponses(conversationData) {
+    const functionName = "generateDefaultAndSuggestedUserResponses";
+
     try {
         // Convert conversation data into a formatted string of dialogue
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
@@ -192,7 +197,7 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
         return aiResponseJson;
     } catch (error) {
         // Log the error encountered during AI response generation
-        console.error('Error generating AI response to conversation:', error);
+        log("Error generating AI response to conversation:" + error, aiConfig.verbosityLevel, 1, functionName);
         // Return the degraded mode response due to error
         return degradedModeUserResponses();
     }
@@ -206,6 +211,8 @@ function enterDegradedModeKeyTakeaway() {
 
 // Function to extract key takeaways from a conversation using AI.
 async function getKeyTakeaway(conversationData, documentId, conversationId) {
+    const functionName = "getKeyTakeaway";
+
     try {
         // Condense conversationData into a string listing what AI and user said to each other
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
@@ -239,8 +246,8 @@ async function getKeyTakeaway(conversationData, documentId, conversationId) {
         // Convert the AI response to a string and return it
         return aiResponse.toString();
     } catch (error) {
-        // Log the error if something goes wrong during the process
-        console.error('Error getting key takeaway:', error);
+        // Log the error
+        log("Error getting key takeaway:" + error, aiConfig.verbosityLevel, 1, functionName);
     }
 };
 
@@ -253,33 +260,30 @@ function generateReActAgentLLMPrompt(tools) {
     // Define the prompt using a template
     const prompt = `
     Answer the following questions and obey the following commands as best you can.
-    
+
     You have access to the following tools:
-    ${tools.map(tool => `\n${tool.name}: ${tool.description}`).join('')}
-    
+    ${tools.map(tool => `\n{"name": "${tool.name}", "description": "${tool.description}"}`).join(',')}
+
     Response To Human: When you need to respond to the human you are talking to.
-    
-    You will receive a message from the human, then you should start a loop and do one of two things:
-    
-    Option 1: use a tool to answer the question.
-    For this, you should use the following format:
-    Thought: always think about what to do
-    Action: tool name, must be one of [${tools.map(tool => tool.name).join(', ')}]
-    Action Input: "input to the tool"
-    
-    After this, the human will respond with an observation, and you will continue.
-    
-    Option 2: respond to the human.
-    For this, you should use the following format:
-    Action: Response To Human
-    Action Input: "your response to the human, summarizing what you did and what you learned"
-    
-    Make sure your response follows this format:
-    Action: [Action Name]
-    Action Input: [Input Value]
-    
-    For each response, include only one action and its corresponding input.
-    Keep the loop concise and direct.
+
+    You will receive a message from the human, then you should start a loop and perform one of the following actions:
+
+    Option 1: Use a tool to answer the question.
+    For this, follow the JSON format:
+    {
+        "Thought": "Always think about what to do.",
+        "Action": "[Tool Name]", 
+        "Action Input": "[Input to the tool]"
+    }
+
+    Option 2: Respond to the human.
+    For this, follow the JSON format:
+    {
+        "Action": "Response To Human",
+        "Action Input": "[Your response to the human, summarizing what you did and what you learned]"
+    }
+
+    Ensure each response is a single JSON object. Maintain clarity and conciseness in your actions and inputs.
 
     Begin!`;
     
@@ -289,92 +293,34 @@ function generateReActAgentLLMPrompt(tools) {
     return prompt;
 };
 
-// Helper function to extract action and input from text
-function extractActionAndInput(text) {
+// Helper function to extract action and input from JSON response
+function extractActionAndInput(jsonText) {
     const functionName = "extractActionAndInput";
 
     try {
-        log("Entering function", aiConfig.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-        log("Input text:", aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
-        log(text, aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
+        log("Entering function", aiConfig.verbosityLevel, 1, functionName); // Log function entry with verbosity level
+        log("Input JSON:", aiConfig.verbosityLevel, 1, functionName); // Log input JSON with verbosity level
+        log(jsonText, aiConfig.verbosityLevel, 1, functionName); // Log input JSON with verbosity level
 
-        // Find the index of "Action:" and "Action Input:" in the text
-        const actionIndex = text.indexOf("Action:");
-        const inputIndex = text.indexOf("Action Input:");
+        // Parse the JSON text into an object
+        const responseObject = JSON.parse(jsonText);
 
-        let action = null;
-        // If "Action:" is found in the text, extract the action substring and remove non-alphanumeric characters
-        if (actionIndex !== -1) {
-            const actionStart = actionIndex + "Action:".length;
-            const actionEnd = inputIndex !== -1 ? inputIndex : text.length;
-            action = text.substring(actionStart, actionEnd).trim();
-            action = removeNonAlphanumeric(action);
-        }
+        // Extract 'Action' and 'Action Input' from the JSON object
+        const action = responseObject.Action ? responseObject.Action : null;
+        const actionInput = responseObject["Action Input"] ? responseObject["Action Input"] : null;
 
-        let input = null;
-        // If "Action Input:" is found in the text, extract the input substring and clean up the string
-        // TODO: REPLACE THE REGEX AND FIX THE CASE OF \N
-        if (inputIndex !== -1) {
-            const inputStart = inputIndex + "Action Input:".length;
-            input = text.substring(inputStart).trim().replace(/^\"|\"$/g, '');
-            input = replaceCharacter(input, '\\\\\\"', '"');
-            input = replaceCharacter(input, '\\"', '"');
-        }
+        log("Action:", aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level
+        log(action, aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level
+        log("Input:", aiConfig.verbosityLevel, 1, functionName); // Log input with verbosity level
+        log(actionInput, aiConfig.verbosityLevel, 1, functionName); // Log input with verbosity level
+        log("Exiting function", aiConfig.verbosityLevel, 1, functionName); // Log function exit with verbosity level
 
-        log("Action:", aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
-        log(action, aiConfig.verbosityLevel, 4, functionName); // Log action with verbosity level 4
-        log("Input:", aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
-        log(input, aiConfig.verbosityLevel, 4, functionName); // Log input with verbosity level 4
-        log("Exiting function", aiConfig.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-
-        return [action, input];
+        return [action, actionInput];
     } catch (error) {
         // Log the error
         log("Error in extractActionAndInput: " + error, aiConfig.verbosityLevel, 1, functionName);
-        // Return an empty list
+        // Return an empty array with null values to indicate an error
         return [null, null];
-    }
-};
-
-// Function to format the response to human
-async function formatResponseToHuman(output, schema) {
-    const functionName = "formatResponseToHuman";
-
-    // Enter formatObservation function
-    log("Entering function", aiConfig.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-
-    try {
-        // Log output and schema at the start of the function
-        log("Output: " + output, aiConfig.verbosityLevel, 3, functionName); // Log output with verbosity level 3
-        log("Schema: " + JSON.stringify(schema), aiConfig.verbosityLevel, 3, functionName); // Log schema with verbosity level 3
-
-        const prompt = `Format the user content according to the following schema:\n${JSON.stringify(schema)}. Return a JSON result that complies with the given schema.`;
-
-        // Recall the LLM API key and endpoint from the settings data
-        const aiApiKey = await llmApiKey();
-        const aiEndpoint = await llmEndpoint();
-
-        // Call promptLLM to format the final response
-        const response = await promptLLM({
-            apiKey: aiApiKey,
-            prompt: JSON.stringify([{ "role": "user", "content": prompt }, { "role": "system", "content": output }]),
-            endpoint: aiEndpoint,
-            model: aiConfig.LLM,
-        });
-
-        // Log the full response from LLM
-        log("Full Response from LLM: " + response, aiConfig.verbosityLevel, 5, functionName); // Log full response from LLM with verbosity level 5
-
-        // Parse the response as JSON
-        const formattedObservation = JSON.parse(response);
-
-        // Exit formatObservation function
-        log("Exiting formatResponseToHuman function", aiConfig.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
-        return formattedObservation;
-    } catch (error) {
-        // Log and handle errors
-        log('Error: ' + error, aiConfig.verbosityLevel, 2, functionName); // Log error with verbosity level 2
-        return null;
     }
 };
 
@@ -413,35 +359,27 @@ async function executeAction(tool, action, action_input) {
     return null;
 };
 
-// Handles situations where LLM is unavailable by entering degraded mode
-function handleDegradedMode() {
-    return {
-        action: "Response to Human",
-        action_input: "The AI model is currently unavailable, and we have entered a degraded mode."
-    };
-};
-
 // Main AI function that manages user inputs, tool interactions, and logging
 async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const functionName = "PhysarAI";
 
-    // Enter the function and log the entry
+    // Log entry into the PhysarAI function
     log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName);
 
-    // Validate the presence of required properties in output schema
+    // Validate necessary properties in the output schema
     if (!outputSchema.properties.hasOwnProperty("success") || !outputSchema.properties.hasOwnProperty("errorMessage")) {
         throw new Error("Output schema must contain properties for 'success' and 'errorMessage'");
     }
 
-    // Prepare context from insights
+    // Prepare context and prompt for interaction
     const context = prepareContext(insightTakeaways);
     const promptWithContext = context + prompt;
     const System_prompt = generateReActAgentLLMPrompt(tools);
     let messages = prepareMessages(System_prompt, promptWithContext);
 
-    const maximum_allowable_ai_reasoning_iterations = 2;
+    const maximum_allowable_ai_reasoning_iterations = 15;
 
-    // Process interactions up to the maximum iterations
+    // Process interactions up to the maximum allowed iterations
     for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
         log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName);
 
@@ -449,38 +387,40 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         const aiApiKey = await llmApiKey();
         const aiEndpoint = await llmEndpoint();
 
-        // Interact with LLM and receive response
+        // Attempt interaction with LLM
         const response = await interactWithLLM(aiApiKey, aiEndpoint, messages);
 
-        // Check for null response to determine if LLM is unavailable
+        // Check if the LLM interaction was unsuccessful
         if (!response) {
-            const degradedResponse = handleDegradedMode();
+            // Handle case where LLM is unavailable. Wait for LLM to become available again
+            await new Promise(resolve => setTimeout(resolve, 20000));
 
-            // Exit the function and log the exit
-            log("Exiting PhysarAI function in degraded mode", aiConfig.verbosityLevel, 1, functionName);
-
-            return degradedResponse.action_input; // Return degraded mode message
-        }
-
-        // Extract action and input from the LLM response
-        const [action, action_input] = extractActionAndInput(response);
-        const tool = tools.find(tool => tool.name === action);
-        const observation = await executeAction(tool, action, action_input);
-
-        if (observation) {
-            messages.push({ "role": "system", "content": response });
-            messages.push({ "role": "user", "content": "Observation: " + observation });
-        } else if (action === "Response To Human") {
-            return action_input; // Return response directly to human
+            // Log and exit the function in degraded mode
+            log("Exiting PhysarAI process iteration due to LLM degraded mode", aiConfig.verbosityLevel, 2, functionName);
         } else {
-            break; // Exit loop if action is invalid or not actionable
+            // Process successful LLM interaction
+            const [action, action_input] = extractActionAndInput(response);
+            const tool = tools.find(tool => tool.name === action);
+            const observation = await executeAction(tool, action, action_input);
+
+            // Log the observation from taking the action with verbosity level 1
+            log("Observation from the action taken: " + observation, aiConfig.verbosityLevel, 1, functionName);
+
+            if (observation) {
+                messages.push({ "role": "system", "content": response });
+                messages.push({ "role": "user", "content": "Observation: " + observation });
+            } else if (action === "Response To Human") {
+                log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName);
+            } else {
+                break;
+            }
         }
 
-        // Wait for 2 seconds before the next iteration to prevent overload
+        // Delay between iterations to manage load
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
-    // Exit the function and log the exit
+    // Log function exit
     log("Exiting PhysarAI function", aiConfig.verbosityLevel, 1, functionName);
 };
 

@@ -168,7 +168,7 @@ const outputSchema = {
 // Updates the notifications based on insights gained from user interactions
 async function updateNotifications(insightTakeaways) {
   // Create tools for PhysarAI to use
-  const physarAiTools = [...notificationTools, ...commonTools];
+  const physarAiTools = [...taskTools, ...notificationTools, ...commonTools];
 
   // Prompt PhysarAI to update the notifications
   const outcome = await PhysarAI(physarAiTools, insightTakeaways, updateNotificationsPrompt, outputSchema);

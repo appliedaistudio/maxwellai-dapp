@@ -90,11 +90,12 @@ const aiUpdateNetwork = `
     6. Efficient Categorization: Organize resources effectively within the existing categories to ensure ease of access and navigation, enhancing user experience while maintaining a minimal network structure.`;
 
 const aiUpdateNotifications = `
-    Minimize notifications while ensuring effectiveness:
-    1. Introduce notifications only for critical actions MaxwellAI plans to take, such as managing applications to enhance focus or preparing essential apps for imminent tasks.
-    2. Limit notifications strictly to actions within MaxwellAI's capabilities.
-    3. Adjust or add notifications solely based on essential insights from user interactions that require actions not already covered by existing notifications.
-    4. Avoid sending notifications when current ones sufficiently meet user needs.`;
+    Execute notification actions directly:
+    1. Verify existing notifications and user tasks. If current, proceed; if not, adjust.
+    2. Send notifications only for immediate and necessary actions.
+    3. Use MaxwellAI's existing capabilities for all notifications.
+    4. Apply updates only when new user interactions present clear, unmet needs.`;
+
 
 const aiUpdateTasks = `
     Streamline tasks for efficiency based on user interactions:
