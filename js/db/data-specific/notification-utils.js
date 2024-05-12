@@ -55,15 +55,20 @@ const docId = 'notifications';
 // Initialize PouchlocalDb instance with the specified database name
 const localDb = new PouchDB(config.localDbName);
 
-// Function to validate notification against JSON schema using tv4
-function validateNotification(notification) {
-    const validationResult = validateJson(notification, notificationSchema);
-    if (validationResult.valid) {
-        return "Notification schema validation successful.";
-    } else {
-        return "Notification schema validation failed: " + validationResult.error;
+// Function to validate notification against JSON schema
+function validateNotification(notificationString) {
+    try {
+        const notification = JSON.parse(notificationString);
+        const validationResult = validateJson(notification, notificationSchema);
+        if (validationResult.valid) {
+            return "Notification schema validation successful.";
+        } else {
+            return "Notification schema validation failed: " + validationResult.error;
+        }
+    } catch (error) {
+        return "Error parsing JSON: " + error.message;
     }
-}
+};
 
 // Function to create a new notification
 async function createNotification(notificationString) {

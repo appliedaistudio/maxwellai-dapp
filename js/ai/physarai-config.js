@@ -90,11 +90,8 @@ const aiUpdateNetwork = `
     6. Efficient Categorization: Organize resources effectively within the existing categories to ensure ease of access and navigation, enhancing user experience while maintaining a minimal network structure.`;
 
 const aiUpdateNotifications = `
-    Execute notification actions directly:
-    1. Verify existing notifications and user tasks. If current, proceed; if not, adjust.
-    2. Send notifications only for immediate and necessary actions.
-    3. Use MaxwellAI's existing capabilities for all notifications.
-    4. Apply updates only when new user interactions present clear, unmet needs.`;
+    Create, update, or delete notifications in a way that minimizes computational complexity relative to MaxwellAI capabilities, key takeaways from user interactions, and existing tasks.
+    Try to keep the total number of notifications to 5 or fewer.`;
 
 
 const aiUpdateTasks = `

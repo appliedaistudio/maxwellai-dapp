@@ -6,7 +6,6 @@ import aiConfig from './physarai-config.js';
 import config from '../dapp-config.js';
 
 import { log } from '../utils/logging.js';
-import { removeNonAlphanumeric, removeCharacter, replaceCharacter } from '../utils/string-parse.js';
 import { decryptString } from '../utils/encryption.js';
 
 
@@ -82,6 +81,64 @@ async function promptLLM(parameters) {
         // Log and handle errors
         log('PromptLLM error: ' + error, aiConfig.verbosityLevel, 1, functionName); // Log error with verbosity level 1
         return null;
+    }
+};
+
+const llmResponseSchema = {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "Thought": {
+            "type": "string",
+            "description": "The LLM's initial consideration or strategy before taking action."
+        },
+        "Actions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "Action": {
+                        "type": "string",
+                        "description": "The name of the action to be taken, which could be a tool name or 'Response To Human'."
+                    },
+                    "Action Input": {
+                        "anyOf": [
+                            { "type": "string" },
+                            { "type": "object" }
+                        ],
+                        "description": "The specific input or command given to the tool, or the response to be conveyed to the human. Can be a string or JSON object."
+                    }
+                },
+                "required": ["Action", "Action Input"],
+                "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "A list of actions the LLM should perform, either using tools or responding to the human."
+        }
+    },
+    "required": ["Actions"],
+    "additionalProperties": false
+};
+
+// Validate the LLM response against an expected schema
+function validateLLMResponse(responseString) {
+    try {
+        // Parse the JSON string into an object
+        const response = JSON.parse(responseString);
+
+        // Validate the parsed object against the predefined schema
+        const validationResult = validateJson(response, llmResponseSchema);
+        
+        if (validationResult.valid) {
+            // Return true if the response is valid according to the schema
+            return { isValid: true, message: "LLM response schema validation successful." };
+        } else {
+            // Return the single error message if the response fails validation
+            return { isValid: false, message: "LLM response schema validation failed: " + validationResult.error };
+        }
+    } catch (error) {
+        // Handle and return JSON parsing errors
+        return { isValid: false, message: "Error parsing JSON: " + error.message };
     }
 };
 
@@ -262,28 +319,35 @@ function generateReActAgentLLMPrompt(tools) {
     Answer the following questions and obey the following commands as best you can.
 
     You have access to the following tools:
-    ${tools.map(tool => `\n{"name": "${tool.name}", "description": "${tool.description}"}`).join(',')}
+    ${tools.map(tool => `\n{"tool name": "${tool.name}", " tool description": "${tool.description}"}`).join(',')}
 
     Response To Human: When you need to respond to the human you are talking to.
 
     You will receive a message from the human, then you should start a loop and perform one of the following actions:
 
-    Option 1: Use a tool to answer the question.
+    Option 1: Use a tools to answer the question.
     For this, follow the JSON format:
     {
         "Thought": "Always think about what to do.",
-        "Action": "[Tool Name]", 
-        "Action Input": "[Input to the tool]"
+        "Actions": [
+            {"Action": "[Tool Name]", "Action Input": "[Input to the tool]"},
+            {"Action": "[Another Tool Name]", "Action Input": "[Another Input to the tool]"},
+        ]
     }
+
+    After this, the human will respond with an observation, and you will continue.
 
     Option 2: Respond to the human.
     For this, follow the JSON format:
     {
-        "Action": "Response To Human",
-        "Action Input": "[Your response to the human, summarizing what you did and what you learned]"
+        "Actions": [
+            {"Action": "Response To Human", "Action Input": "[Your response to the human, summarizing what you did and what you learned]"}
+        ]
     }
 
+    Respond with Option 2 only upon completion of the task.
     Ensure each response is a single JSON object. Maintain clarity and conciseness in your actions and inputs.
+    If necessary, use one or more tools simultaneously to gather information or perform tasks.
 
     Begin!`;
     
@@ -293,34 +357,43 @@ function generateReActAgentLLMPrompt(tools) {
     return prompt;
 };
 
-// Helper function to extract action and input from JSON response
-function extractActionAndInput(jsonText) {
-    const functionName = "extractActionAndInput";
+// Helper function to extract actions and their inputs from JSON response
+function extractActionsAndInputs(jsonText) {
+    const functionName = "extractActionsAndInputs";
 
     try {
-        log("Entering function", aiConfig.verbosityLevel, 1, functionName); // Log function entry with verbosity level
-        log("Input JSON:", aiConfig.verbosityLevel, 1, functionName); // Log input JSON with verbosity level
-        log(jsonText, aiConfig.verbosityLevel, 1, functionName); // Log input JSON with verbosity level
+        log("Entering function", aiConfig.verbosityLevel, 2, functionName); // Log function entry with verbosity level
+        log("Input JSON:", aiConfig.verbosityLevel, 2, functionName); // Log input JSON with verbosity level
+        log(jsonText, aiConfig.verbosityLevel, 2, functionName); // Log input JSON with verbosity level
 
         // Parse the JSON text into an object
         const responseObject = JSON.parse(jsonText);
 
-        // Extract 'Action' and 'Action Input' from the JSON object
-        const action = responseObject.Action ? responseObject.Action : null;
-        const actionInput = responseObject["Action Input"] ? responseObject["Action Input"] : null;
+        // Initialize an array to hold action-input pairs as separate sets
+        const actionsAndInputs = [];
 
-        log("Action:", aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level
-        log(action, aiConfig.verbosityLevel, 1, functionName); // Log action with verbosity level
-        log("Input:", aiConfig.verbosityLevel, 1, functionName); // Log input with verbosity level
-        log(actionInput, aiConfig.verbosityLevel, 1, functionName); // Log input with verbosity level
-        log("Exiting function", aiConfig.verbosityLevel, 1, functionName); // Log function exit with verbosity level
+        // Check if the 'Actions' key exists and is an array
+        if (Array.isArray(responseObject.Actions)) {
+            responseObject.Actions.forEach(actionObject => {
+                const action = actionObject.Action ? actionObject.Action.toString() : "null";
+                const actionInput = actionObject["Action Input"] ? actionObject["Action Input"].toString() : "null";
+                actionsAndInputs.push({action: action, actionInput: actionInput}); // Add the action and input as a set
+            });
+        }
 
-        return [action, actionInput];
+        // Prepare a formatted string of actions and inputs for logging
+        const logString = actionsAndInputs.map(pair => `Action: ${pair.action}, Input: ${pair.input}`).join('; ');
+
+        log("Actions and Inputs:", aiConfig.verbosityLevel, 2, functionName); // Log actions and inputs with verbosity level
+        log(logString, aiConfig.verbosityLevel, 2, functionName); // Log formatted actions and inputs as a single string
+        log("Exiting function", aiConfig.verbosityLevel, 2, functionName); // Log function exit with verbosity level
+
+        return actionsAndInputs;
     } catch (error) {
         // Log the error
-        log("Error in extractActionAndInput: " + error, aiConfig.verbosityLevel, 1, functionName);
-        // Return an empty array with null values to indicate an error
-        return [null, null];
+        log("Error in extractActionsAndInputs: " + error, aiConfig.verbosityLevel, 1, functionName);
+        // Return an empty array to indicate an error
+        return [];
     }
 };
 
@@ -352,9 +425,9 @@ async function interactWithLLM(aiApiKey, aiEndpoint, messages) {
 };
 
 // Executes actions determined by the LLM
-async function executeAction(tool, action, action_input) {
+async function executeAction(tool, tool_input) {
     if (tool) {
-        return await tool.func(action_input);
+        return await tool.func(tool_input);
     }
     return null;
 };
@@ -390,33 +463,64 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         // Attempt interaction with LLM
         const response = await interactWithLLM(aiApiKey, aiEndpoint, messages);
 
+        console.log("raw response " + String(response));
+
+        // Validate the LLM response
+        const validation = validateLLMResponse(response);
+
         // Check if the LLM interaction was unsuccessful
         if (!response) {
-            // Handle case where LLM is unavailable. Wait for LLM to become available again
+            // Log and handle the case where LLM is unavailable
+            log("LLM response not available, waiting for 20 seconds before retry", aiConfig.verbosityLevel, 1, functionName);
+
+            // Wait for 20 seconds for the LLM to become available again
             await new Promise(resolve => setTimeout(resolve, 20000));
+            continue;
+        } else if (!validation.isValid) {
+            // Log the invalid LLM response and add it to messages
+            log("Invalid LLM response detected: " + validation.message, aiConfig.verbosityLevel, 1, functionName);
+            messages.push({ "role": "system", "content": validation.message });
+            continue; // Skip processing and continue to the next iteration
+        }
 
-            // Log and exit the function in degraded mode
-            log("Exiting PhysarAI process iteration due to LLM degraded mode", aiConfig.verbosityLevel, 2, functionName);
-        } else {
-            // Process successful LLM interaction
-            const [action, action_input] = extractActionAndInput(response);
+        // Log the LLM response
+        log("LLM response " + String(response), aiConfig.verbosityLevel, 1, functionName);
+
+        // Process successful LLM interaction
+        const actionsAndInputs = extractActionsAndInputs(response);
+        let combinedObservations = [];
+
+        // Loop over each action and input from the LLM response
+        for (const {action, actionInput} of actionsAndInputs) {
+            // Find corresponding tool for the action
             const tool = tools.find(tool => tool.name === action);
-            const observation = await executeAction(tool, action, action_input);
+            // Execute the action using the found tool and log the observation
+            const observation = await executeAction(tool, actionInput);
 
-            // Log the observation from taking the action with verbosity level 1
-            log("Observation from the action taken: " + observation, aiConfig.verbosityLevel, 1, functionName);
-
+            // Check if there is an observation from the action
             if (observation) {
+                combinedObservations.push(observation);
                 messages.push({ "role": "system", "content": response });
                 messages.push({ "role": "user", "content": "Observation: " + observation });
             } else if (action === "Response To Human") {
-                log("Response to Human: " + action_input, aiConfig.verbosityLevel, 2, functionName);
+                // Log response specifically for a human-directed response
+                log("Exiting Physari with the following Response to Human: " + actionInput, aiConfig.verbosityLevel, 1, functionName);
+                // Exit PhysarAI
+                return null;
             } else {
-                break;
+                // Exit PhysarAI if no observation and no specific human-directed response
+                log("Exiting PhysarAI with no Response to Human", aiConfig.verbosityLevel, 1, functionName);
+                return null;
             }
         }
 
-        // Delay between iterations to manage load
+        // Combine and log all observations from the actions taken
+        if (combinedObservations.length > 0) {
+            const finalObservation = combinedObservations.join(", ");
+            log("Combined observations from the actions taken: " + String(finalObservation), aiConfig.verbosityLevel, 1, functionName);
+        }
+
+        // Delay between iterations to manage the load on the LLM API
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
 

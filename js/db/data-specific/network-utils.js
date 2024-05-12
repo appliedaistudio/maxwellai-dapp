@@ -69,12 +69,17 @@ const networkDocId = 'maxwellai_network';
 const localDb = new PouchDB(config.localDbName);
 
 // Function to validate a network entity against the JSON schema
-function validateNetworkEntity(networkEntity) {
-    const validationResult = validateJson(networkEntity, networkEntitySchema);
-    if (!validationResult.valid) {
-        throw new Error('Network entity schema validation failed: ' + validationResult.error);
+function validateNetworkEntity(networkEntityString) {
+    try {
+        const networkEntity = JSON.parse(networkEntityString);
+        const validationResult = validateJson(networkEntity, networkEntitySchema);
+        if (!validationResult.valid) {
+            throw new Error('Network entity schema validation failed: ' + validationResult.error);
+        }
+    } catch (error) {
+        throw new Error('Error parsing JSON: ' + error.message);
     }
-}
+};
 
 // Function to validate the parameters for network entity functions
 function validateParams(params) {

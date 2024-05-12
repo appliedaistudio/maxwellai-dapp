@@ -7,7 +7,7 @@ function formatJson(obj, spaces) {
 }
 
 function validateJson(jsonData, schema) {
-    // Convert jsonData to object if it's a string
+    // Check if jsonData is a string and parse it into an object
     if (typeof jsonData === 'string') {
         try {
             jsonData = JSON.parse(jsonData);
@@ -17,7 +17,7 @@ function validateJson(jsonData, schema) {
         }
     }
 
-    // Convert schema to object if it's a string
+    // Check if schema is a string and parse it into an object
     if (typeof schema === 'string') {
         try {
             schema = JSON.parse(schema);
@@ -26,37 +26,48 @@ function validateJson(jsonData, schema) {
         }
     }
 
-    // Check if jsonData is an object and schema is an object
+    // Validate that both jsonData and schema are objects
     if (typeof jsonData !== 'object' || typeof schema !== 'object') {
         throw new Error('JSON data and schema must be objects');
     }
 
-    // Iterate over each property in the schema
+    // Iterate over each property defined in the schema
     for (var key in schema.properties) {
-        // Check if the property is required
+        // Check for required properties in jsonData
         if (schema.required && schema.required.includes(key)) {
-            // Check if the property is missing in jsonData
             if (!(key in jsonData)) {
-                return {
-                    valid: false,
-                    error: "Required property '" + key + "' is missing"
-                }; // Property is missing
+                return { valid: false, error: "Required property '" + key + "' is missing" };
             }
         }
 
-        // Check if the property's type matches the schema
-        if (schema.properties[key].type && typeof jsonData[key] !== schema.properties[key].type) {
-            return {
-                valid: false,
-                error: "Property '" + key + "' has invalid type"
-            }; // Property type doesn't match
+        // Handle array properties in jsonData according to the schema
+        if (schema.properties[key].type === 'array' && Array.isArray(jsonData[key])) {
+            let itemSchema = schema.properties[key].items;
+            // Validate each item in the array
+            for (let item of jsonData[key]) {
+                for (let prop in itemSchema.properties) {
+                    // Check for required properties within each item
+                    if (itemSchema.required.includes(prop) && !(prop in item)) {
+                        return { valid: false, error: "Missing required property '" + prop + "' in an item of '" + key + "'" };
+                    }
+                    // Special handling for 'Action Input' which can be string or object
+                    if (prop === 'Action Input') {
+                        if (!(typeof item[prop] === 'string' || (typeof item[prop] === 'object' && item[prop] !== null && !Array.isArray(item[prop])))) {
+                            return { valid: false, error: `Invalid type for property '${prop}' in an item of '${key}', expected string or object` };
+                        }
+                    } else if (typeof item[prop] !== itemSchema.properties[prop].type) {
+                        return { valid: false, error: `Invalid type for property '${prop}' in an item of '${key}', expected ${itemSchema.properties[prop].type}` };
+                    }
+                }
+            }
+        } else if (typeof jsonData[key] !== schema.properties[key].type) {
+            // Validate type of non-array properties
+            return { valid: false, error: `Property '${key}' has invalid type, expected ${schema.properties[key].type}` };
         }
     }
-    return {
-        valid: true,
-        error: null
-    }; // JSON data is valid
-}
+    // Return valid if all checks pass
+    return { valid: true, error: null };
+};
 
 function removeNonAlphanumeric(text) {
     const functionName = "removeNonAlphanumeric";

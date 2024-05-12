@@ -51,16 +51,20 @@ const docId = 'maxwell_ai_tasks';
 const localDb = new PouchDB(config.localDbName);
 
 // Function to validate task against JSON schema
-function validateTask(task) {
-    // Validate task against JSON schema
-    const validationResult = validateJson(task, taskSchema);
-    // Return validation result
-    if (validationResult.valid) {
-        return "Task schema validation successful.";
-    } else {
-        return "Task schema validation failed: " + validationResult.error;
+function validateTask(taskString) {
+    try {
+        const task = JSON.parse(taskString);
+        const validationResult = validateJson(task, taskSchema);
+        // Return validation result
+        if (validationResult.valid) {
+            return "Task schema validation successful.";
+        } else {
+            return "Task schema validation failed: " + validationResult.error;
+        }
+    } catch (error) {
+        return "Error parsing JSON: " + error.message;
     }
-}
+};
 
 // Function to create a new task
 async function createTask(taskString) {
