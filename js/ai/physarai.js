@@ -341,11 +341,11 @@ function generateReActAgentLLMPrompt(tools) {
     For this, follow the JSON format:
     {
         "Actions": [
-            {"Action": "Response To Human", "Action Input": "[Your response to the human, summarizing what you did and what you learned]"}
+            {"Action": "Response To Human", "Action Input": "[Your final response to the human, summarizing the final outcome of your actions and what you learned]"}
         ]
     }
 
-    Respond with Option 2 only upon completion of the task.
+    Respond with Option 2 only after completing all actions.
     Ensure each response is a single JSON object. Maintain clarity and conciseness in your actions and inputs.
     If necessary, use one or more tools simultaneously to gather information or perform tasks.
 
@@ -357,42 +357,45 @@ function generateReActAgentLLMPrompt(tools) {
     return prompt;
 };
 
-// Helper function to extract actions and their inputs from JSON response
+// Helper function to extract actions and their inputs from a JSON response
 function extractActionsAndInputs(jsonText) {
     const functionName = "extractActionsAndInputs";
 
     try {
-        log("Entering function", aiConfig.verbosityLevel, 2, functionName); // Log function entry with verbosity level
-        log("Input JSON:", aiConfig.verbosityLevel, 2, functionName); // Log input JSON with verbosity level
-        log(jsonText, aiConfig.verbosityLevel, 2, functionName); // Log input JSON with verbosity level
+        // Log entering the function with configured verbosity
+        log("Entering function", aiConfig.verbosityLevel, 2, functionName);
+        // Log the received JSON text for debugging purposes
+        log("Input JSON:", aiConfig.verbosityLevel, 2, functionName);
+        log(jsonText, aiConfig.verbosityLevel, 2, functionName);
 
-        // Parse the JSON text into an object
+        // Parse the JSON text to an object
         const responseObject = JSON.parse(jsonText);
-
-        // Initialize an array to hold action-input pairs as separate sets
         const actionsAndInputs = [];
 
-        // Check if the 'Actions' key exists and is an array
+        // Check if 'Actions' is an array and process each action object
         if (Array.isArray(responseObject.Actions)) {
             responseObject.Actions.forEach(actionObject => {
+                // Extract the 'Action' as a string, default to "null" if undefined
                 const action = actionObject.Action ? actionObject.Action.toString() : "null";
-                const actionInput = actionObject["Action Input"] ? actionObject["Action Input"].toString() : "null";
-                actionsAndInputs.push({action: action, actionInput: actionInput}); // Add the action and input as a set
+                // Serialize the 'Action Input' as a string, default to "null" if undefined
+                const actionInput = actionObject["Action Input"] ? JSON.stringify(actionObject["Action Input"]) : "null";
+                // Add the action and its input to the results array
+                actionsAndInputs.push({action: action, actionInput: actionInput});
             });
         }
 
-        // Prepare a formatted string of actions and inputs for logging
-        const logString = actionsAndInputs.map(pair => `Action: ${pair.action}, Input: ${pair.input}`).join('; ');
+        // Create a log string of all actions and inputs and log it
+        const logString = actionsAndInputs.map(pair => `Action: ${pair.action}, Input: ${pair.actionInput}`).join('; ');
+        log("Actions and Inputs:", aiConfig.verbosityLevel, 2, functionName);
+        log(logString, aiConfig.verbosityLevel, 2, functionName);
+        // Log exiting the function
+        log("Exiting function", aiConfig.verbosityLevel, 2, functionName);
 
-        log("Actions and Inputs:", aiConfig.verbosityLevel, 2, functionName); // Log actions and inputs with verbosity level
-        log(logString, aiConfig.verbosityLevel, 2, functionName); // Log formatted actions and inputs as a single string
-        log("Exiting function", aiConfig.verbosityLevel, 2, functionName); // Log function exit with verbosity level
-
+        // Return the array of actions and their inputs
         return actionsAndInputs;
     } catch (error) {
-        // Log the error
-        log("Error in extractActionsAndInputs: " + error, aiConfig.verbosityLevel, 1, functionName);
-        // Return an empty array to indicate an error
+        // Log any errors that occur during the function execution
+        log("Error in extractActionsAndInputs: " + error.toString(), aiConfig.verbosityLevel, 1, functionName);
         return [];
     }
 };
@@ -425,9 +428,9 @@ async function interactWithLLM(aiApiKey, aiEndpoint, messages) {
 };
 
 // Executes actions determined by the LLM
-async function executeAction(tool, tool_input) {
+async function executeAction(tool, toolInputString) {
     if (tool) {
-        return await tool.func(tool_input);
+        return await tool.func(toolInputString);
     }
     return null;
 };
@@ -463,8 +466,6 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         // Attempt interaction with LLM
         const response = await interactWithLLM(aiApiKey, aiEndpoint, messages);
 
-        console.log("raw response " + String(response));
-
         // Validate the LLM response
         const validation = validateLLMResponse(response);
 
@@ -479,7 +480,7 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         } else if (!validation.isValid) {
             // Log the invalid LLM response and add it to messages
             log("Invalid LLM response detected: " + validation.message, aiConfig.verbosityLevel, 1, functionName);
-            messages.push({ "role": "system", "content": validation.message });
+            messages.push({ "role": "user", "content": "Observation: " + validation.message });
             continue; // Skip processing and continue to the next iteration
         }
 

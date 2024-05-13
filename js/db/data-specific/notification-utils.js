@@ -49,6 +49,24 @@ const notificationSchema = `
         "required": ["_id", "topic", "body", "priority", "created_at", "status", "actions"]
     }`;
 
+// Define a JSON schema for a list of notifications
+const listNotificationIdsSchema = `
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "List of Notification IDs",
+    "type": "object",
+    "properties": {
+        "notificationIds": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["notificationIds"]
+}`;
+
+
 // Initialize document ID
 const docId = 'notifications';
 
@@ -69,6 +87,23 @@ function validateNotification(notificationString) {
         return "Error parsing JSON: " + error.message;
     }
 };
+
+// Function to validate a list notification Ids against JSON schema
+function validateNotificationIds(notificationIdsString) {
+    // Parse the input string into a JSON object
+    try {
+        const notificationIdsJson = JSON.parse(notificationIdsString);
+        // Validate the JSON object against the notification IDs schema
+        const validationResult = validateJson(notificationIdsJson, listNotificationIdsSchema);
+        if (validationResult.valid) {
+            return "Notification IDs validation successful.";
+        } else {
+            return "Notification IDs validation failed: " + validationResult.error;
+        }
+    } catch (error) {
+        return "Error parsing JSON: " + error.message;
+    }
+}
 
 // Function to create a new notification
 async function createNotification(notificationString) {
@@ -98,7 +133,7 @@ async function createNotification(notificationString) {
     } catch (error) {
         return "Error creating notification: " + error.message;
     }
-}
+};
 
 // Function to get all notifications
 async function getAllNotifications() {
@@ -115,30 +150,43 @@ async function getAllNotifications() {
         log(error, config.verbosityLevel, 3, functionName);
         return "Error retrieving notifications: " + error.message;
     }
-}
+};
 
-// Function to get a notification by ID
-function getNotificationById(id) {
-    const functionName = "getNotificationById";
+// Function to get a list of notifications by ID
+async function getNotificationsByIds(idsString) {
+    // Log entry into the function
+    const functionName = "getNotificationsByIds";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
     try {
-        // Retrieve the document containing notifications from the database
-        return localDb.get(docId)
-            .then(response => {
-                // Find the notification with the specified ID from the notifications array in the document
-                const notification = response.notifications.find(notification => notification._id === id);
-                if (notification) {
-                    return notification;
-                } else {
-                    return "Notification not found";
-                }
-            });
+        // Validate the input JSON containing the notification IDs
+        const validationResult = validateNotificationIds(idsString);
+        if (!validationResult.includes("successful")) {
+            return validationResult; // Return validation failure message if not valid
+        }
+
+        // Parse the input string to extract IDs
+        const idsJson = JSON.parse(idsString);
+        // Retrieve the notifications document from the database
+        const response = await localDb.get(docId);
+
+        // Filter notifications to find those with the specified IDs
+        const notifications = response.notifications.filter(notification =>
+            idsJson.notificationIds.includes(notification._id)
+        );
+
+        // Return found notifications or a not found message
+        if (notifications.length > 0) {
+            return JSON.stringify(notifications);
+        } else {
+            return "Notifications not found";
+        }
     } catch (error) {
+        // Log and return error message
         log(error, config.verbosityLevel, 3, functionName);
-        return "Error retrieving notification by ID: " + error.message;
+        return "Error retrieving notifications by IDs: " + error.message;
     }
-}
+};
 
 // Function to update a notification
 function updateNotification(notificationString) {
@@ -175,33 +223,40 @@ function updateNotification(notificationString) {
     } catch (error) {
         return "Error updating notification: " + error.message;
     }
-}
+};
 
-// Function to delete a notification
-function deleteNotification(id) {
+// Function to delete a lsit notifications
+async function deleteNotifications(idsString) {
+    // Log entry into the function
+    const functionName = "deleteNotifications";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     try {
-        // Retrieve the document containing notifications from the database
-        return localDb.get(docId)
-            .then(response => {
-                // Find the index of the notification to be deleted in the notifications array
-                const index = response.notifications.findIndex(notification => notification._id === id);
-                if (index !== -1) {
-                    // Remove the notification from the notifications array
-                    response.notifications.splice(index, 1);
-                    // Save the updated document back to the database
-                    return localDb.put(response)
-                        .then(() => {
-                            return "Notification deleted successfully.";
-                        });
-                } else {
-                    return "Notification not found";
-                }
-            });
-    } catch (error) {
-        return "Error deleting notification: " + error.message;
-    }
-}
+        // Validate the input JSON containing the notification IDs
+        const validationResult = validateNotificationIds(idsString);
+        if (!validationResult.includes("successful")) {
+            return validationResult; // Return validation failure message if not valid
+        }
 
+        // Parse the input string to extract IDs
+        const idsJson = JSON.parse(idsString);
+        // Retrieve the notifications document from the database
+        const response = await localDb.get(docId);
+
+        // Remove notifications with the specified IDs
+        response.notifications = response.notifications.filter(notification =>
+            !idsJson.notificationIds.includes(notification._id)
+        );
+
+        // Save the updated notifications document to the database
+        const saveResponse = await localDb.put(response);
+        return "Notifications deleted successfully.";
+    } catch (error) {
+        // Log and return error message
+        log(error, config.verbosityLevel, 3, functionName);
+        return "Error deleting notifications: " + error.message;
+    }
+};
 
 const notificationTools = [
     {
@@ -220,9 +275,9 @@ const notificationTools = [
         description: "Retrieves all existing notifications from the database and returns them as an array. No input required."
     },
     {
-        name: "Retrieve Notification by ID",
-        func: getNotificationById,
-        description: "Retrieves a specific notification from the database based on its ID. Requires the ID of the notification as input."
+        name: "Retrieve Notifications by IDs",
+        func: getNotificationsByIds,
+        description: `Retrieves specific notifications from the database based on a list of IDs. Requires a JSON string of notification IDs formatted according to the specified ${listNotificationIdsSchema} schema.`
     },
     {
         name: "Update Notification",
@@ -230,9 +285,9 @@ const notificationTools = [
         description: `Updates an existing notification, validates its schema, and saves the updated data back to the database. Requires a notification object with the updated data as input. The notification object must be valid JSON that adheres to the specified ${notificationSchema} schema.`
     },
     {
-        name: "Delete Notification",
-        func: deleteNotification,
-        description: "Deletes a notification from the database based on its ID. Requires the ID of the notification to be deleted as input."
+        name: "Delete Notifications by IDs",
+        func: deleteNotifications,
+        description: `Deletes notifications from the database based on a list of IDs. Requires a JSON string of notification IDs formatted according to the specified ${listNotificationIdsSchema} schema.`
     }
 ];
 
@@ -243,9 +298,9 @@ export {
     validateNotification,
     createNotification,
     getAllNotifications,
-    getNotificationById,
+    getNotificationsByIds,
     updateNotification,
-    deleteNotification,
+    deleteNotifications,
     notificationTools,
     updateNotificationsPrompt
 };
