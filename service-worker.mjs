@@ -5,11 +5,11 @@ import config from './js/dapp-config.js';
 import { log } from './js/utils/logging.js';
 
 // Functions needed to interact with the AI
-import { updateNotificationsPrompt, notificationTools } from './js/db/data-specific/notification-utils.js';
+import { updateNotificationsPrompt, notificationTools, runNotificationUtilsTestSuite } from './js/db/data-specific/notification-utils.js';
 import { updateTasksPrompt, taskTools } from './js/db/data-specific/task-utils.js';
 import { updateNetworkPrompt, networkTools } from './js/db/data-specific/network-utils.js';
 import { commonTools } from './js/utils/common.js';
-import { PhysarAI } from './js/ai/physarai.js';
+import { PhysarAI } from './js/ai/physarai/physarai-main.js';
 
 const CACHE_NAME = 'cache-v1';
 const urlsToCache = [
@@ -212,25 +212,31 @@ async function engageAI() {
    //actionTakeaways.forEach(action => console.log(action));
 }
 
-// Code executed by regular AI engagement
-function regularAIEngagement() {
-  engageAI();
-}
-
-// Code executed by realtime AI engagement
-function realtimeAIEngagement() {
-  //console.log("Engaging AI in realtime...");
-}
-
 const regularIntervalInMinutes = 3; // Regular interval in minutes
 const regularIntervalInSeconds = regularIntervalInMinutes * 60; // Regular interval in seconds
-const regularIntervaInMilliseconds = regularIntervalInSeconds * 1000; // Convert regular interval to milliseconds
-
-// Engage the AI on a regular basis
-setInterval(regularAIEngagement, regularIntervaInMilliseconds);
+const regularIntervalInMilliseconds = regularIntervalInSeconds * 1000; // Convert regular interval to milliseconds
 
 const realtimeInSeconds = 10; // Realtime interval in seconds
 const realtimeInMilliseconds = realtimeInSeconds * 1000; // Convert realtime interval to milliseconds
 
-// Engage the AI on a realtime basis
-setInterval(realtimeAIEngagement, realtimeInMilliseconds);
+async function regularAIEngagement() {
+    // Your regular AI engagement logic here
+    await engageAI();
+
+    // Schedule the next regular AI engagement after the current one completes, including rest period
+    setTimeout(regularAIEngagement, regularIntervalInMilliseconds);
+}
+
+function realtimeAIEngagement() {
+    // Your realtime AI engagement logic here
+
+    // Schedule the next realtime AI engagement after the current one completes, including rest period
+    setTimeout(realtimeAIEngagement, realtimeInMilliseconds);
+}
+
+// Start the first regular AI engagement
+setTimeout(regularAIEngagement, regularIntervalInMilliseconds);
+
+// Start the first realtime AI engagement
+setTimeout(realtimeAIEngagement, realtimeInMilliseconds);
+

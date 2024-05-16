@@ -24,6 +24,10 @@ const optionFunctionMappings = {
     'MaxwellAI Settings': {
         func: openSettingsModal, // The function to execute
         params: '' // No parameters needed
+    },
+    'System Diagnostics': {
+        func: navigateToScreen, // The function to execute
+        params: 'diagnostics.html' // Directly provide the URL string
     }
     // Add other options here as needed
 };

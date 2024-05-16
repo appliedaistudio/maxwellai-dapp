@@ -1,6 +1,6 @@
-import '../../lib/pouchdb/pouchdb.min.js';
-import config from '../dapp-config.js';
-import { decryptString } from '../utils/encryption.js';
+import '../../../lib/pouchdb/pouchdb.min.js';
+import config from '../../dapp-config.js';
+import { decryptString } from '../../utils/encryption.js';
 
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -90,7 +90,7 @@ const aiUpdateNetwork = `
     6. Efficient Categorization: Organize resources effectively within the existing categories to ensure ease of access and navigation, enhancing user experience while maintaining a minimal network structure.`;
 
 const aiUpdateNotifications = `
-    Create, update, or delete notifications in a way that minimizes computational complexity relative to MaxwellAI capabilities, key takeaways from user interactions, and existing tasks.
+    Create, update, or delete notifications in a way that aligns with MaxwellAI capabilities, key takeaways from user interactions, and existing tasks.
     Try to keep the total number of notifications to 5 or fewer.`;
 
 
@@ -108,7 +108,7 @@ const aiUpdateTasks = `
 
 // Configuration details for the AI
 const aiConfig = {
-    LLM: 'gpt-4',
+    LLM: 'gpt-4o',
     verbosityLevel: 1,
     aiProfile: maxwellaiProfile,
     aiCaveats,

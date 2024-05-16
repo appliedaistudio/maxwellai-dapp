@@ -7,7 +7,7 @@
     
     <!-- Linking to manifest file and setting title -->
     <link rel="manifest" href="./manifest.json">
-    <title>Hello World App</title>
+    <title>MaxwellAI Diagnostics</title>
     
     <!-- Linking to external CSS libraries -->
     <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
@@ -104,10 +104,10 @@
                 <!-- Menu container -->
                 <div id="menu-container" class="mb-3 mb-md-4 mb-lg-5"></div>
                 <!-- App title -->
-                <h1 id="app-title">Hello World</h1>
+                <h1 id="app-title">Diagnostics</h1>
                 <!-- Main content -->
                 <div id="main-content">
-                    <p>Here's a short message in the main content area.</p>
+                    <p>I am running system diagnostics. Check the console log for results.</p>
                     <!-- Button to open chat modal -->
                     <button class="ai-chat-button" data-bs-toggle="modal" data-bs-target="#chatModal" title="Open AI Chat"></button>
                 </div>
@@ -224,10 +224,9 @@
     </script>
     <!-- Scripts for UI authentication and main application logic -->
     <script type="module" src="./js/ui/ui-auth.js"></script>
-    <script type="module" src="./js/dapp.js"></script>
+    <script type="module" src="./js/diagnostics.js"></script>
 
     <!-- AI chat app JavaScript function to save the current chat conversation -->
     <script type="module" src="./js/ui/ui-ai-chat.js"></script>
-    
 </body>
 </html>

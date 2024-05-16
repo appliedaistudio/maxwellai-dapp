@@ -1,5 +1,5 @@
 import { log } from "../utils/logging.js";
-import config from "../ai/physarai-config.js";
+import config from "../ai/physarai/physarai-config.js";
 
 
 function formatJson(obj, spaces) {
@@ -7,17 +7,16 @@ function formatJson(obj, spaces) {
 }
 
 function validateJson(jsonData, schema) {
-    // Check if jsonData is a string and parse it into an object
+    // Check if jsonData is a string and attempt to parse it into an object
     if (typeof jsonData === 'string') {
         try {
             jsonData = JSON.parse(jsonData);
         } catch (error) {
-            console.log("jsonData:" + jsonData);
             throw new Error('Invalid JSON data string for jsonData');
         }
     }
 
-    // Check if schema is a string and parse it into an object
+    // Check if schema is a string and attempt to parse it into an object
     if (typeof schema === 'string') {
         try {
             schema = JSON.parse(schema);
@@ -26,46 +25,47 @@ function validateJson(jsonData, schema) {
         }
     }
 
-    // Validate that both jsonData and schema are objects
+    // Ensure that both jsonData and schema are objects before proceeding
     if (typeof jsonData !== 'object' || typeof schema !== 'object') {
         throw new Error('JSON data and schema must be objects');
     }
 
-    // Iterate over each property defined in the schema
+    // Iterate through each property in the schema to perform validation
     for (var key in schema.properties) {
-        // Check for required properties in jsonData
+        // Ensure required properties are present in jsonData
         if (schema.required && schema.required.includes(key)) {
             if (!(key in jsonData)) {
                 return { valid: false, error: "Required property '" + key + "' is missing" };
             }
         }
 
-        // Handle array properties in jsonData according to the schema
+        // Validate properties that are arrays according to the schema
         if (schema.properties[key].type === 'array' && Array.isArray(jsonData[key])) {
             let itemSchema = schema.properties[key].items;
-            // Validate each item in the array
             for (let item of jsonData[key]) {
+                // Validate each property in the array items according to the item schema
                 for (let prop in itemSchema.properties) {
-                    // Check for required properties within each item
-                    if (itemSchema.required.includes(prop) && !(prop in item)) {
+                    if (itemSchema.required && itemSchema.required.includes(prop) && !(prop in item)) {
                         return { valid: false, error: "Missing required property '" + prop + "' in an item of '" + key + "'" };
                     }
-                    // Special handling for 'Action Input' which can be string or object
-                    if (prop === 'Action Input') {
-                        if (!(typeof item[prop] === 'string' || (typeof item[prop] === 'object' && item[prop] !== null && !Array.isArray(item[prop])))) {
-                            return { valid: false, error: `Invalid type for property '${prop}' in an item of '${key}', expected string or object` };
+
+                    // Check for the 'anyOf' condition to allow multiple possible types
+                    if (itemSchema.properties[prop].hasOwnProperty('anyOf')) {
+                        let validType = itemSchema.properties[prop].anyOf.some(typeSpec => typeof item[prop] === typeSpec.type);
+                        if (!validType) {
+                            return { valid: false, error: `Invalid type for property '${prop}' in an item of '${key}', expected one of the specified types in anyOf` };
                         }
                     } else if (typeof item[prop] !== itemSchema.properties[prop].type) {
                         return { valid: false, error: `Invalid type for property '${prop}' in an item of '${key}', expected ${itemSchema.properties[prop].type}` };
                     }
                 }
             }
-        } else if (typeof jsonData[key] !== schema.properties[key].type) {
-            // Validate type of non-array properties
+        } else if (key in jsonData && typeof jsonData[key] !== schema.properties[key].type) {
+            // Validate the type of non-array properties against the schema definition
             return { valid: false, error: `Property '${key}' has invalid type, expected ${schema.properties[key].type}` };
         }
     }
-    // Return valid if all checks pass
+    // If all validations pass, return that the data is valid
     return { valid: true, error: null };
 };
 

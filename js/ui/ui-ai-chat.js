@@ -1,8 +1,7 @@
 import config from '../dapp-config.js';
 
-import { getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses, PhysarAI } from '../ai/physarai.js';
+import { getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses } from '../ai/physarai/physarai-ai-conversations.js';
 import { searchWikipedia } from '../ai/knowledge.js';
-
 import { formatJson } from '../utils/string-parse.js';
 
 

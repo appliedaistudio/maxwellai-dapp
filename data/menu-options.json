@@ -21,6 +21,10 @@
                 {
                     "name": "MaxwellAI Settings",
                     "tooltip": "Set MaxwellAI's settings"
+                },
+                {
+                    "name": "System Diagnostics",
+                    "tooltip": "Run checks to make sure all systems are functioning"
                 }
             ]
         },

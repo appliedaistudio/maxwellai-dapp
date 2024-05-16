@@ -1,5 +1,5 @@
 import config from "../../dapp-config.js";
-import aiConfig from "../../ai/physarai-config.js";
+import aiConfig from "../../ai/physarai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -68,11 +68,14 @@ function validateTask(taskString) {
 
 // Function to create a new task
 async function createTask(taskString) {
+    console.log("inside create task input string " + taskString);
+
     try {
+        // Validate task schema
+        const validationOutcome = validateTask(taskString);
+
         // Parse task string into JSON
         const taskJson = JSON.parse(taskString);
-        // Validate task schema
-        const validationOutcome = validateTask(taskJson);
 
         if (validationOutcome.includes("successful")) {
             // Get existing tasks from the database
@@ -87,7 +90,7 @@ async function createTask(taskString) {
             return validationOutcome; // Return validation failure message
         }
     } catch (error) {
-        log(error, config.verbosityLevel, 3, 'createTask');
+        log(error, config.verbosityLevel, 1, 'createTask');
         return "Error creating task: " + error.message;
     }
 }
@@ -98,7 +101,7 @@ async function getAllTasks() {
         const response = await localDb.get(docId);
         return JSON.stringify(response.tasks);
     } catch (error) {
-        log(error, config.verbosityLevel, 3, 'getAllTasks');
+        log(error, config.verbosityLevel, 1, 'getAllTasks');
         return "Error retrieving tasks: " + error.message;
     }
 }
@@ -116,7 +119,7 @@ function getTaskById(id) {
                 }
             });
     } catch (error) {
-        log(error, config.verbosityLevel, 3, 'getTaskById');
+        log(error, config.verbosityLevel, 1, 'getTaskById');
         return "Error retrieving task by ID: " + error.message;
     }
 }
@@ -124,10 +127,10 @@ function getTaskById(id) {
 // Function to update a task
 function updateTask(taskString) {
     try {
+        // Validate task schema
+        const validationOutcome = validateTask(taskString);
         // Parse task string into JSON
         const taskJson = JSON.parse(taskString);
-        // Validate task schema
-        const validationOutcome = validateTask(taskJson);
 
         if (validationOutcome.includes("successful")) {
             // Retrieve tasks document from the database
@@ -151,7 +154,7 @@ function updateTask(taskString) {
             return validationOutcome; // Return validation failure message
         }
     } catch (error) {
-        log(error, config.verbosityLevel, 3, 'updateTask');
+        log(error, config.verbosityLevel, 1, 'updateTask');
         return "Error updating task: " + error.message;
     }
 }
@@ -177,7 +180,7 @@ function deleteTask(id) {
                 }
             });
     } catch (error) {
-        log(error, config.verbosityLevel, 3, 'deleteTask');
+        log(error, config.verbosityLevel, 1, 'deleteTask');
         return "Error deleting task: " + error.message;
     }
 }

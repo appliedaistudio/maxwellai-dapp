@@ -1,5 +1,5 @@
 import config from "../../dapp-config.js";
-import aiConfig from "../../ai/physarai-config.js";
+import aiConfig from "../../ai/physarai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
@@ -10,41 +10,41 @@ const notificationSchema = `
         "title": "Notification",
         "type": "object",
         "properties": {
-        "_id": {
-            "type": "string"
-        },
-        "topic": {
-            "type": "string"
-        },
-        "body": {
-            "type": "string"
-        },
-        "priority": {
-            "type": "string",
-            "enum": ["low", "medium", "high"]
-        },
-        "created_at": {
-            "type": "string",
-            "format": "date-time"
-        },
-        "status": {
-            "type": "string",
-            "enum": ["pending", "sent", "resolved"]
-        },
-        "actions": {
-            "type": "object",
-            "properties": {
-            "close": {
-                "type": "array",
-                "items": { "type": "string" }
+            "_id": {
+                "type": "string"
             },
-            "open": {
-                "type": "array",
-                "items": { "type": "string" }
+            "topic": {
+                "type": "string"
+            },
+            "body": {
+                "type": "string"
+            },
+            "priority": {
+                "type": "string",
+                "enum": ["low", "medium", "high"]
+            },
+            "created_at": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "status": {
+                "type": "string",
+                "enum": ["pending", "sent", "resolved"]
+            },
+            "actions": {
+                "type": "object",
+                "properties": {
+                    "close": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "open": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "required": ["close", "open"]
             }
-            },
-            "required": ["close", "open"]
-        }
         },
         "required": ["_id", "topic", "body", "priority", "created_at", "status", "actions"]
     }`;
@@ -108,17 +108,20 @@ function validateNotificationIds(notificationIdsString) {
 // Function to create a new notification
 async function createNotification(notificationString) {
     try {
-        const notificationJson = JSON.parse(notificationString);
-        const validationResult = validateNotification(notificationJson);
-        if (validationResult.includes("successful")) {
-            // Proceed with creating notification
-            log("Entering function", config.verbosityLevel, 4, "createNotification");
+        const validationResult = validateNotification(notificationString);
 
-            // Validate notification Json against the schema
-            validateNotification(notificationJson);
+        const notificationJson = JSON.parse(notificationString);
+        if (validationResult.includes("successful")) {
+            log("Entering function", config.verbosityLevel, 4, "createNotification");
 
             // Get existing notifications from the database
             const existingNotifications = await localDb.get('notifications');
+
+            // Check if notification ID already exists
+            const existingIds = existingNotifications.notifications.map(n => n._id);
+            if (existingIds.includes(notificationJson._id)) {
+                return "Error: Notification with this ID already exists.";
+            }
 
             // Append the new notification to the existing notifications
             existingNotifications.notifications.push(notificationJson);
@@ -147,7 +150,7 @@ async function getAllNotifications() {
         const notificationsString = JSON.stringify(response.notifications);
         return notificationsString;
     } catch (error) {
-        log(error, config.verbosityLevel, 3, functionName);
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error retrieving notifications: " + error.message;
     }
 };
@@ -191,19 +194,17 @@ async function getNotificationsByIds(idsString) {
 // Function to update a notification
 function updateNotification(notificationString) {
     try {
+        const validationResult = validateNotification(notificationString);
         const notificationJson = JSON.parse(notificationString);
-        const validationResult = validateNotification(notificationJson);
         if (validationResult.includes("successful")) {
             // Proceed with updating notification
             log("Entering function", config.verbosityLevel, 4, "updateNotification");
 
-            // Validate notification schema
-            validateNotification(notificationJson);
             // Retrieve the document containing notifications from the database
             return localDb.get(docId)
                 .then(response => {
                     // Find the index of the notification to be updated in the notifications array
-                    console.log('Notification to update ID:', notificationJson._id);
+                    console.log('Notification to ID to update:', notificationJson._id);
                     const index = response.notifications.findIndex(n => n._id === notificationJson._id);
                     if (index !== -1) {
                         // Update the notification in the notifications array
@@ -253,7 +254,7 @@ async function deleteNotifications(idsString) {
         return "Notifications deleted successfully.";
     } catch (error) {
         // Log and return error message
-        log(error, config.verbosityLevel, 3, functionName);
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error deleting notifications: " + error.message;
     }
 };
@@ -293,8 +294,137 @@ const notificationTools = [
 
 const updateNotificationsPrompt = aiConfig.aiUpdateNotifications;
 
+// Test function for validateNotification
+function testValidateNotification() {
+    const validNotification = JSON.stringify({
+        _id: "1",
+        topic: "Update",
+        body: "Your application has been updated",
+        priority: "high",
+        created_at: "2022-01-01T12:00:00Z",
+        status: "pending",
+        actions: {
+            close: ["archive"],
+            open: ["read"]
+        }
+    });
+
+    const invalidNotification = JSON.stringify({}); // Missing required fields
+
+    console.log("Testing validateNotification with valid input:");
+    console.log(validateNotification(validNotification)); // Should log 'Notification schema validation successful.'
+    
+    console.log("Testing validateNotification with invalid input:");
+    console.log(validateNotification(invalidNotification)); // Should log 'Notification schema validation failed: ...'
+}
+
+// Test function for createNotification
+async function testCreateNotification() {
+    // Array of notifications to be created, each structured as a JSON string
+    const notifications = [
+        JSON.stringify({
+            _id: "test1",
+            topic: "Reminder",
+            body: "Don't forget the meeting at 3 PM",
+            priority: "medium",
+            created_at: "2022-01-02T15:00:00Z",
+            status: "pending",
+            actions: {
+                close: ["dismiss"],
+                open: ["view"]
+            }
+        }),
+        JSON.stringify({
+            _id: "test2",
+            topic: "Alert",
+            body: "System maintenance tonight at 12 AM",
+            priority: "high",
+            created_at: "2022-01-03T20:00:00Z",
+            status: "pending",
+            actions: {
+                close: ["archive"],
+                open: ["view details"]
+            }
+        })
+    ];
+
+    // Loop over each notification for creation and validation
+    for (const notification of notifications) {
+        console.log("Creating a new notification:");
+        const createResult = await createNotification(notification);
+        console.log(createResult); // Log the result of the creation attempt
+
+        // Parse the notification string back into an object
+        const notificationObj = JSON.parse(notification);
+        // If the notification creation is successful, verify it in the database
+        if (createResult.includes("successfully")) {
+            console.log(`Verifying the creation in the database for ID: ${notificationObj._id}`);
+            const allNotifications = await getAllNotifications();
+            const notificationsArray = JSON.parse(allNotifications);
+            // Find the newly created notification by its ID
+            const foundNotification = notificationsArray.find(n => n._id === notificationObj._id);
+            // Verify that the 'close' action of the notification is as expected
+            if (foundNotification && foundNotification.actions.close.includes(notificationObj.actions.close[0])) {
+                console.log(`Verification successful: Notification with ID ${notificationObj._id} is correctly stored in the database.`);
+            } else {
+                console.log(`Verification failed: Notification with ID ${notificationObj._id} is not correctly stored in the database.`);
+            }
+        }
+    }
+};
+
+// Test function for getAllNotifications
+async function testGetAllNotifications() {
+    console.log("Retrieving all notifications:");
+    console.log(await getAllNotifications()); // Should log all notifications
+};
+
+// Test function for getNotificationsByIds
+async function testGetNotificationsByIds() {
+    const ids = JSON.stringify({ notificationIds: ["test1", "test2"] });
+    console.log("Retrieving notifications by IDs:");
+    console.log(await getNotificationsByIds(ids)); // Should log notifications with ids 1 and 2
+};
+
+// Test function for updateNotification
+async function testUpdateNotification() {
+    const updatedNotification = JSON.stringify({
+        _id: "test1",
+        topic: "Update",
+        body: "Your application update is complete",
+        priority: "high",
+        created_at: "2022-01-01T12:00:00Z",
+        status: "resolved",
+        actions: {
+            close: ["archive"],
+            open: ["read"]
+        }
+    });
+
+    console.log("Updating a notification:");
+    console.log(await updateNotification(updatedNotification)); // Should log 'Notification updated successfully.' or 'Notification not found'
+};
+
+// Test function for deleteNotifications
+async function testDeleteNotifications() {
+    const idsToDelete = JSON.stringify({ notificationIds: ["test1", "test2"] });
+    console.log("Deleting notifications by IDs:");
+    console.log(await deleteNotifications(idsToDelete)); // Should log 'Notifications deleted successfully.'
+};
+
+// Test harness that runs all test functions
+async function runNotificationUtilsTestSuite() {
+    testValidateNotification();
+    await testCreateNotification();
+    await testGetAllNotifications();
+    await testGetNotificationsByIds();
+    await testUpdateNotification();
+    await testDeleteNotifications();
+};
+
 // Export CRUD functions and tools
 export {
+    runNotificationUtilsTestSuite,
     validateNotification,
     createNotification,
     getAllNotifications,
