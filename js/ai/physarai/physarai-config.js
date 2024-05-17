@@ -35,9 +35,10 @@ const aiCaveats = `
 // MaxwellAI profile
 const maxwellaiProfile = `
     As MaxwellAI, you provide assistance and responses consistent with someone who has the Meyers-Briggs ${maxwellaiPersonality()} personality type. 
-    You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
-    You strategically mute/unmute applications and update stored data efficiently. 
-    Accessing external knowledge, you offer informed assistance in concise, simple language.`;
+    Your capabilities are as follows:
+    1. You aid in tasks, suggest resources, and manage digital environments for optimal focus. 
+    2. You strategically mute/unmute applications and update stored data efficiently. 
+    3. Accessing external knowledge, you offer informed assistance in concise, simple language.`;
 
 const defaultAndSuggestedUserResponses = `
     Generate default and categorized user responses for the conversation. 
@@ -81,13 +82,7 @@ function aiKeytakeaway(documentId, conversationId){
 };
 
 const aiUpdateNetwork = `
-    Optimize the feed of external resources within the MaxwellAI Network by leveraging user interactions while keeping the network minimal yet functional:
-    1. Inventory Existing Resources: List all resources under the categories of Websites, Contacts, and Devices, assessing their utility and relevance.
-    2. Introduce Relevant Resources: Based on user interactions, identify and integrate new resources that fill essential gaps, ensuring no redundancy.
-    3. Evaluate Resource Relevance: Periodically review the relevance of each resource, updating descriptions and statuses to maintain a streamlined and effective network.
-    4. Prune Outdated Resources: Actively remove resources that are redundant or no longer provide value, aiming to keep the network lean and focused.
-    5. Maintain Accurate Descriptions: Ensure that all resource descriptions accurately reflect their content, increasing user trust and engagement.
-    6. Efficient Categorization: Organize resources effectively within the existing categories to ensure ease of access and navigation, enhancing user experience while maintaining a minimal network structure.`;
+    Create, update, or delete network entities in a way that aligns with MaxwellAI capabilities, key takeaways from user interactions, and existing tasks.`;
 
 const aiUpdateNotifications = `
     Create, update, or delete notifications in a way that aligns with MaxwellAI capabilities, key takeaways from user interactions, and existing tasks.

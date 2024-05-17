@@ -83,7 +83,7 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
 
     // Process interactions up to the maximum allowed iterations
     for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
-        log(`Loop run number: ${i+1}`, aiConfig.verbosityLevel, 1, functionName);
+        log(`Diffusion Wave: ${i+1}`, aiConfig.verbosityLevel, 1, functionName);
 
         // Retrieve API key and endpoint for the LLM
         const aiApiKey = await llmApiKey();

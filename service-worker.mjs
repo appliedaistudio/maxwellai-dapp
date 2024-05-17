@@ -203,7 +203,7 @@ async function engageAI() {
    await updateNotifications(insightTakeaways);
 
    // Update the tasks based on insights gained from user interactions
-   //await updateTasks(insightTakeaways);
+   await updateTasks(insightTakeaways);
 
    // Update the external resources feed based on insights gained from user interactions
    //await updateNetwork(insightTakeaways);
