@@ -78,6 +78,8 @@ function validateNotification(notificationString) {
     try {
         const notification = JSON.parse(notificationString);
         const validationResult = validateJson(notification, notificationSchema);
+
+        // Return validation result
         if (validationResult.valid) {
             return "Notification schema validation successful.";
         } else {
@@ -107,15 +109,17 @@ function validateNotificationIds(notificationIdsString) {
 
 // Function to create a new notification
 async function createNotification(notificationString) {
+    const functionName = "createNotification";
+    
     try {
         const validationResult = validateNotification(notificationString);
 
         const notificationJson = JSON.parse(notificationString);
         if (validationResult.includes("successful")) {
-            log("Entering function", config.verbosityLevel, 4, "createNotification");
+            log("Entering function", config.verbosityLevel, 4, functionName);
 
             // Get existing notifications from the database
-            const existingNotifications = await localDb.get('notifications');
+            const existingNotifications = await localDb.get(docId);
 
             // Check if notification ID already exists
             const existingIds = existingNotifications.notifications.map(n => n._id);
@@ -146,7 +150,7 @@ async function getAllNotifications() {
     try {
         // Retrieve the document containing notifications from the database
         const response = await localDb.get(docId);
-        // Return, as a string. the notifications array from the retrieved document
+        // Return, as a string, the notifications array from the retrieved document
         const notificationsString = JSON.stringify(response.notifications);
         return notificationsString;
     } catch (error) {
@@ -155,7 +159,7 @@ async function getAllNotifications() {
     }
 };
 
-// Function to get a list of notifications by ID
+// Function to get a list of notifications by IDs
 async function getNotificationsByIds(idsString) {
     // Log entry into the function
     const functionName = "getNotificationsByIds";
@@ -193,18 +197,22 @@ async function getNotificationsByIds(idsString) {
 
 // Function to update a notification
 function updateNotification(notificationString) {
+    const functionName = "updateNotification";
+
+    // Log entry into the function
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     try {
         const validationResult = validateNotification(notificationString);
         const notificationJson = JSON.parse(notificationString);
         if (validationResult.includes("successful")) {
             // Proceed with updating notification
-            log("Entering function", config.verbosityLevel, 4, "updateNotification");
 
             // Retrieve the document containing notifications from the database
             return localDb.get(docId)
                 .then(response => {
                     // Find the index of the notification to be updated in the notifications array
-                    console.log('Notification to ID to update:', notificationJson._id);
+                    log('Notification to ID to update:', notificationJson._id, config.verbosityLevel, 4, functionName);
                     const index = response.notifications.findIndex(n => n._id === notificationJson._id);
                     if (index !== -1) {
                         // Update the notification in the notifications array
@@ -228,8 +236,9 @@ function updateNotification(notificationString) {
 
 // Function to delete a lsit notifications
 async function deleteNotifications(idsString) {
-    // Log entry into the function
     const functionName = "deleteNotifications";
+
+    // Log entry into the function
     log("Entering function", config.verbosityLevel, 4, functionName);
 
     try {

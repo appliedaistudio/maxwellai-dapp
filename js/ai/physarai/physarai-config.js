@@ -95,16 +95,7 @@ const aiUpdateNotifications = `
 
 
 const aiUpdateTasks = `
-    Streamline tasks for efficiency based on user interactions:
-    1. Review the list of existing tasks to identify essential actions only.
-    2. Prioritize and adjust tasks dynamically based on essential changes in project requirements.
-    3. Categorize tasks effectively to simplify tracking and management.
-    4. Revise task descriptions for clarity and necessity, removing non-essential details.
-    5. Accurately update task statuses to reflect progress, focusing on essential updates.
-    6. Address critical dependencies between tasks to ensure smooth workflow.
-    7. Adjust task deadlines only when necessary to align strictly with project goals.
-    8. Streamline workflows by merging tasks or introducing new ones only when they significantly enhance efficiency.
-    9. Incorporate crucial user feedback and project insights to maintain and improve task relevance and effectiveness.`;
+    Create, update, or delete tasks in a way that aligns with key takeaways from user interactions. Try to keep the total number of tasks to 5 or fewer.`;
 
 // Configuration details for the AI
 const aiConfig = {

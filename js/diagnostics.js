@@ -6,6 +6,7 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 
 import { runNotificationUtilsTestSuite } from './db/data-specific/notification-utils.js';
 import { testLLMResponses } from './ai/physarai/physarai-llm-schema.js';
+import { runTaskUtilsTestSuite } from './db/data-specific/task-utils.js';
 
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
@@ -16,19 +17,27 @@ await runNotificationUtilsTestSuite();
 // Run a diagnostic on validating LLM responses
 testLLMResponses();
 
-// Listener for app startup logic
+// Run the notifications utility diagnostics
+await runTaskUtilsTestSuite();
+
+// Event listener for when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Check users' logged-in status
-    isLoggedIn(localDb).then(loggedIn => {
-        if (!loggedIn) {
-            sessionStorage.setItem('lastVisitedPage', window.location.href);
-            window.location.replace('./login.html');
-        } else {
-            console.log('A user is currently logged in.');
-            loadMenu(localDb, 'hello_world_menu');
-            loadMainContentControls(localDb, 'hello_world_controls');
-        }
-    }).catch(err => {
-        console.error('Error while checking if user is logged in:', err);
-    });
+    // Check if user is logged in
+    isLoggedIn(localDb)
+        .then(loggedIn => {
+            if (!loggedIn) {
+                // Redirect to login page if not logged in
+                window.location.replace('./login.html');
+            } else {
+                // Log status and initialize UI components
+                console.log('User is logged in. Initializing DB and UI components...');
+                loadMenu(localDb, 'hello_world_menu');
+                loadMainContentControls(localDb, 'hello_world_controls');
+                loadNetworkDataRegularly();
+            }
+        })
+        .catch(err => {
+            // Log any error during login check
+            console.error('Error while checking if user is logged in:', err);
+        });
 });

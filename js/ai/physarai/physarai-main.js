@@ -107,9 +107,6 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         } else if (!validation.isValid) {
             // Log the invalid LLM response and add it to messages
             log("Invalid LLM response detected: " + validation.message, aiConfig.verbosityLevel, 1, functionName);
-            
-            console.log("response " + cleanedResponse);
-
             messages.push({ "role": "user", "content": "Observation: " + validation.message });
             continue; // Skip processing and continue to the next iteration
         }
