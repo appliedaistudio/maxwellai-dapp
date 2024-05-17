@@ -467,14 +467,14 @@ const networkTools = [
         description: `Creates a new network entity after validating its schema and inserts it into the database. 
                       Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
                       and 'networkEntityString' containing the network entity data as a JSON string. 
-                      The input must adhere to the schema corresponding to the specified entity type: 'websitesSchema', 'contactsSchema', or 'devicesSchema'.`
+                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
     },
     {
         name: "Retrieve All Network Entities",
         func: getNetworkEntities,
         description: `Retrieves all network entities of a specified type from the database. 
                       Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}). 
-                      The input schema is 'paramsSchema', which includes the 'entityType'. 
+                      The input schema is ${paramsSchema}, which includes the 'entityType'. 
                       Returns a JSON array of all entities.`
     },
     {
@@ -482,7 +482,7 @@ const networkTools = [
         func: getNetworkEntityById,
         description: `Retrieves a specific network entity based on its ID from the specified entity type. 
                       Requires a JSON object with 'entityType' and 'networkEntityString' containing the ID of the network entity as a JSON string. 
-                      The input schema is 'paramsSchema', which includes the 'entityType' and 'networkEntityString'.`
+                      The input schema is ${paramsSchema}, which includes the 'entityType' and 'networkEntityString'.`
     },
     {
         name: "Update Network Entity",
@@ -490,27 +490,180 @@ const networkTools = [
         description: `Updates an existing network entity after validating its schema. 
                       Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
                       and 'networkEntityString' containing the updated network entity data as a JSON string. 
-                      The input must adhere to the schema corresponding to the specified entity type: 'websitesSchema', 'contactsSchema', or 'devicesSchema'.`
+                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
     },
     {
         name: "Delete Network Entity",
         func: deleteNetworkEntity,
         description: `Deletes a network entity from the database based on its ID. 
                       Requires a JSON object with 'entityType' and 'id' specifying the type and ID of the entity to be deleted. 
-                      The input schema is 'paramsSchema', which includes the 'entityType' and 'id'.`
+                      The input schema is ${paramsSchema}, which includes the 'entityType' and 'id'.`
     }
 ];
 
 const updateNetworkPrompt = aiConfig.aiUpdateNetwork;
 
+// Test function for validateNetworkEntity
+function testValidateNetworkEntity() {
+    const validWebsite = JSON.stringify({
+        "_id": "website1",
+        "url": "https://example.com",
+        "description": "Example website",
+        "usefulness_description": "Provides example content",
+        "category": "Research & Reference",
+        "review_status": "Pending",
+        "thumbnail_url": "https://picsum.photos/seed/11/200"
+    });
+
+    // Invalid input missing required fields
+    const invalidWebsite = JSON.stringify({});
+
+    console.log("Testing validateNetworkEntity with valid input:");
+    try {
+        // Validate a correctly structured network entity
+        validateNetworkEntity(validWebsite, 'websites');
+        console.log('Network entity schema validation successful.');
+    } catch (error) {
+        console.error(error.message);
+    }
+
+    console.log("Testing validateNetworkEntity with invalid input:");
+    try {
+        // Attempt to validate an incorrectly structured network entity
+        validateNetworkEntity(invalidWebsite, 'websites');
+    } catch (error) {
+        // Expected to fail
+        console.error(error.message);
+    }
+};
+
+// Test function for createNetworkEntity
+async function testCreateNetworkEntity() {
+    const validWebsite = JSON.stringify({
+        "_id": "website_test1",
+        "url": "https://example-test.com",
+        "description": "Example test website",
+        "usefulness_description": "Provides test content",
+        "category": "Research & Reference",
+        "review_status": "Pending",
+        "thumbnail_url": "https://picsum.photos/seed/12/200"
+    });
+
+    // Parameters for creating a network entity
+    const params = {
+        entityType: "websites",
+        networkEntityString: validWebsite
+    };
+
+    console.log("Creating a new network entity:");
+    try {
+        // Attempt to create a new network entity
+        const createResult = await createNetworkEntity(params);
+        console.log('Network entity created successfully:', createResult);
+    } catch (error) {
+        console.error('Error creating network entity:', error.message);
+    }
+};
+
+// Test function for getNetworkEntities
+async function testGetNetworkEntities() {
+    const params = {
+        entityType: "websites"
+    };
+
+    console.log("Retrieving all network entities of type 'websites':");
+    try {
+        // Retrieve all network entities of the specified type
+        const entities = await getNetworkEntities(params);
+        console.log('Retrieved entities:', entities);
+    } catch (error) {
+        console.error('Error retrieving network entities:', error.message);
+    }
+};
+
+// Test function for getNetworkEntityById
+async function testGetNetworkEntityById() {
+    const params = {
+        entityType: "websites",
+        // JSON string containing the ID of the network entity to retrieve
+        networkEntityString: JSON.stringify({ _id: "website_test1" })
+    };
+
+    console.log("Retrieving network entity by ID:");
+    try {
+        // Retrieve a specific network entity by its ID
+        const entity = await getNetworkEntityById(params);
+        console.log('Retrieved entity:', entity);
+    } catch (error) {
+        console.error('Error retrieving network entity by ID:', error.message);
+    }
+};
+
+// Test function for updateNetworkEntity
+async function testUpdateNetworkEntity() {
+    const updatedWebsite = JSON.stringify({
+        "_id": "website_test1",
+        "url": "https://example-test-updated.com",
+        "description": "Updated example test website",
+        "usefulness_description": "Provides updated test content",
+        "category": "Research & Reference",
+        "review_status": "Reviewed",
+        "thumbnail_url": "https://picsum.photos/seed/13/200"
+    });
+
+    // Parameters for updating a network entity
+    const params = {
+        entityType: "websites",
+        networkEntityString: updatedWebsite
+    };
+
+    console.log("Updating network entity:");
+    try {
+        // Attempt to update an existing network entity
+        const updateResult = await updateNetworkEntity(params);
+        console.log('Network entity updated successfully:', updateResult);
+    } catch (error) {
+        console.error('Error updating network entity:', error.message);
+    }
+};
+
+// Test function for deleteNetworkEntity
+async function testDeleteNetworkEntity() {
+    const params = {
+        entityType: "websites",
+        // ID of the network entity to delete
+        id: "website_test1"
+    };
+
+    console.log("Deleting network entity:");
+    try {
+        // Attempt to delete a network entity
+        const deleteResult = await deleteNetworkEntity(params);
+        console.log('Network entity deleted successfully:', deleteResult);
+    } catch (error) {
+        console.error('Error deleting network entity:', error.message);
+    }
+};
+
+// Test harness that runs all test functions
+async function runNetworkUtilsTestSuite() {
+    testValidateNetworkEntity();
+    await testCreateNetworkEntity();
+    await testGetNetworkEntities();
+    await testGetNetworkEntityById();
+    await testUpdateNetworkEntity();
+    await testDeleteNetworkEntity();
+};
+
+
 // Export CRUD functions and tools for the network data
 export {
+    runNetworkUtilsTestSuite,
     validateNetworkEntity,
     createNetworkEntity,
-    getAllNetworkEntities,
+    getNetworkEntities,
     getNetworkEntityById,
     updateNetworkEntity,
     deleteNetworkEntity,
     networkTools,
-    updateNetworkPrompt
 };
