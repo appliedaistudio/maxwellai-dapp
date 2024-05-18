@@ -7,18 +7,16 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 import { runNotificationUtilsTestSuite } from './db/data-specific/notification-utils.js';
 import { testLLMResponses } from './ai/physarai/physarai-llm-schema.js';
 import { runTaskUtilsTestSuite } from './db/data-specific/task-utils.js';
+import { runNetworkUtilsTestSuite } from './db/data-specific/network-utils.js';
 
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-// Run the notifications utility diagnostics
+// Run the diagnostics
 await runNotificationUtilsTestSuite();
-
-// Run a diagnostic on validating LLM responses
 testLLMResponses();
-
-// Run the notifications utility diagnostics
 await runTaskUtilsTestSuite();
+await runNetworkUtilsTestSuite();
 
 // Event listener for when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', () => {

@@ -69,6 +69,9 @@ const localDb = new PouchDB(config.localDbName);
 
 // Function to validate task against JSON schema
 function validateTask(taskString) {
+    const functionName = "taskString";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     try {
         const task = JSON.parse(taskString);
         const validationResult = validateJson(task, taskSchema);
@@ -80,12 +83,16 @@ function validateTask(taskString) {
             return "Task schema validation failed: " + validationResult.error;
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error parsing JSON: " + error.message;
     }
 };
 
 // Function to validate a list task  Ids against JSON schema
 function validateTaskIds(taskIdsString) {
+    const functionName = "taskIdsString";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     // Parse the input string into a JSON object
     try {
         const taskIdsJson = JSON.parse(taskIdsString);
@@ -97,6 +104,7 @@ function validateTaskIds(taskIdsString) {
             return "Task IDs validation failed: " + validationResult.error;
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error parsing JSON: " + error.message;
     }
 }
@@ -104,6 +112,7 @@ function validateTaskIds(taskIdsString) {
 // Function to create a new task
 async function createTask(taskString) {
     const functionName = "createTask";
+    log("Entering function", config.verbosityLevel, 4, functionName);
 
     try {
         const validationResult = validateTask(taskString);
@@ -132,6 +141,7 @@ async function createTask(taskString) {
             return validationResult; // Return validation failure message
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error creating task: " + error.message;
     }
 };
@@ -185,7 +195,7 @@ async function getTasksByIds(idsString) {
         }
     } catch (error) {
         // Log and return error message
-        log(error, config.verbosityLevel, 3, functionName);
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error retrieving tasks by IDs: " + error.message;
     }
 };
@@ -225,6 +235,7 @@ function updateTask(taskString) {
             return validationResult; // Return validation failure message
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error updating task: " + error.message;
     }
 }
