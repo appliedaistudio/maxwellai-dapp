@@ -78,8 +78,10 @@ function validateTask(taskString) {
 
         // Return validation result
         if (validationResult.valid) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task schema validation successful.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task schema validation failed: " + validationResult.error;
         }
     } catch (error) {
@@ -99,8 +101,10 @@ function validateTaskIds(taskIdsString) {
         // Validate the JSON object against the notification IDs schema
         const validationResult = validateJson(taskIdsJson, listTaskIdsSchema);
         if (validationResult.valid) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task IDs validation successful.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task IDs validation failed: " + validationResult.error;
         }
     } catch (error) {
@@ -135,9 +139,11 @@ async function createTask(taskString) {
 
             // Update the task document in the database
             const response = await localDb.put(existingTasks);
-
+            
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task created successfully.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return validationResult; // Return validation failure message
         }
     } catch (error) {
@@ -156,6 +162,7 @@ async function getAllTasks() {
         const response = await localDb.get(docId);
         // Return, as a string, the tasks array from the retrieved document
         const tasksString = JSON.stringify(response.tasks);
+        log("Exiting function", config.verbosityLevel, 4, functionName);
         return tasksString;
     } catch (error) {
         log(error, config.verbosityLevel, 1, functionName);
@@ -174,6 +181,7 @@ async function getTasksByIds(idsString) {
         // Validate the input JSON containing the task IDs
         const validationResult = validateTaskIds(idsString);
         if (!validationResult.includes("successful")) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return validationResult; // Return validation failure message if not valid
         }
 
@@ -189,8 +197,10 @@ async function getTasksByIds(idsString) {
 
         // Return found notifications or a not found message
         if (tasks.length > 0) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return JSON.stringify(tasks);
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Tasks not found";
         }
     } catch (error) {
@@ -225,9 +235,11 @@ function updateTask(taskString) {
                         // Save the updated document back to the database
                         return localDb.put(response)
                             .then(() => {
+                                log("Exiting function", config.verbosityLevel, 4, functionName);
                                 return "Task updated successfully.";
                             });
                     } else {
+                        log("Exiting function", config.verbosityLevel, 4, functionName);
                         return "Task not found";
                     }
                 });
@@ -251,6 +263,7 @@ async function deleteTasks(idsString) {
         // Validate the input JSON containing the task IDs
         const validationResult = validateTaskIds(idsString);
         if (!validationResult.includes("successful")) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return validationResult; // Return validation failure message if not valid
         }
 
@@ -266,6 +279,7 @@ async function deleteTasks(idsString) {
 
         // Save the updated tasks document to the database
         const saveResponse = await localDb.put(response);
+        log("Exiting function", config.verbosityLevel, 4, functionName);
         return "Tasks deleted successfully.";
     } catch (error) {
         // Log and return error message

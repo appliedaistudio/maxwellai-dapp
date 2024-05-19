@@ -75,34 +75,46 @@ const localDb = new PouchDB(config.localDbName);
 
 // Function to validate notification against JSON schema
 function validateNotification(notificationString) {
+    const functionName = "validateNotification";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     try {
         const notification = JSON.parse(notificationString);
         const validationResult = validateJson(notification, notificationSchema);
 
         // Return validation result
         if (validationResult.valid) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification schema validation successful.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification schema validation failed: " + validationResult.error;
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error parsing JSON: " + error.message;
     }
 };
 
 // Function to validate a list notification Ids against JSON schema
 function validateNotificationIds(notificationIdsString) {
+    const functionName = "validateNotification";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
     // Parse the input string into a JSON object
     try {
         const notificationIdsJson = JSON.parse(notificationIdsString);
         // Validate the JSON object against the notification IDs schema
         const validationResult = validateJson(notificationIdsJson, listNotificationIdsSchema);
         if (validationResult.valid) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification IDs validation successful.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification IDs validation failed: " + validationResult.error;
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error parsing JSON: " + error.message;
     }
 }
@@ -110,6 +122,7 @@ function validateNotificationIds(notificationIdsString) {
 // Function to create a new notification
 async function createNotification(notificationString) {
     const functionName = "createNotification";
+    log("Entering function", config.verbosityLevel, 4, functionName);
     
     try {
         const validationResult = validateNotification(notificationString);
@@ -124,6 +137,7 @@ async function createNotification(notificationString) {
             // Check if notification ID already exists
             const existingIds = existingNotifications.notifications.map(n => n._id);
             if (existingIds.includes(notificationJson._id)) {
+                log("Exiting function", config.verbosityLevel, 4, functionName);
                 return "Error: Notification with this ID already exists.";
             }
 
@@ -132,12 +146,14 @@ async function createNotification(notificationString) {
 
             // Update the notifications document in the database
             const response = await localDb.put(existingNotifications);
-
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification created successfully.";
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return validationResult; // Return validation failure message
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error creating notification: " + error.message;
     }
 };
@@ -152,6 +168,7 @@ async function getAllNotifications() {
         const response = await localDb.get(docId);
         // Return, as a string, the notifications array from the retrieved document
         const notificationsString = JSON.stringify(response.notifications);
+        log("Exiting function", config.verbosityLevel, 4, functionName);
         return notificationsString;
     } catch (error) {
         log(error, config.verbosityLevel, 1, functionName);
@@ -184,8 +201,10 @@ async function getNotificationsByIds(idsString) {
 
         // Return found notifications or a not found message
         if (notifications.length > 0) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return JSON.stringify(notifications);
         } else {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notifications not found";
         }
     } catch (error) {
@@ -220,9 +239,11 @@ function updateNotification(notificationString) {
                         // Save the updated document back to the database
                         return localDb.put(response)
                             .then(() => {
+                                log("Exiting function", config.verbosityLevel, 4, functionName);
                                 return "Notification updated successfully.";
                             });
                     } else {
+                        log("Exiting function", config.verbosityLevel, 4, functionName);
                         return "Notification not found";
                     }
                 });
@@ -230,6 +251,7 @@ function updateNotification(notificationString) {
             return validationResult; // Return validation failure message
         }
     } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
         return "Error updating notification: " + error.message;
     }
 };
@@ -245,6 +267,7 @@ async function deleteNotifications(idsString) {
         // Validate the input JSON containing the notification IDs
         const validationResult = validateNotificationIds(idsString);
         if (!validationResult.includes("successful")) {
+            log("Exiting function", config.verbosityLevel, 4, functionName);
             return validationResult; // Return validation failure message if not valid
         }
 
@@ -260,6 +283,7 @@ async function deleteNotifications(idsString) {
 
         // Save the updated notifications document to the database
         const saveResponse = await localDb.put(response);
+        log("Exiting function", config.verbosityLevel, 4, functionName);
         return "Notifications deleted successfully.";
     } catch (error) {
         // Log and return error message
