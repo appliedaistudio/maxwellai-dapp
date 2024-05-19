@@ -89,7 +89,7 @@ function validateNetworkEntity(networkEntityString, entityType) {
     // Check if the entityType is valid
     if (!validEntityTypes.includes(entityType)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        throw new Error('Invalid network entity type: ' + entityType);
+        return "Invalid network entity type: " + entityType;
     }
 
     const entitySchema = entitySchemas[entityType];
@@ -104,13 +104,13 @@ function validateNetworkEntity(networkEntityString, entityType) {
         // Check if validation failed and throw an error if it did
         if (!validationResult.valid) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            throw new Error('Network entity schema validation failed: ' + validationResult.error);
+            return 'Network entity schema validation failed: ' + validationResult.error;
         }
         log("Exiting function", config.verbosityLevel, 4, functionName);
     } catch (error) {
         // Handle JSON parsing errors
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error parsing JSON: ' + error.message);
+        return 'Error parsing JSON: ' + error.message;
     }
 };
 
@@ -123,13 +123,13 @@ function validateParams(params) {
         const validationResult = validateJson(params, paramsSchema);
         if (!validationResult.valid) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            throw new Error('Params validation failed: ' + validationResult.error);
+            return 'Params validation failed: ' + validationResult.error;
         }
         log("Exiting function", config.verbosityLevel, 4, functionName);
     } catch (error) {
         // Handle JSON validation errors
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error validating parms ' + error.message);
+        return 'Error validating parms ' + error.message;
     }
 };
 
@@ -309,7 +309,7 @@ async function createNetworkEntity(params) {
         // Check if an entity with the same _id already exists
         if (networkDoc.data[entityType].data.some(entity => entity._id === networkEntityJson._id)) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            throw new Error(`Entity with _id ${networkEntityJson._id} already exists in ${entityType}`);
+            return `Entity with _id ${networkEntityJson._id} already exists in ${entityType}`;
         }
 
         // Add the new entity to the appropriate section in the network document
@@ -325,7 +325,7 @@ async function createNetworkEntity(params) {
     } catch (error) {
         // Log any errors encountered during the process
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error creating network entity: ' + error.message);
+        return 'Error creating network entity: ' + error.message;
     }
 };
 
@@ -345,7 +345,7 @@ async function getNetworkEntities(params) {
     // Check if the entity type is valid
     if (!validEntityTypes.includes(entityType)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        throw new Error('Invalid network entity type: ' + entityType);
+        return 'Invalid network entity type: ' + entityType;
     }
 
     try {
@@ -359,7 +359,7 @@ async function getNetworkEntities(params) {
     } catch (error) {
         // Log and throw any errors encountered during the fetch
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error fetching network entities: ' + error.message);
+        return 'Error fetching network entities: ' + error.message;
     }
 };
 
@@ -379,7 +379,7 @@ async function getNetworkEntityById(params) {
     // Check if the entity type is valid
     if (!validEntityTypes.includes(entityType)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        throw new Error('Invalid network entity type: ' + entityType);
+        return 'Invalid network entity type: ' + entityType;
     }
 
     // Parse the network entity string into JSON
@@ -399,12 +399,12 @@ async function getNetworkEntityById(params) {
             return networkEntity;
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            throw new Error(`Network entity with ID ${_id} not found in ${entityType}`);
+            return `Network entity with ID ${_id} not found in ${entityType}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the fetch
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error fetching network entity: ' + error.message);
+        return 'Error fetching network entity: ' + error.message;
     }
 };
 
@@ -424,7 +424,7 @@ async function updateNetworkEntity(params) {
     // Check if the entity type is valid
     if (!validEntityTypes.includes(entityType)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        throw new Error('Invalid network entity type: ' + entityType);
+        return 'Invalid network entity type: ' + entityType;
     }
 
     try {
@@ -454,12 +454,12 @@ async function updateNetworkEntity(params) {
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
-            throw new Error(`Network entity with ID ${networkEntityJson._id} not found in ${entityType}`);
+            return `Network entity with ID ${networkEntityJson._id} not found in ${entityType}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the process
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error updating network entity: ' + error.message);
+        return 'Error updating network entity: ' + error.message;
     }
 };
 
@@ -479,7 +479,7 @@ async function deleteNetworkEntity(params) {
     // Check if the entity type is valid
     if (!validEntityTypes.includes(entityType)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        throw new Error('Invalid network entity type: ' + entityType);
+        return 'Invalid network entity type: ' + entityType;
     }
 
     try {
@@ -502,14 +502,14 @@ async function deleteNetworkEntity(params) {
             return { deleted: true, response };
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            
+
             // Throw an error if the network entity is not found
-            throw new Error(`Network entity with ID ${id} not found in ${entityType}`);
+            return `Network entity with ID ${id} not found in ${entityType}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the process
         log(error, config.verbosityLevel, 1, functionName);
-        throw new Error('Error deleting network entity: ' + error.message);
+        return 'Error deleting network entity: ' + error.message;
     }
 };
 
@@ -796,4 +796,5 @@ export {
     updateNetworkEntity,
     deleteNetworkEntity,
     networkTools,
+    updateNetworkPrompt
 };

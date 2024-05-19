@@ -12,12 +12,6 @@ import { runNetworkUtilsTestSuite } from './db/data-specific/network-utils.js';
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-// Run the diagnostics
-await runNotificationUtilsTestSuite();
-testLLMResponses();
-await runTaskUtilsTestSuite();
-await runNetworkUtilsTestSuite();
-
 // Event listener for when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Check if user is logged in
@@ -30,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Log status and initialize UI components
                 console.log('User is logged in. Initializing DB and UI components...');
                 loadMenu(localDb, 'hello_world_menu');
-                loadMainContentControls(localDb, 'hello_world_controls');
-                loadNetworkDataRegularly();
+                loadMainContentControls(localDb, 'hello_world_controls')
             }
         })
         .catch(err => {
@@ -39,3 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error while checking if user is logged in:', err);
         });
 });
+
+// Run the diagnostics
+await runNotificationUtilsTestSuite();
+testLLMResponses();
+await runTaskUtilsTestSuite();
+await runNetworkUtilsTestSuite();
