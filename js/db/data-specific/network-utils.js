@@ -115,12 +115,13 @@ function validateNetworkEntity(networkEntityString, entityType) {
 };
 
 // Function to validate params against the schema
-function validateParams(params) {
+function validateParams(paramsString) {
     const functionName = "validateParams";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
     try {
-        const validationResult = validateJson(params, paramsSchema);
+        const paramsJson = JSON.parse(paramsString);
+        const validationResult = validateJson(paramsJson, paramsSchema);
         if (!validationResult.valid) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
             return 'Params validation failed: ' + validationResult.error;
@@ -284,14 +285,16 @@ function getPotentialDevices() {
 };
 
 // Function to create a new network entity
-async function createNetworkEntity(params) {
+async function createNetworkEntity(paramsString) {
     const functionName = "createNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    // Validate the input parameters
-    validateParams(params);
+    const paramsJson = JSON.parse(paramsString);
 
-    const { entityType, networkEntityString } = params;
+    // Validate the input parameters
+    validateParams(paramsJson);
+
+    const { entityType, networkEntityString } = paramsJson;
 
     // Log the creation process
     console.log(`Creating a new network entity in ${entityType}`);
@@ -330,14 +333,16 @@ async function createNetworkEntity(params) {
 };
 
 // Function to get all network entities of the specified type
-async function getNetworkEntities(params) {
+async function getNetworkEntities(paramsString) {
     const functionName = "getNetworkEntities";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    // Validate the input parameters
-    validateParams(params);
+    const paramsJson = JSON.parse(paramsString);
 
-    const { entityType } = params;
+    // Validate the input parameters
+    validateParams(paramsJson);
+
+    const { entityType } = paramsJson;
 
     // Log the retrieval process
     console.log(`Retrieving all network entities of type ${entityType}`);
@@ -364,14 +369,16 @@ async function getNetworkEntities(params) {
 };
 
 // Function to retrieve a network entity by ID and type
-async function getNetworkEntityById(params) {
+async function getNetworkEntityById(paramsString) {
     const functionName = "getNetworkEntityById";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    // Validate the input parameters
-    validateParams(params);
+    const paramsJson = JSON.parse(paramsString);
 
-    const { entityType, networkEntityString } = params;
+    // Validate the input parameters
+    validateParams(paramsJson);
+
+    const { entityType, networkEntityString } = paramsJson;
 
     // Log the retrieval process
     console.log(`Getting network entity by ID from ${entityType}`);
@@ -409,14 +416,16 @@ async function getNetworkEntityById(params) {
 };
 
 // Function to update a network entity
-async function updateNetworkEntity(params) {
+async function updateNetworkEntity(paramsString) {
     const functionName = "updateNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    // Validate the input parameters
-    validateParams(params);
+    const paramsJson = JSON.parse(paramsString);
 
-    const { entityType, networkEntityString } = params;
+    // Validate the input parameters
+    validateParams(paramsJson);
+
+    const { entityType, networkEntityString } = paramsJson;
 
     // Log the update process
     console.log(`Updating network entity in ${entityType}`);
@@ -464,14 +473,16 @@ async function updateNetworkEntity(params) {
 };
 
 // Function to delete a network entity
-async function deleteNetworkEntity(params) {
+async function deleteNetworkEntity(paramsString) {
     const functionName = "deleteNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    // Validate the input parameters
-    validateParams(params);
+    const paramsJson = JSON.parse(paramsString);
 
-    const { entityType, id } = params;
+    // Validate the input parameters
+    validateParams(paramsJson);
+
+    const { entityType, id } = paramsJson;
 
     // Log the deletion process
     console.log(`Deleting network entity from ${entityType}`);
@@ -622,23 +633,27 @@ async function testCreateNetworkEntity() {
         "thumbnail_url": "https://picsum.photos/seed/12/200"
     });
 
-    const params = {
+    const paramsJson = {
         entityType: "websites",
         networkEntityString: validWebsite
     };
 
+    const paramsString = JSON.stringify(paramsJson);
+
     console.log("Creating a new network entity:");
     try {
         // Attempt to create a new network entity
-        const createResult = await createNetworkEntity(params);
+        const createResult = await createNetworkEntity(paramsString);
         console.log('Network entity created successfully:', createResult);
 
         // Verify the entity was actually created by checking its existence
-        const verifyParams = {
+        const verifyParamsJson = {
             entityType: "websites",
             networkEntityString: JSON.stringify({ _id: "website_test1" })
         };
-        const createdEntity = await getNetworkEntityById(verifyParams);
+        const verifyParamsString = JSON.stringify(verifyParamsJson);
+
+        const createdEntity = await getNetworkEntityById(verifyParamsString);
         console.log('Verified created entity:', createdEntity);
     } catch (error) {
         console.error('Error creating network entity:', error.message);
@@ -647,7 +662,7 @@ async function testCreateNetworkEntity() {
     console.log("Attempting to create a network entity with an existing ID:");
     try {
         // Attempt to create a network entity with the same ID
-        const duplicateCreateResult = await createNetworkEntity(params);
+        const duplicateCreateResult = await createNetworkEntity(paramsString);
         console.log('Network entity created successfully:', duplicateCreateResult);
     } catch (error) {
         // Expected to fail because the ID already exists
@@ -657,14 +672,15 @@ async function testCreateNetworkEntity() {
 
 // Test function for getNetworkEntities
 async function testGetNetworkEntities() {
-    const params = {
+    const paramsJson = {
         entityType: "websites"
     };
+    const paramsString = JSON.stringify(paramsJson);
 
     console.log("Retrieving all network entities of type 'websites':");
     try {
         // Retrieve all network entities of the specified type
-        const entities = await getNetworkEntities(params);
+        const entities = await getNetworkEntities(paramsString);
         console.log('Retrieved entities:', entities);
     } catch (error) {
         console.error('Error retrieving network entities:', error.message);
@@ -673,16 +689,17 @@ async function testGetNetworkEntities() {
 
 // Test function for getNetworkEntityById
 async function testGetNetworkEntityById() {
-    const params = {
+    const paramsJson = {
         entityType: "websites",
         // JSON string containing the ID of the network entity to retrieve
         networkEntityString: JSON.stringify({ _id: "website_test1" })
     };
+    const paramsString = JSON.stringify(paramsJson);
 
     console.log("Retrieving network entity by ID:");
     try {
         // Retrieve a specific network entity by its ID
-        const entity = await getNetworkEntityById(params);
+        const entity = await getNetworkEntityById(paramsString);
         console.log('Retrieved entity:', entity);
     } catch (error) {
         console.error('Error retrieving network entity by ID:', error.message);
@@ -701,15 +718,16 @@ async function testUpdateNetworkEntity() {
         "thumbnail_url": "https://picsum.photos/seed/13/200"
     });
 
-    const params = {
+    const paramsJson = {
         entityType: "websites",
         networkEntityString: updatedWebsite
     };
+    const paramsString = JSON.stringify(paramsJson);
 
     console.log("Updating network entity:");
     try {
         // Attempt to update an existing network entity
-        const updateResult = await updateNetworkEntity(params);
+        const updateResult = await updateNetworkEntity(paramsString);
         console.log('Network entity updated successfully:', updateResult);
     } catch (error) {
         console.error('Error updating network entity:', error.message);
@@ -725,15 +743,16 @@ async function testUpdateNetworkEntity() {
         "thumbnail_url": "https://picsum.photos/seed/14/200"
     });
 
-    const nonExistentParams = {
+    const nonExistentParamsJson = {
         entityType: "websites",
         networkEntityString: nonExistentWebsite
     };
+    const nonExistentParamsString = JSON.stringify(nonExistentParamsJson);
 
     console.log("Attempting to update a non-existent network entity:");
     try {
         // Attempt to update a network entity that does not exist
-        const nonExistentUpdateResult = await updateNetworkEntity(nonExistentParams);
+        const nonExistentUpdateResult = await updateNetworkEntity(nonExistentParamsString);
         console.log('Network entity updated successfully:', nonExistentUpdateResult);
     } catch (error) {
         // Expected to fail because the entity does not exist
@@ -743,31 +762,33 @@ async function testUpdateNetworkEntity() {
 
 // Test function for deleteNetworkEntity
 async function testDeleteNetworkEntity() {
-    const params = {
+    const paramsJson = {
         entityType: "websites",
         // ID of the network entity to delete
         id: "website_test1"
     };
+    const paramsString = JSON.stringify(paramsJson);
 
     console.log("Deleting network entity:");
     try {
         // Attempt to delete an existing network entity
-        const deleteResult = await deleteNetworkEntity(params);
+        const deleteResult = await deleteNetworkEntity(paramsString);
         console.log('Network entity deleted successfully:', deleteResult);
     } catch (error) {
         console.error('Error deleting network entity:', error.message);
     }
 
-    const nonExistentParams = {
+    const nonExistentParamsJson = {
         entityType: "websites",
         // ID of a non-existent network entity
         id: "non_existent_website"
     };
+    const nonExistentParamsString = JSON.stringify(nonExistentParamsJson);
 
     console.log("Attempting to delete a non-existent network entity:");
     try {
         // Attempt to delete a network entity that does not exist
-        const nonExistentDeleteResult = await deleteNetworkEntity(nonExistentParams);
+        const nonExistentDeleteResult = await deleteNetworkEntity(nonExistentParamsString);
         console.log('Network entity deleted successfully:', nonExistentDeleteResult);
     } catch (error) {
         // Expected to fail because the entity does not exist
