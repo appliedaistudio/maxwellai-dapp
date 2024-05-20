@@ -70,15 +70,15 @@ const paramsSchema = {
     "title": "Params",
     "type": "object",
     "properties": {
-        "entityType": {
+        "entityTypeString": {
             "type": "string",
             "enum": ["websites", "contacts", "devices"]
         },
-        "networkEntityString": {
-            "type": "string"
+        "networkEntityJson": {
+            "type": "object"
         }
     },
-    "required": ["entityType", "networkEntityString"]
+    "required": ["entityTypeString", "networkEntityJson"]
 };
 
 // Function to validate a network entity against the JSON schema
@@ -107,6 +107,7 @@ function validateNetworkEntity(networkEntityString, entityType) {
             return 'Network entity schema validation failed: ' + validationResult.error;
         }
         log("Exiting function", config.verbosityLevel, 4, functionName);
+        return 'Network entity validation successful';
     } catch (error) {
         // Handle JSON parsing errors
         log(error, config.verbosityLevel, 1, functionName);
@@ -127,6 +128,7 @@ function validateParams(paramsString) {
             return 'Params validation failed: ' + validationResult.error;
         }
         log("Exiting function", config.verbosityLevel, 4, functionName);
+        return 'Params validation successful';
     } catch (error) {
         // Handle JSON validation errors
         log(error, config.verbosityLevel, 1, functionName);
@@ -286,37 +288,41 @@ function getPotentialDevices() {
 
 // Function to create a new network entity
 async function createNetworkEntity(paramsString) {
+
     const functionName = "createNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    const paramsJson = JSON.parse(paramsString);
-
-    // Validate the input parameters
-    validateParams(paramsJson);
-
-    const { entityType, networkEntityString } = paramsJson;
-
-    // Log the creation process
-    console.log(`Creating a new network entity in ${entityType}`);
-
     try {
-        // Parse the network entity string into JSON
-        const networkEntityJson = JSON.parse(networkEntityString);
+        // Validate the input parameters
+        const validationMessage = validateParams(paramsString);
+        if (validationMessage !== 'Params validation successful') {
+            throw new Error(validationMessage);
+        }
+
+        const paramsJson = JSON.parse(paramsString);
+        const { entityTypeString, networkEntityJson } = paramsJson;
+
+        // Log the creation process
+        log(`Creating a new network entity in ${entityTypeString}`, config.verbosityLevel, 4, functionName);
 
         // Validate the parsed JSON against the appropriate schema
-        validateNetworkEntity(networkEntityJson, entityType);
+        const networkEntityString = JSON.stringify(networkEntityJson);
+        const validationNetworkMessage = validateNetworkEntity(networkEntityString, entityTypeString);
+        if (validationNetworkMessage !== 'Network entity validation successful') {
+            throw new Error(validationNetworkMessage);
+        }
 
         // Fetch the network document from the local database
         const networkDoc = await localDb.get(networkDocId);
 
         // Check if an entity with the same _id already exists
-        if (networkDoc.data[entityType].data.some(entity => entity._id === networkEntityJson._id)) {
+        if (networkDoc.network.data[entityTypeString].data.some(entity => entity._id === networkEntityJson._id)) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            return `Entity with _id ${networkEntityJson._id} already exists in ${entityType}`;
+            return `Entity with _id ${networkEntityJson._id} already exists in ${entityTypeString}`;
         }
 
         // Add the new entity to the appropriate section in the network document
-        networkDoc.data[entityType].data.push(networkEntityJson);
+        networkDoc.network.data[entityTypeString].data.push(networkEntityJson);
 
         // Update the network document in the local database
         const response = await localDb.put(networkDoc);
@@ -337,20 +343,22 @@ async function getNetworkEntities(paramsString) {
     const functionName = "getNetworkEntities";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    const paramsJson = JSON.parse(paramsString);
-
     // Validate the input parameters
-    validateParams(paramsJson);
+    const validationMessage = validateParams(paramsString);
+    if (validationMessage !== 'Params validation successful') {
+        throw new Error(validationMessage);
+    }
 
-    const { entityType } = paramsJson;
+    const paramsJson = JSON.parse(paramsString);
+    const { entityTypeString } = paramsJson;
 
     // Log the retrieval process
-    console.log(`Retrieving all network entities of type ${entityType}`);
+    log(`Retrieving all network entities of type ${entityTypeString}`, config.verbosityLevel, 4, functionName);
 
     // Check if the entity type is valid
-    if (!validEntityTypes.includes(entityType)) {
+    if (!validEntityTypes.includes(entityTypeString)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        return 'Invalid network entity type: ' + entityType;
+        return 'Invalid network entity type: ' + entityTypeString;
     }
 
     try {
@@ -360,7 +368,7 @@ async function getNetworkEntities(paramsString) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
 
         // Return the list of entities of the specified type
-        return networkDoc.data[entityType].data;
+        return networkDoc.network.data[entityTypeString].data;
     } catch (error) {
         // Log and throw any errors encountered during the fetch
         log(error, config.verbosityLevel, 1, functionName);
@@ -373,24 +381,25 @@ async function getNetworkEntityById(paramsString) {
     const functionName = "getNetworkEntityById";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    const paramsJson = JSON.parse(paramsString);
-
     // Validate the input parameters
-    validateParams(paramsJson);
+    const validationMessage = validateParams(paramsString);
+    if (validationMessage !== 'Params validation successful') {
+        throw new Error(validationMessage);
+    }
 
-    const { entityType, networkEntityString } = paramsJson;
+    const paramsJson = JSON.parse(paramsString);
+    const { entityTypeString, networkEntityJson } = paramsJson;
 
     // Log the retrieval process
-    console.log(`Getting network entity by ID from ${entityType}`);
+    log(`Getting network entity by ID from ${entityTypeString}`, config.verbosityLevel, 4, functionName);
 
     // Check if the entity type is valid
-    if (!validEntityTypes.includes(entityType)) {
+    if (!validEntityTypes.includes(entityTypeString)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        return 'Invalid network entity type: ' + entityType;
+        return 'Invalid network entity type: ' + entityTypeString;
     }
 
     // Parse the network entity string into JSON
-    const networkEntityJson = JSON.parse(networkEntityString);
     const { _id } = networkEntityJson;
 
     try {
@@ -398,7 +407,7 @@ async function getNetworkEntityById(paramsString) {
         const networkDoc = await localDb.get(networkDocId);
 
         // Find the network entity by ID
-        const networkEntity = networkDoc.data[entityType].data.find(entity => entity._id === _id);
+        const networkEntity = networkDoc.network.data[entityTypeString].data.find(entity => entity._id === _id);
         
         // Check if the network entity was found
         if (networkEntity) {
@@ -406,7 +415,7 @@ async function getNetworkEntityById(paramsString) {
             return networkEntity;
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            return `Network entity with ID ${_id} not found in ${entityType}`;
+            return `Network entity with ID ${_id} not found in ${entityTypeString}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the fetch
@@ -420,38 +429,41 @@ async function updateNetworkEntity(paramsString) {
     const functionName = "updateNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    const paramsJson = JSON.parse(paramsString);
-
     // Validate the input parameters
-    validateParams(paramsJson);
+    const validationMessage = validateParams(paramsString);
+    if (validationMessage !== 'Params validation successful') {
+        throw new Error(validationMessage);
+    }
 
-    const { entityType, networkEntityString } = paramsJson;
+    const paramsJson = JSON.parse(paramsString);
+    const { entityTypeString, networkEntityJson } = paramsJson;
 
     // Log the update process
-    console.log(`Updating network entity in ${entityType}`);
+    log(`Updating network entity in ${entityTypeString}`, config.verbosityLevel, 4, functionName);
 
     // Check if the entity type is valid
-    if (!validEntityTypes.includes(entityType)) {
+    if (!validEntityTypes.includes(entityTypeString)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        return 'Invalid network entity type: ' + entityType;
+        return 'Invalid network entity type: ' + entityTypeString;
     }
 
     try {
-        // Parse the network entity string into JSON
-        const networkEntityJson = JSON.parse(networkEntityString);
-
         // Validate the parsed JSON against the appropriate schema
-        validateNetworkEntity(networkEntityString, entityType);
+        const networkEntityString = JSON.stringify(networkEntityJson);
+        const validationNetworkMessage = validateNetworkEntity(networkEntityString, entityTypeString);
+        if (validationNetworkMessage !== 'Network entity validation successful') {
+            throw new Error(validationNetworkMessage);
+        }
 
         // Fetch the network document from the local database
         const networkDoc = await localDb.get(networkDocId);
 
         // Find the index of the network entity by ID
-        const index = networkDoc.data[entityType].data.findIndex(entity => entity._id === networkEntityJson._id);
+        const index = networkDoc.network.data[entityTypeString].data.findIndex(entity => entity._id === networkEntityJson._id);
         
         if (index !== -1) {
             // Update the network entity at the found index
-            networkDoc.data[entityType].data[index] = networkEntityJson;
+            networkDoc.network.data[entityTypeString].data[index] = networkEntityJson;
 
             // Update the network document in the local database
             const response = await localDb.put(networkDoc);
@@ -463,7 +475,7 @@ async function updateNetworkEntity(paramsString) {
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
-            return `Network entity with ID ${networkEntityJson._id} not found in ${entityType}`;
+            return `Network entity with ID ${networkEntityJson._id} not found in ${entityTypeString}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the process
@@ -477,20 +489,23 @@ async function deleteNetworkEntity(paramsString) {
     const functionName = "deleteNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
-    const paramsJson = JSON.parse(paramsString);
-
     // Validate the input parameters
-    validateParams(paramsJson);
+    const validationMessage = validateParams(paramsString);
+    if (validationMessage !== 'Params validation successful') {
+        throw new Error(validationMessage);
+    }
 
-    const { entityType, id } = paramsJson;
+    const paramsJson = JSON.parse(paramsString);
+    const { entityTypeString, networkEntityJson } = paramsJson;
+    const { _id } = networkEntityJson; // Extract _id from networkEntityJson
 
     // Log the deletion process
-    console.log(`Deleting network entity from ${entityType}`);
+    log(`Deleting network entity from ${entityTypeString}`, config.verbosityLevel, 4, functionName);
 
     // Check if the entity type is valid
-    if (!validEntityTypes.includes(entityType)) {
+    if (!validEntityTypes.includes(entityTypeString)) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
-        return 'Invalid network entity type: ' + entityType;
+        return 'Invalid network entity type: ' + entityTypeString;
     }
 
     try {
@@ -498,11 +513,11 @@ async function deleteNetworkEntity(paramsString) {
         const networkDoc = await localDb.get(networkDocId);
 
         // Find the index of the network entity by ID
-        const index = networkDoc.data[entityType].data.findIndex(entity => entity._id === id);
+        const index = networkDoc.network.data[entityTypeString].data.findIndex(entity => entity._id === _id);
 
         if (index !== -1) {
             // Remove the network entity from the document
-            networkDoc.data[entityType].data.splice(index, 1);
+            networkDoc.network.data[entityTypeString].data.splice(index, 1);
 
             // Update the network document in the local database
             const response = await localDb.put(networkDoc);
@@ -514,8 +529,8 @@ async function deleteNetworkEntity(paramsString) {
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
-            // Throw an error if the network entity is not found
-            return `Network entity with ID ${id} not found in ${entityType}`;
+            // Return an error message if the network entity is not found
+            return `Network entity with ID ${_id} not found in ${entityTypeString}`;
         }
     } catch (error) {
         // Log and throw any errors encountered during the process
@@ -530,13 +545,13 @@ const networkTools = [
         func: validateNetworkEntity,
         description: `Validates the data of a network entity against a JSON schema to ensure conformity before performing CRUD operations. 
                       Requires a JSON string representing a network entity as input and the entity type (one of ${validEntityTypes.join(', ')}). 
-                      The input must adhere to the schema corresponding to the specified entity type: 'websitesSchema', 'contactsSchema', or 'devicesSchema'.`
+                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
     },
     {
         name: "Create A Network Entity",
         func: createNetworkEntity,
         description: `Creates a new network entity after validating its schema and inserts it into the database. 
-                      Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
+                      Requires a JSON string  with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
                       and 'networkEntityString' containing the network entity data as a JSON string. 
                       The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
     },
@@ -544,31 +559,31 @@ const networkTools = [
         name: "Retrieve All Network Entities",
         func: getNetworkEntities,
         description: `Retrieves all network entities of a specified type from the database. 
-                      Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}). 
-                      The input schema is ${paramsSchema}, which includes the 'entityType'. 
+                      Requires a JSON string with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}). 
+                      The input schema is ${paramsSchema}. 
                       Returns a JSON array of all entities.`
     },
     {
         name: "Retrieve Network Entity by ID",
         func: getNetworkEntityById,
         description: `Retrieves a specific network entity based on its ID from the specified entity type. 
-                      Requires a JSON object with 'entityType' and 'networkEntityString' containing the ID of the network entity as a JSON string. 
-                      The input schema is ${paramsSchema}, which includes the 'entityType' and 'networkEntityString'.`
+                      Requires a JSON string with 'entityType' and 'networkEntityString' containing the ID of the network entity as a JSON string. 
+                      The input schema is ${paramsSchema}.`
     },
     {
         name: "Update Network Entity",
         func: updateNetworkEntity,
         description: `Updates an existing network entity after validating its schema. 
-                      Requires a JSON object with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
-                      and 'networkEntityString' containing the updated network entity data as a JSON string. 
+                      Requires a JSON string with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
+                      and 'networkEntityJson' containing the updated network entity data as a JSON string. 
                       The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
     },
     {
         name: "Delete Network Entity",
         func: deleteNetworkEntity,
         description: `Deletes a network entity from the database based on its ID. 
-                      Requires a JSON object with 'entityType' and 'id' specifying the type and ID of the entity to be deleted. 
-                      The input schema is ${paramsSchema}, which includes the 'entityType' and 'id'.`
+                      Requires a JSON string with 'entityType' and 'id' specifying the type and ID of the entity to be deleted. 
+                      The input schema is ${paramsSchema}.`
     },
     {
         name: "Get Potential Contacts",
@@ -583,7 +598,6 @@ const networkTools = [
                       Requires no input parameters.`
     }
 ];
-
 
 const updateNetworkPrompt = aiConfig.aiUpdateNetwork;
 
@@ -615,15 +629,59 @@ function testValidateNetworkEntity() {
     try {
         // Attempt to validate an incorrectly structured network entity
         validateNetworkEntity(invalidWebsite, 'websites');
+        console.log(validateNetworkEntity(invalidWebsite, 'websites')); // Should log that validation failed
     } catch (error) {
-        // Expected to fail
+        console.error(error.message);
+    }
+};
+
+// Test function for validateParams
+function testValidateParams() {
+    // Define a valid params object
+    const validParams = {
+        entityTypeString: "websites",
+        networkEntityJson: {
+            "_id": "website1",
+            "url": "https://example.com",
+            "description": "Example website",
+            "usefulness_description": "Provides example content",
+            "category": "Research & Reference",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/seed/11/200"
+        }
+    };
+
+    // Define an invalid params object missing networkEntityJson
+    const invalidParams = {
+        entityTypeString: "websites"
+        // networkEntityJson is missing
+    };
+
+    // Test with valid params
+    console.log("Testing validateParams with valid input:");
+    try {
+        // Validate a correctly structured params object
+        const validParamsString = JSON.stringify(validParams);
+        validateParams(validParamsString);
+        console.log(validateParams(validParamsString));
+    } catch (error) {
+        console.error(error.message);
+    }
+
+    // Test with invalid params
+    console.log("Testing validateParams with invalid input:");
+    try {
+        // Attempt to validate an incorrectly structured params object
+        const invalidParamsString = JSON.stringify(invalidParams);
+        console.log(validateParams(invalidParamsString)); // Should log that validation failed
+    } catch (error) {
         console.error(error.message);
     }
 };
 
 // Test function for createNetworkEntity
 async function testCreateNetworkEntity() {
-    const validWebsite = JSON.stringify({
+    const validWebsiteJson = {
         "_id": "website_test1",
         "url": "https://example-test.com",
         "description": "Example test website",
@@ -631,11 +689,11 @@ async function testCreateNetworkEntity() {
         "category": "Research & Reference",
         "review_status": "Pending",
         "thumbnail_url": "https://picsum.photos/seed/12/200"
-    });
+    };
 
     const paramsJson = {
-        entityType: "websites",
-        networkEntityString: validWebsite
+        entityTypeString: "websites",
+        networkEntityJson: validWebsiteJson
     };
 
     const paramsString = JSON.stringify(paramsJson);
@@ -648,8 +706,8 @@ async function testCreateNetworkEntity() {
 
         // Verify the entity was actually created by checking its existence
         const verifyParamsJson = {
-            entityType: "websites",
-            networkEntityString: JSON.stringify({ _id: "website_test1" })
+            entityTypeString: "websites",
+            networkEntityJson: { _id: "website_test1" }
         };
         const verifyParamsString = JSON.stringify(verifyParamsJson);
 
@@ -673,7 +731,8 @@ async function testCreateNetworkEntity() {
 // Test function for getNetworkEntities
 async function testGetNetworkEntities() {
     const paramsJson = {
-        entityType: "websites"
+        entityTypeString: "websites",
+        networkEntityJson: {}
     };
     const paramsString = JSON.stringify(paramsJson);
 
@@ -690,9 +749,9 @@ async function testGetNetworkEntities() {
 // Test function for getNetworkEntityById
 async function testGetNetworkEntityById() {
     const paramsJson = {
-        entityType: "websites",
+        entityTypeString: "websites",
         // JSON string containing the ID of the network entity to retrieve
-        networkEntityString: JSON.stringify({ _id: "website_test1" })
+        networkEntityJson: { _id: "website_test1" }
     };
     const paramsString = JSON.stringify(paramsJson);
 
@@ -708,7 +767,7 @@ async function testGetNetworkEntityById() {
 
 // Test function for updateNetworkEntity
 async function testUpdateNetworkEntity() {
-    const updatedWebsite = JSON.stringify({
+    const updatedWebsiteJson = {
         "_id": "website_test1",
         "url": "https://example-test-updated.com",
         "description": "Updated example test website",
@@ -716,11 +775,11 @@ async function testUpdateNetworkEntity() {
         "category": "Research & Reference",
         "review_status": "Reviewed",
         "thumbnail_url": "https://picsum.photos/seed/13/200"
-    });
+    };
 
     const paramsJson = {
-        entityType: "websites",
-        networkEntityString: updatedWebsite
+        entityTypeString: "websites",
+        networkEntityJson: updatedWebsiteJson
     };
     const paramsString = JSON.stringify(paramsJson);
 
@@ -733,7 +792,7 @@ async function testUpdateNetworkEntity() {
         console.error('Error updating network entity:', error.message);
     }
 
-    const nonExistentWebsite = JSON.stringify({
+    const nonExistentWebsiteJson = {
         "_id": "non_existent_website",
         "url": "https://non-existent.com",
         "description": "Non-existent website",
@@ -741,11 +800,11 @@ async function testUpdateNetworkEntity() {
         "category": "Research & Reference",
         "review_status": "Pending",
         "thumbnail_url": "https://picsum.photos/seed/14/200"
-    });
+    };
 
     const nonExistentParamsJson = {
-        entityType: "websites",
-        networkEntityString: nonExistentWebsite
+        entityTypeString: "websites",
+        networkEntityString: nonExistentWebsiteJson
     };
     const nonExistentParamsString = JSON.stringify(nonExistentParamsJson);
 
@@ -762,10 +821,19 @@ async function testUpdateNetworkEntity() {
 
 // Test function for deleteNetworkEntity
 async function testDeleteNetworkEntity() {
+    const websiteToDelete = {
+        "_id": "website_test1",
+        "url": "https://example-test-updated.com",
+        "description": "Updated example test website",
+        "usefulness_description": "Provides updated test content",
+        "category": "Research & Reference",
+        "review_status": "Reviewed",
+        "thumbnail_url": "https://picsum.photos/seed/13/200"
+    };
+
     const paramsJson = {
-        entityType: "websites",
-        // ID of the network entity to delete
-        id: "website_test1"
+        entityTypeString: "websites",
+        networkEntityJson: websiteToDelete
     };
     const paramsString = JSON.stringify(paramsJson);
 
@@ -778,10 +846,19 @@ async function testDeleteNetworkEntity() {
         console.error('Error deleting network entity:', error.message);
     }
 
+    const nonExistentWebsite = {
+        "_id": "non_existent_website",
+        "url": "https://non-existent.com",
+        "description": "Non-existent website",
+        "usefulness_description": "Does not exist",
+        "category": "Research & Reference",
+        "review_status": "Pending",
+        "thumbnail_url": "https://picsum.photos/seed/14/200"
+    };
+
     const nonExistentParamsJson = {
-        entityType: "websites",
-        // ID of a non-existent network entity
-        id: "non_existent_website"
+        entityTypeString: "websites",
+        networkEntityJson: nonExistentWebsite
     };
     const nonExistentParamsString = JSON.stringify(nonExistentParamsJson);
 
@@ -799,6 +876,7 @@ async function testDeleteNetworkEntity() {
 // Test harness that runs all test functions
 async function runNetworkUtilsTestSuite() {
     testValidateNetworkEntity();
+    testValidateParams();
     await testCreateNetworkEntity();
     await testGetNetworkEntities();
     await testGetNetworkEntityById();

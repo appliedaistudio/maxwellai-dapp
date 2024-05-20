@@ -206,7 +206,7 @@ async function engageAI() {
    await updateTasks(insightTakeaways);
 
    // Update the external resources feed based on insights gained from user interactions
-   //await updateNetwork(insightTakeaways);
+   await updateNetwork(insightTakeaways);
 
    // Act on the existing action takeaways
    //actionTakeaways.forEach(action => console.log(action));
