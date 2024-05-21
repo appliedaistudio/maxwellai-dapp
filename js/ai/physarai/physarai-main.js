@@ -133,7 +133,7 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
                 messages.push({ "role": "user", "content": "Observation: " + observation });
             } else if (action === "Response To Human") {
                 // Log response specifically for a human-directed response
-                log("Exiting Physari with the following Response to Human: " + actionInput, aiConfig.verbosityLevel, 1, functionName);
+                log("Exiting Physari", aiConfig.verbosityLevel, 1, functionName);
                 // Exit PhysarAI
                 return null;
             } else {

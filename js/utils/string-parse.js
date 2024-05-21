@@ -39,6 +39,13 @@ function validateJson(jsonData, schema) {
             }
         }
 
+        // Check for const values
+        if (schema.properties[key].hasOwnProperty('const')) {
+            if (jsonData[key] !== schema.properties[key]['const']) {
+                return { valid: false, error: `Property '${key}' must have the constant value ${schema.properties[key]['const']}` };
+            }
+        }
+
         // Validate properties that are arrays according to the schema
         if (schema.properties[key].type === 'array' && Array.isArray(jsonData[key])) {
             let itemSchema = schema.properties[key].items;
@@ -65,6 +72,7 @@ function validateJson(jsonData, schema) {
             return { valid: false, error: `Property '${key}' has invalid type, expected ${schema.properties[key].type}` };
         }
     }
+
     // If all validations pass, return that the data is valid
     return { valid: true, error: null };
 };

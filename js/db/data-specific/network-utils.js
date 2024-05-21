@@ -18,7 +18,11 @@ const websitesSchema = {
         "usefulness_description": { "type": "string" },
         "category": { "type": "string", "enum": ["Research & Reference", "Cybersecurity Resources"] },
         "review_status": { "type": "string", "enum": ["Pending", "Reviewed"] },
-        "thumbnail_url": { "type": "string", "format": "uri" }
+        "thumbnail_url": { 
+            "type": "string", 
+            "format": "uri",
+            "const": "https://picsum.photos/id/445/200" 
+        }
     },
     "required": ["_id", "url", "description", "usefulness_description", "category", "review_status", "thumbnail_url"]
 };
@@ -35,7 +39,11 @@ const contactsSchema = {
         "relationship": { "type": "string" },
         "category": { "type": "string", "enum": ["Networking", "Personal"] },
         "review_status": { "type": "string", "enum": ["Reviewed", "Not Suitable"] },
-        "thumbnail_url": { "type": "string", "format": "uri" }
+        "thumbnail_url": { 
+            "type": "string", 
+            "format": "uri",
+            "const": "https://picsum.photos/id/160/200" 
+        }
     },
     "required": ["_id", "name", "email", "phone", "relationship", "category", "review_status", "thumbnail_url"]
 };
@@ -59,7 +67,11 @@ const devicesSchema = {
         },
         "category": { "type": "string", "enum": ["Utility"] },
         "review_status": { "type": "string", "enum": ["Pending", "Reviewed"] },
-        "thumbnail_url": { "type": "string", "format": "uri" }
+        "thumbnail_url": { 
+            "type": "string", 
+            "format": "uri",
+            "const": "https://picsum.photos/id/36/200" 
+        }
     },
     "required": ["_id", "name", "type", "location", "api_info", "category", "review_status", "thumbnail_url"]
 };
@@ -156,7 +168,7 @@ function getPotentialContacts() {
 
     // Return a list of simulated potential contacts
     log("Exiting function", config.verbosityLevel, 4, functionName);
-    return [
+    const contacts =  [
         {
             "_id": "contact_sim1",
             "name": "Alice Johnson",
@@ -208,6 +220,7 @@ function getPotentialContacts() {
             "thumbnail_url": "https://picsum.photos/seed/20/200"
         }
     ];
+    return JSON.stringify(contacts);
 };
 
 // Function to get a list of potential devices
@@ -217,7 +230,7 @@ function getPotentialDevices() {
 
     // Return a list of simulated potential devices
     log("Exiting function", config.verbosityLevel, 4, functionName);
-    return [
+    const devices = [
         {
             "_id": "device_sim1",
             "name": "Smart Thermostat",
@@ -284,6 +297,21 @@ function getPotentialDevices() {
             "thumbnail_url": "https://picsum.photos/seed/25/200"
         }
     ];
+    return JSON.stringify(devices);
+};
+
+// Helper function to get the schema based on the entity type
+function getSchemaForEntityType(entityTypeString) {
+    switch (entityTypeString) {
+        case 'websites':
+            return websitesSchema;
+        case 'contacts':
+            return contactsSchema;
+        case 'devices':
+            return devicesSchema;
+        default:
+            throw new Error(`Unknown entity type: ${entityTypeString}`);
+    }
 };
 
 // Function to create a new network entity
@@ -309,7 +337,9 @@ async function createNetworkEntity(paramsString) {
         const networkEntityString = JSON.stringify(networkEntityJson);
         const validationNetworkMessage = validateNetworkEntity(networkEntityString, entityTypeString);
         if (validationNetworkMessage !== 'Network entity validation successful') {
-            throw new Error(validationNetworkMessage);
+            // Include schema in the error message for feedback
+            const schema = getSchemaForEntityType(entityTypeString);
+            return`${validationNetworkMessage}. Be sure to follow this schema: ${JSON.stringify(schema)}`;
         }
 
         // Fetch the network document from the local database
@@ -330,7 +360,8 @@ async function createNetworkEntity(paramsString) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
 
         // Return the response from the database update
-        return response;
+        const responseString = JSON.stringify(response);
+        return responseString;
     } catch (error) {
         // Log any errors encountered during the process
         log(error, config.verbosityLevel, 1, functionName);
@@ -368,7 +399,9 @@ async function getNetworkEntities(paramsString) {
         log("Exiting function", config.verbosityLevel, 4, functionName);
 
         // Return the list of entities of the specified type
-        return networkDoc.network.data[entityTypeString].data;
+        const entitiesJson = networkDoc.network.data[entityTypeString].data;
+        const entitiesString = JSON.stringify(entitiesJson);
+        return entitiesString
     } catch (error) {
         // Log and throw any errors encountered during the fetch
         log(error, config.verbosityLevel, 1, functionName);
@@ -412,7 +445,7 @@ async function getNetworkEntityById(paramsString) {
         // Check if the network entity was found
         if (networkEntity) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
-            return networkEntity;
+            return JSON.stringify(networkEntity);
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
             return `Network entity with ID ${_id} not found in ${entityTypeString}`;
@@ -471,7 +504,8 @@ async function updateNetworkEntity(paramsString) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
             // Return the response from the database update
-            return { updated: true, response };
+            const responseString = JSON.stringify({ updated: true, response });
+            return responseString;
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
@@ -525,7 +559,8 @@ async function deleteNetworkEntity(paramsString) {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
             // Return the response from the database update
-            return { deleted: true, response };
+            const responseString = JSON.stringify({ deleted: true, response });
+            return responseString;
         } else {
             log("Exiting function", config.verbosityLevel, 4, functionName);
 
@@ -541,49 +576,53 @@ async function deleteNetworkEntity(paramsString) {
 
 const networkTools = [
     {
-        name: "Network Entity JSON Schema Validation",
-        func: validateNetworkEntity,
-        description: `Validates the data of a network entity against a JSON schema to ensure conformity before performing CRUD operations. 
-                      Requires a JSON string representing a network entity as input and the entity type (one of ${validEntityTypes.join(', ')}). 
-                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
-    },
-    {
         name: "Create A Network Entity",
         func: createNetworkEntity,
-        description: `Creates a new network entity after validating its schema and inserts it into the database. 
-                      Requires a JSON string  with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
-                      and 'networkEntityString' containing the network entity data as a JSON string. 
-                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
+        description: `Creates a new network entity (after validating its schema) and inserts it into the database.
+                      Requires as input a JSON string that has a schema of ${paramsSchema}.
+                      The 'entityTypeString' must be one of ${validEntityTypes.join(', ')}.
+                      The 'networkEntityJson' of a new website must adhere to the ${websitesSchema} schema.
+                      The 'networkEntityJson' of a new contact must adhere to the ${contactsSchema} schema.
+                      The 'networkEntityJson' of a new device must adhere to the ${devicesSchema} schema.`
     },
     {
         name: "Retrieve All Network Entities",
         func: getNetworkEntities,
         description: `Retrieves all network entities of a specified type from the database. 
-                      Requires a JSON string with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}). 
-                      The input schema is ${paramsSchema}. 
+                      Requires as input a JSON string that has a schema of ${paramsSchema}.
+                      The 'entityTypeString' indicates the type of network entity to retreive and must be one of ${validEntityTypes.join(', ')}.
+                      The 'networkEntityJson' should be {}.
                       Returns a JSON array of all entities.`
     },
     {
         name: "Retrieve Network Entity by ID",
         func: getNetworkEntityById,
-        description: `Retrieves a specific network entity based on its ID from the specified entity type. 
-                      Requires a JSON string with 'entityType' and 'networkEntityString' containing the ID of the network entity as a JSON string. 
-                      The input schema is ${paramsSchema}.`
+        description: `Retrieves a specific network entity based on its ID from the specified network entity JSON.
+                      Requires as input a JSON string that has a schema of ${paramsSchema}.
+                      The 'entityTypeString' must be one of ${validEntityTypes.join(', ')}.
+                      The 'networkEntityJson' must adhere to one of the following schemas: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.
+                      Returns a JSON object of the network entity that corresponds to the category given in entityTypeString and _id given in networkEntityJson.`
     },
     {
         name: "Update Network Entity",
         func: updateNetworkEntity,
         description: `Updates an existing network entity after validating its schema. 
-                      Requires a JSON string with 'entityType' specifying the type of entity (one of ${validEntityTypes.join(', ')}), 
-                      and 'networkEntityJson' containing the updated network entity data as a JSON string. 
-                      The input must adhere to the schema corresponding to the specified entity type: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.`
+                      Requires as input a JSON string that has a schema of ${paramsSchema}.
+                      The 'entityTypeString' must be one of ${validEntityTypes.join(', ')}.
+                      The 'entityTypeString' must be one of ${validEntityTypes.join(', ')}.
+                      The 'networkEntityJson' of an updated website must adhere to the ${websitesSchema} schema.
+                      The 'networkEntityJson' of an updated contact must adhere to the ${contactsSchema} schema.
+                      The 'networkEntityJson' of an updated device must adhere to the ${devicesSchema} schema.
+                      Updates the network entity that corresponds to the category given in entityTypeString and _id given in networkEntityJson.`
     },
     {
         name: "Delete Network Entity",
         func: deleteNetworkEntity,
         description: `Deletes a network entity from the database based on its ID. 
-                      Requires a JSON string with 'entityType' and 'id' specifying the type and ID of the entity to be deleted. 
-                      The input schema is ${paramsSchema}.`
+                      Requires as input a JSON string that has a schema of ${paramsSchema}.
+                      The 'entityTypeString' must be one of ${validEntityTypes.join(', ')}.
+                      The 'networkEntityJson' must adhere to one of the following schemas: ${websitesSchema}, ${contactsSchema}, or ${devicesSchema}.
+                      Deletes the network entity that corresponds to the category given in entityTypeString and _id given in networkEntityJson.`
     },
     {
         name: "Get Potential Contacts",
@@ -688,7 +727,7 @@ async function testCreateNetworkEntity() {
         "usefulness_description": "Provides test content",
         "category": "Research & Reference",
         "review_status": "Pending",
-        "thumbnail_url": "https://picsum.photos/seed/12/200"
+        "thumbnail_url": "https://picsum.photos/id/445/200"
     };
 
     const paramsJson = {
@@ -774,7 +813,7 @@ async function testUpdateNetworkEntity() {
         "usefulness_description": "Provides updated test content",
         "category": "Research & Reference",
         "review_status": "Reviewed",
-        "thumbnail_url": "https://picsum.photos/seed/13/200"
+        "thumbnail_url": "https://picsum.photos/id/445/200"
     };
 
     const paramsJson = {
@@ -799,12 +838,12 @@ async function testUpdateNetworkEntity() {
         "usefulness_description": "Does not exist",
         "category": "Research & Reference",
         "review_status": "Pending",
-        "thumbnail_url": "https://picsum.photos/seed/14/200"
+        "thumbnail_url": "https://picsum.photos/id/445/200"
     };
 
     const nonExistentParamsJson = {
         entityTypeString: "websites",
-        networkEntityString: nonExistentWebsiteJson
+        networkEntityJson: nonExistentWebsiteJson
     };
     const nonExistentParamsString = JSON.stringify(nonExistentParamsJson);
 
@@ -828,7 +867,7 @@ async function testDeleteNetworkEntity() {
         "usefulness_description": "Provides updated test content",
         "category": "Research & Reference",
         "review_status": "Reviewed",
-        "thumbnail_url": "https://picsum.photos/seed/13/200"
+        "thumbnail_url": "https://picsum.photos/id/445/200"
     };
 
     const paramsJson = {
@@ -853,7 +892,7 @@ async function testDeleteNetworkEntity() {
         "usefulness_description": "Does not exist",
         "category": "Research & Reference",
         "review_status": "Pending",
-        "thumbnail_url": "https://picsum.photos/seed/14/200"
+        "thumbnail_url": "https://picsum.photos/id/445/200"
     };
 
     const nonExistentParamsJson = {
