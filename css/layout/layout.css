@@ -43,3 +43,21 @@
     max-height: 55vh; /* Limits the maximum height to prevent overflow of the screen height */
     overflow: auto; /* Enables scrolling for the content area if the content exceeds the box size */
 }
+
+/* Define keyframes for pulsing animation */
+@keyframes pulse {
+    0% {
+        background-color: var(--neutral-color-bg); /* Original color */
+    }
+    50% {
+        background-color: rgba(0, 0, 0, 0.1); /* Darker color */
+    }
+    100% {
+        background-color: var(--neutral-color-bg); /* Original color */
+    }
+}
+
+/* Add the pulse animation to the app content */
+.pulsing {
+    animation: pulse 1s infinite !important;
+}

@@ -5,28 +5,37 @@ import { decryptString } from '../../utils/encryption.js';
 // Initialize local and remote PouchDB instances using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
-// Retreive the setting that stores MaxwellAI's personality type
+// Retrieve the setting that stores MaxwellAI's personality type
 async function maxwellaiPersonality() {
-    // Fetch the existing settings document from localDb
-    const doc = await localDb.get('dapp_settings');
+    try {
+        // Fetch the existing settings document from localDb
+        const doc = await localDb.get('dapp_settings');
+        
+        // Fetch and decrypt the personality from localDb
+        const encryptedPersonality = await doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
+        const personality = await decryptString(encryptedPersonality);
+        return personality;
+    } catch (error) {
+        // Return null if there is an error
+        return null;
+    }
+};
 
-    // Fetch and decrypt the personality from localDb
-    const encryptedPersonality = await doc.settings.MaxwellAI_Meyers_Briggs_Personality_Type.value;
-    const personality = await decryptString(encryptedPersonality);
-    return personality;
-
-}
-
-// Retreive the setting that stores the user's personality type
+// Retrieve the setting that stores the user's personality type
 async function userPersonality() {
-    // Fetch the existing settings document from localDb
-    const doc = await localDb.get('dapp_settings');
-
-    // Fetch and decrypt the personality from localDb
-    const encryptedPersonality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
-    const personality = await decryptString(encryptedPersonality);
-    return personality;
-}
+    try {
+        // Fetch the existing settings document from localDb
+        const doc = await localDb.get('dapp_settings');
+        
+        // Fetch and decrypt the personality from localDb
+        const encryptedPersonality = await doc.settings.Your_Meyers_Briggs_Personality_Type.value;
+        const personality = await decryptString(encryptedPersonality);
+        return personality;
+    } catch (error) {
+        // Return null if there is an error
+        return null;
+    }
+};
 
 // Caveats to be observed by the AI at all times
 const aiCaveats = `
@@ -94,6 +103,7 @@ const aiUpdateTasks = `
 
 // Configuration details for the AI
 const aiConfig = {
+    aiSubstrateFolder: "cybersecurity-productivity",
     LLM: 'gpt-4o',
     verbosityLevel: 1,
     aiProfile: maxwellaiProfile,
@@ -105,4 +115,4 @@ const aiConfig = {
     aiUpdateTasks
 };
 
-export default aiConfig;
+export { aiConfig };

@@ -1,0 +1,105 @@
+{
+  "_id": "maxwellai_project_feedback",
+  "takeaway_types": ["insight", "action"],
+  "feedback": [
+    {
+      "_id": 1,
+      "time": "2024-02-15 10:00 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm using machine learning for threat detection."},
+        {"speaker": "AI", "text": "Great approach. Automation can further enhance response."},
+        {"speaker": "User", "text": "Continuous improvement is key."},
+        {"speaker": "AI", "text": "Agreed. Keep it up!"}
+      ],
+      "takeaway": {"insight": "Exploring ML and automation for threat intelligence is beneficial."}
+    },
+    {
+      "_id": 2,
+      "time": "2024-02-20 11:30 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm presenting on AI in cybersecurity."},
+        {"speaker": "AI", "text": "Exciting topic. Need any assistance?"},
+        {"speaker": "User", "text": "Case studies on MaxwellAI's impact."},
+        {"speaker": "AI", "text": "I'm here to help. Good luck!"}
+      ],
+      "takeaway": {"insight": "Preparing a keynote on AI's impact is valuable."}
+    },
+    {
+      "_id": 3,
+      "time": "2024-02-25 02:00 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm enhancing network security."},
+        {"speaker": "AI", "text": "Good steps. Vigilance is crucial."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the great work!"}
+      ],
+      "takeaway": {"insight": "Improving network security measures is vital."}
+    },
+    {
+      "_id": 4,
+      "time": "2024-03-02 03:45 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Researching advanced persistent threats."},
+        {"speaker": "AI", "text": "Understanding their tactics is key."},
+        {"speaker": "User", "text": "Indeed."},
+        {"speaker": "AI", "text": "Keep researching diligently!"}
+      ],
+      "takeaway": {"insight": "Researching APTs is essential for defense strategies."}
+    },
+    {
+      "_id": 5,
+      "time": "2024-03-10 04:30 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Analyzing endpoint security."},
+        {"speaker": "AI", "text": "Behavioral analysis is promising."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the detailed analysis!"}
+      ],
+      "takeaway": {"insight": "Examining endpoint security solutions thoroughly is important."}
+    },
+    {
+      "_id": 6,
+      "time": "2024-03-15 02:15 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Exploring cloud security."},
+        {"speaker": "AI", "text": "Encryption and access control are fundamental."},
+        {"speaker": "User", "text": "Exactly."},
+        {"speaker": "AI", "text": "Keep up the comprehensive exploration!"}
+      ],
+      "takeaway": {"insight": "Researching cloud security practices is crucial."}
+    },
+    {
+      "_id": 7,
+      "time": "2024-03-20 11:45 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "Evaluating intrusion detection systems."},
+        {"speaker": "AI", "text": "Machine learning can enhance anomaly detection."},
+        {"speaker": "User", "text": "True."},
+        {"speaker": "AI", "text": "Keep evaluating diligently!"}
+      ],
+      "takeaway": {"insight": "Carefully assessing intrusion detection systems is important."}
+    },
+    {
+      "_id": 8,
+      "time": "2024-03-25 03:30 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "Researching security orchestration platforms."},
+        {"speaker": "AI", "text": "Integration with threat intel is crucial."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the thorough research!"}
+      ],
+      "takeaway": {"insight": "Exploring SOAR platforms with threat intel integration is beneficial."}
+    },
+    {
+      "_id": 9,
+      "time": "2024-03-30 10:45 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "Studying social engineering tactics."},
+        {"speaker": "AI", "text": "Awareness training is effective."},
+        {"speaker": "User", "text": "Agreed."},
+        {"speaker": "AI", "text": "Keep up the vigilant study!"}
+      ],
+      "takeaway": {"insight": "Continuing social engineering studies with a focus on awareness training is vital."}
+    }
+  ]
+}

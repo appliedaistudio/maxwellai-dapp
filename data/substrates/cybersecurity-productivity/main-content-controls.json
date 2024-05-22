@@ -1,0 +1,23 @@
+{
+    "_id": "hello_world_controls",
+    "icons": [
+      {
+        "_id": "icon1",
+        "name": "you",
+        "iconClass": "fas fa-user",
+        "tooltip": "Let MaxwellAI get to know you."
+      },
+      {
+        "_id": "icon2",
+        "name": "your aspirations",
+        "iconClass": "fas fa-rocket",
+        "tooltip": "Talk to MaxwellAI about your projects and aspirations."
+      },
+      {
+        "_id": "icon3",
+        "name": "your environment",
+        "iconClass": "fa fa-home",
+        "tooltip": "Talk to MaxwellAI about what's happening around you."
+      }
+    ]
+  }

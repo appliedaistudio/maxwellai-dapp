@@ -1,5 +1,5 @@
 
-import aiConfig from './physarai-config.js';
+import { aiConfig } from './physarai-config.js';
 import { log } from '../../utils/logging.js';
 
 // Helper function to extract actions and their inputs from a JSON response

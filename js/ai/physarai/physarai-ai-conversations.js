@@ -1,4 +1,4 @@
-import aiConfig from './physarai-config.js';
+import { aiConfig } from './physarai-config.js';
 import { log } from '../../utils/logging.js';
 
 // Function specifically for handling degraded mode in AI conversation response scenarios

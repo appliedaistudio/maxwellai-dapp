@@ -1,5 +1,5 @@
 import { log } from "../utils/logging.js";
-import config from "../ai/physarai/physarai-config.js";
+import { aiConfig } from "../ai/physarai/physarai-config.js";
 
 
 function formatJson(obj, spaces) {
@@ -81,8 +81,8 @@ function removeNonAlphanumeric(text) {
     const functionName = "removeNonAlphanumeric";
 
     log("Entering removeNonAlphanumeric function", config.verbosityLevel, 4, functionName); // Log function entry with verbosity level 4
-    log("Input text:", config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
-    log(text, config.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
+    log("Input text:", aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
+    log(text, aiConfig.verbosityLevel, 4, functionName); // Log input text with verbosity level 4
     let result = '';
     for (let char of text) {
         // Check if the character is alphanumeric or a space
@@ -90,9 +90,9 @@ function removeNonAlphanumeric(text) {
             result += char;
         }
     }
-    log("Output text:", config.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
-    log(result, config.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
-    log("Exiting removeNonAlphanumeric function", config.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
+    log("Output text:", aiConfig.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
+    log(result, aiConfig.verbosityLevel, 4, functionName); // Log output text with verbosity level 4
+    log("Exiting removeNonAlphanumeric function", aiConfig.verbosityLevel, 4, functionName); // Log function exit with verbosity level 4
     return result;
 };
 

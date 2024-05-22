@@ -26,6 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Add an event listener for messages from the service worker
+navigator.serviceWorker.addEventListener('message', (event) => {
+    const appContent = document.getElementById('app-content');
+
+    if (event.data.action === 'startPulsing') {
+        appContent.classList.add('pulsing');
+    } else if (event.data.action === 'stopPulsing') {
+        appContent.classList.remove('pulsing');
+    }
+});
+
 // Fetch tasks from PouchDB and handle them
 const loadTasks = async () => {
     try {

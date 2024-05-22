@@ -193,24 +193,38 @@ async function updateNetwork(insightTakeaways) {
 }
 
 async function engageAI() {
-   // Send out any outstanding notifications
-   await sendNotifications();
+  // Notify the main thread to start the pulsing effect
+  self.clients.matchAll().then(clients => {
+      clients.forEach(client => {
+          client.postMessage({ action: 'startPulsing' });
+      });
+  });
 
-   // Gather insights action items as a result of user interaction
-   const [insightTakeaways, actionTakeaways] = await takeaways();
+  // Send out any outstanding notifications
+  await sendNotifications();
 
-   // Update the notifications based on insights gained from user interactions
-   await updateNotifications(insightTakeaways);
+  // Gather insights action items as a result of user interaction
+  const [insightTakeaways, actionTakeaways] = await takeaways();
 
-   // Update the tasks based on insights gained from user interactions
-   await updateTasks(insightTakeaways);
+  // Update the notifications based on insights gained from user interactions
+  await updateNotifications(insightTakeaways);
 
-   // Update the external resources feed based on insights gained from user interactions
-   await updateNetwork(insightTakeaways);
+  // Update the tasks based on insights gained from user interactions
+  await updateTasks(insightTakeaways);
 
-   // Act on the existing action takeaways
-   //actionTakeaways.forEach(action => console.log(action));
-}
+  // Update the external resources feed based on insights gained from user interactions
+  await updateNetwork(insightTakeaways);
+
+  // Notify the main thread to stop the pulsing effect
+  self.clients.matchAll().then(clients => {
+      clients.forEach(client => {
+          client.postMessage({ action: 'stopPulsing' });
+      });
+  });
+
+  // Act on the existing action takeaways
+  //actionTakeaways.forEach(action => console.log(action));
+};
 
 const regularIntervalInMinutes = 3; // Regular interval in minutes
 const regularIntervalInSeconds = regularIntervalInMinutes * 60; // Regular interval in seconds

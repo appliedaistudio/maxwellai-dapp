@@ -1,0 +1,43 @@
+{
+    "_id": "hello_world_menu",
+    "options": [
+        {
+            "_id": "Menu 1",
+            "name": "MaxwellAI",
+            "tooltip": "Explore Menu 1 options",
+            "items": [
+                {
+                    "name": "Small, Meaningful Tasks",
+                    "tooltip": "Your goals broken down into attainable tasks"
+                },
+                {
+                    "name": "Resource Network",
+                    "tooltip": "A network of resource suggestions tailored to your goals"
+                },
+                {
+                    "name": "Helpful Interventions",
+                    "tooltip": "A list of upcoming actions that MaxwellAI will take on your behalf"
+                },
+                {
+                    "name": "MaxwellAI Settings",
+                    "tooltip": "Set MaxwellAI's settings"
+                },
+                {
+                    "name": "System Diagnostics",
+                    "tooltip": "Run checks to make sure all systems are functioning"
+                }
+            ]
+        },
+        {
+            "_id": "User",
+            "name": "You",
+            "tooltip": "Access user options",
+            "items": [
+                {
+                    "name": "Logout",
+                    "tooltip": "Sign out of your account"
+                }
+            ]
+        }
+    ]
+}

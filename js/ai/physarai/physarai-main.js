@@ -1,6 +1,6 @@
 import '../../../lib/pouchdb/pouchdb.min.js';
 
-import aiConfig from './physarai-config.js';
+import { aiConfig } from './physarai-config.js';
 
 import { llmApiKey, llmEndpoint } from './physarai-database.js';
 import { interactWithLLM } from './physarai-llm-interactions.js';

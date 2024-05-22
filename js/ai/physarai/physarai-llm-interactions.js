@@ -1,5 +1,5 @@
 
-import aiConfig from './physarai-config.js';
+import { aiConfig } from './physarai-config.js';
 import { log } from '../../utils/logging.js';
 
 // Interacts with the LLM using the provided configuration

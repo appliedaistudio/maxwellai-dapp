@@ -1,5 +1,5 @@
 import config from "../../dapp-config.js";
-import aiConfig from "../../ai/physarai/physarai-config.js";
+import { aiConfig } from "../../ai/physarai/physarai-config.js";
 import { validateJson } from "../../utils/string-parse.js";
 import { log } from "../../utils/logging.js";
 
