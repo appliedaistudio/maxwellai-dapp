@@ -21,7 +21,7 @@ const optionFunctionMappings = {
         func: navigateToScreen, // The function to execute
         params: 'notifications.html' // Directly provide the URL string
     },
-    'MaxwellAI Settings': {
+    'PhysarAI Settings': {
         func: openSettingsModal, // The function to execute
         params: '' // No parameters needed
     },

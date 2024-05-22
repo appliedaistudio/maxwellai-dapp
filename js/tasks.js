@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('User is logged in. Initializing DB and UI components...');
 
             // Proceed with initializing UI components
-            loadMenu(localDb, 'hello_world_menu');
-            loadMainContentControls(localDb, 'hello_world_controls');
+            loadMenu(localDb, 'dapp_menu');
+            loadMainContentControls(localDb, 'dapp_controls');
             loadTasksRegularly();
         }
     }).catch(err => {

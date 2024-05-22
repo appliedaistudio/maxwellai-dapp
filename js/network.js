@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Log status and initialize UI components
                 console.log('User is logged in. Initializing DB and UI components...');
-                loadMenu(localDb, 'hello_world_menu');
-                loadMainContentControls(localDb, 'hello_world_controls');
+                loadMenu(localDb, 'dapp_menu');
+                loadMainContentControls(localDb, 'dapp_controls');
                 loadNetworkDataRegularly();
             }
         })

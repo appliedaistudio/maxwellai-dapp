@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.replace('./login.html');
         } else {
             console.log('A user is currently logged in.');
-            loadMenu(localDb, 'hello_world_menu');
-            loadMainContentControls(localDb, 'hello_world_controls');
+            loadMenu(localDb, 'dapp_menu');
+            loadMainContentControls(localDb, 'dapp_controls');
         }
     }).catch(err => {
         console.error('Error while checking if user is logged in:', err);
