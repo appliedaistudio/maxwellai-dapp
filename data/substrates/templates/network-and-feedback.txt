@@ -1,0 +1,186 @@
+this is the json for a network of resources...
+
+{
+  "_id": "network",
+  "network": {
+    "metadata": {
+      "node_types": ["Websites", "Contacts", "Devices"],
+      "categories": [
+        "Research & Reference",
+        "Cybersecurity Resources",
+        "Networking",
+        "Utility",
+        "Personal"
+      ],
+      "review_statuses": ["Pending", "Reviewed", "Not Suitable"]
+    },
+    "data": {
+      "websites": {
+        "metadata": {
+          "categories": ["Research & Reference", "Cybersecurity Resources"],
+          "review_statuses": ["Pending", "Reviewed"]
+        },
+        "data": [
+          {
+            "_id": "1",
+            "url": "https://www.ias.edu/ideas",
+            "description": "Institute for Advanced Study",
+            "usefulness_description": "Access academic papers and research on cybersecurity.",
+            "category": "Research & Reference",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/id/445/200"
+          },
+          {
+            "_id": "2",
+            "url": "https://www.nsa.gov/Cybersecurity/",
+            "description": "National Security Agency - Cybersecurity",
+            "usefulness_description": "Explore cybersecurity guidelines and resources.",
+            "category": "Cybersecurity Resources",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/id/445/200"
+          }
+        ]
+      },
+      "contacts": {
+        "metadata": {
+          "categories": ["Networking", "Personal"],
+          "review_statuses": ["Reviewed", "Not Suitable"]
+        },
+        "data": [
+          {
+            "_id": "3",
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "123-456-7890",
+            "relationship": "Colleague",
+            "category": "Networking",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/id/160/200"
+          },
+          {
+            "_id": "4",
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "phone": "987-654-3210",
+            "relationship": "Friend",
+            "category": "Personal",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/id/160/200"
+          }
+        ]
+      },
+      "devices": {
+        "metadata": {
+          "categories": ["Utility"],
+          "review_statuses": ["Pending", "Reviewed"]
+        },
+        "data": [
+          {
+            "_id": "5",
+            "name": "Smart Thermostat",
+            "type": "Thermostat",
+            "location": "Living Room",
+            "api_info": {
+              "url": "https://api.example.com/thermostat",
+              "auth_token": "XXXXXXXXXXXXXXXX"
+            },
+            "category": "Utility",
+            "review_status": "Reviewed",
+            "thumbnail_url": "https://picsum.photos/id/36/200"
+          },
+          {
+            "_id": "6",
+            "name": "Security Camera",
+            "type": "Camera",
+            "location": "Front Door",
+            "api_info": {
+              "url": "https://api.example.com/camera",
+              "auth_token": "YYYYYYYYYYYYYYYY"
+            },
+            "category": "Utility",
+            "review_status": "Pending",
+            "thumbnail_url": "https://picsum.photos/id/36/200"
+          }
+        ]
+      }
+    }
+  }
+}
+
+  
+
+this is the json for user feedback on the resouce network...
+
+{
+    "_id": "network_feedback",
+    "feedback": [
+      {
+        "_id": "1",
+        "network_item_category": "websites",
+        "time": "2024-05-01 10:00 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I've been browsing the Institute for Advanced Study website."},
+          {"speaker": "AI", "text": "How do you find the content there?"},
+          {"speaker": "User", "text": "It's quite academic and high-level, which is good for deep dives but not for quick overviews."},
+          {"speaker": "AI", "text": "Would you prefer resources that offer more direct and practical content?"},
+          {"speaker": "User", "text": "Yes, that would be much more useful to me."},
+          {"speaker": "AI", "text": "I'll note that down and suggest some alternatives. Thanks for your feedback!"},
+          {"speaker": "User", "text": "Thank you, I appreciate it."}
+        ],
+        "takeaway": {
+          "insight": "User finds the Institute for Advanced Study website too academic for quick learning. Suggesting more practical content."
+        }
+      },
+      {
+        "_id": "3",
+        "network_item_category": "contacts",
+        "time": "2024-05-02 03:00 PM",
+        "dialogue": [
+          {"speaker": "User", "text": "I had a meeting with John Doe yesterday."},
+          {"speaker": "AI", "text": "How did that go?"},
+          {"speaker": "User", "text": "John was incredibly helpful in discussing potential cybersecurity threats."},
+          {"speaker": "AI", "text": "That's great to hear. Anything in particular that stood out?"},
+          {"speaker": "User", "text": "His insights on network security were spot on. I'll need to revise our current policies."},
+          {"speaker": "AI", "text": "Would you like some resources on that?"},
+          {"speaker": "User", "text": "Yes, please."},
+          {"speaker": "AI", "text": "I'll send some over. Thanks for the update!"},
+          {"speaker": "User", "text": "Thank you!"}
+        ],
+        "takeaway": {
+          "insight": "John Doe provided valuable insights on cybersecurity, prompting a review of network security policies."
+        }
+      },
+      {
+        "_id": "5",
+        "network_item_category": "devices",
+        "time": "2024-05-03 11:30 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I've been using the Smart Thermostat for a week now."},
+          {"speaker": "AI", "text": "How has your experience been with the device?"},
+          {"speaker": "User", "text": "It's user-friendly, but I had some issues with connectivity."},
+          {"speaker": "AI", "text": "Would you like some troubleshooting tips or a guide to improve connectivity?"},
+          {"speaker": "User", "text": "Yes, that would be very helpful."},
+          {"speaker": "AI", "text": "I'll find some solutions for you and get back."},
+          {"speaker": "User", "text": "Thanks, looking forward to it."}
+        ],
+        "takeaway": {
+          "insight": "User reports connectivity issues with the Smart Thermostat. AI will provide troubleshooting tips."
+        }
+      }
+    ]
+  }
+  
+
+
+the new context is the following...
+
+The user is currently attending the las vegas CES conference. The conference is huge and overwhelming. 
+Help the user make professional network connections. Notify the user of conference events that align with their specific goals. 
+Reduce the vast number of possible activities and actions down to a small number of specific tasks that will help the user get to their goals.
+Connect the user with resources (people, devices, websites) that will help them reach their goals. 
+keep the _ids of "network" and "network_feedback" unchanged.
+
+update the network and network feedback json to fit the new context. make network resources that refer to specific people. 
+Make website references that refer to specific google searches.
+make sure that the _ids in the network feedack correspond to _ids in the network.
+Create feedback for every network entity, even if the feedback is blank.

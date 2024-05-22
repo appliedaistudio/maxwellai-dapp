@@ -1,0 +1,98 @@
+{
+    "_id": "task_feedback",
+    "takeaway_types": ["insight", "action"],
+    "feedback": [
+      {
+        "_id": "1",
+        "time": "2024-05-22 10:30 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I connected with Dr. Lisa Su after her keynote (Task ID: 1), but I'm unsure how to approach the follow-up conversation."},
+          {"speaker": "AI", "text": "Would you like tips on effective follow-up communication?"},
+          {"speaker": "User", "text": "Yes, guidance on making a strong impression would be helpful."},
+          {"speaker": "AI", "text": "I'll provide recommendations to enhance your follow-up strategy. Let's ensure the task description reflects these adjustments."},
+          {"speaker": "User", "text": "That's perfect. I'll wait for the updates and continue."},
+          {"speaker": "AI", "text": "I'll work on it right away. Reach out if you need further assistance."},
+          {"speaker": "User", "text": "Thanks for the help."},
+          {"speaker": "AI", "text": "Glad to assist. Let's make your follow-up efforts more effective!"},
+          {"speaker": "User", "text": "Absolutely!"},
+          {"speaker": "AI", "text": "Take care!"}
+        ],
+        "takeaway": {
+          "action": "Update Task ID 1 description with follow-up strategy and communication tips."
+        }
+      },
+      {
+        "_id": "3",
+        "time": "2024-05-23 02:00 PM",
+        "dialogue": [
+          {"speaker": "User", "text": "I attended the AI in Healthcare panel (Task ID: 3), but I'm unsure if I captured all the essential points."},
+          {"speaker": "AI", "text": "Shall we review your notes together?"},
+          {"speaker": "User", "text": "Yes, to ensure I've covered everything important."},
+          {"speaker": "AI", "text": "I'll schedule a review session and update the task."},
+          {"speaker": "User", "text": "Great. I'll be available."},
+          {"speaker": "AI", "text": "I'll send you details."},
+          {"speaker": "User", "text": "Thanks for organizing."},
+          {"speaker": "AI", "text": "My pleasure. Let's make it thorough!"},
+          {"speaker": "User", "text": "Absolutely!"},
+          {"speaker": "AI", "text": "Take care!"}
+        ],
+        "takeaway": {
+          "action": "Schedule Task ID 3 review session and update description accordingly."
+        }
+      },
+      {
+        "_id": "5",
+        "time": "2024-05-26 11:45 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I've started following up with John Doe from Google Cloud (Task ID: 5). I need help crafting an effective follow-up email."},
+          {"speaker": "AI", "text": "Shall I provide a template and suggestions for your follow-up email?"},
+          {"speaker": "User", "text": "Yes, please. I need a clear framework."},
+          {"speaker": "AI", "text": "I'll update the task description and provide guidance."},
+          {"speaker": "User", "text": "Thanks. Waiting for updates."},
+          {"speaker": "AI", "text": "On it. Let me know if you need more."},
+          {"speaker": "User", "text": "Appreciate it."},
+          {"speaker": "AI", "text": "Glad to assist. Take care!"},
+          {"speaker": "User", "text": "You too!"}
+        ],
+        "takeaway": {
+          "action": "Update Task ID 5 description with email template and suggestions."
+        }
+      },
+      {
+        "_id": "7",
+        "time": "2024-05-24 03:30 PM",
+        "dialogue": [
+          {"speaker": "User", "text": "I'm attending the IBM workshop on scalable AI solutions (Task ID: 7) but unsure about the best sessions to focus on."},
+          {"speaker": "AI", "text": "Need tips on selecting the most relevant workshop sessions?"},
+          {"speaker": "User", "text": "Yes, recommendations on valuable sessions would be great."},
+          {"speaker": "AI", "text": "I'll include session suggestions in the task description."},
+          {"speaker": "User", "text": "Waiting for updates."},
+          {"speaker": "AI", "text": "I'll do that. Reach out if you need more."},
+          {"speaker": "User", "text": "Thanks. Appreciate it."},
+          {"speaker": "AI", "text": "Glad to help. Take care!"},
+          {"speaker": "User", "text": "You too!"}
+        ],
+        "takeaway": {
+          "action": "Update Task ID 7 description with session selection tips and resource suggestions."
+        }
+      },
+      {
+        "_id": "9",
+        "time": "2024-05-25 09:00 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I'm documenting key takeaways from Sundar Pichai's keynote on AI (Task ID: 9) tomorrow morning."},
+          {"speaker": "AI", "text": "Need assistance or resources?"},
+          {"speaker": "User", "text": "Not now. Starting with my notes and session recordings."},
+          {"speaker": "AI", "text": "Great. Reach out if needed."},
+          {"speaker": "User", "text": "Thanks."},
+          {"speaker": "AI", "text": "Good luck with your documentation."},
+          {"speaker": "User", "text": "Thanks. Have a good day!"},
+          {"speaker": "AI", "text": "You too!"}
+        ],
+        "takeaway": {
+          "action": "Ensure adequate time for Task ID 9 documentation and support if needed."
+        }
+      }
+    ]
+  }
+  

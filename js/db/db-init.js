@@ -9,7 +9,7 @@ import { initializeTasks } from './db-init-tasks.js';
 import { initializeNetwork } from './db-init-nerwork.js';
 import { initializeNetworkFeedback } from './db-init-network-feedback.js';
 import { initializeTaskFeedback } from './db-init-task-feedback.js';
-import { initializeProjectFeedback } from './db-init-project-feedback.js';
+import { initializeGeneralFeedback } from './db-init-general-feedback.js';
 import { initializeNotificationFeedback } from './db-init-notification-feedback.js';
 
 // Construct the full remote database URL with credentials for authentication
@@ -53,7 +53,7 @@ function loadLocalDb() {
     initializeNetwork(localDb);
     initializeNetworkFeedback(localDb);
     initializeTaskFeedback(localDb);
-    initializeProjectFeedback(localDb);
+    initializeGeneralFeedback(localDb);
     initializeNotificationFeedback(localDb);
 
     console.log("initialized local db");

@@ -27,7 +27,7 @@ async function takeaways() {
   const functionName = "takeaways";
 
   // List of document IDs
-  const documentIds = ["maxwellai_task_feedback", "maxwellai_project_feedback", "maxwellai_feed_feedback", "notification_feedback"];
+  const documentIds = ["task_feedback", "network_feedback", "notification_feedback", "general_feedback"];
 
   // Initialize lists to store action and insight takeaways
   const actionTakeaways = [];

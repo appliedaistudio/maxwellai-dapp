@@ -1,0 +1,85 @@
+{
+  "_id": "network_feedback",
+  "feedback": [
+    {
+      "_id": "1",
+      "network_item_category": "websites",
+      "time": "2024-05-01 10:00 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I found the CES 2024 keynote speakers page helpful."},
+        {"speaker": "AI", "text": "What did you find most useful about it?"},
+        {"speaker": "User", "text": "It helped me identify which keynotes to attend for networking opportunities."},
+        {"speaker": "AI", "text": "Would you like more information on specific keynotes?"},
+        {"speaker": "User", "text": "Yes, especially those related to AI and tech startups."},
+        {"speaker": "AI", "text": "I'll gather that information for you. Thanks for your feedback!"},
+        {"speaker": "User", "text": "Thank you, I appreciate it."}
+      ],
+      "takeaway": {
+        "insight": "User finds keynote speaker information useful for identifying networking opportunities. Will provide more details on AI and tech startup keynotes."
+      }
+    },
+    {
+      "_id": "2",
+      "network_item_category": "websites",
+      "time": "",
+      "dialogue": [],
+      "takeaway": {
+        "insight": ""
+      }
+    },
+    {
+      "_id": "3",
+      "network_item_category": "contacts",
+      "time": "2024-05-02 03:00 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I met Alice Johnson at the networking event."},
+        {"speaker": "AI", "text": "How did that go?"},
+        {"speaker": "User", "text": "Alice provided valuable insights on organizing tech events."},
+        {"speaker": "AI", "text": "That's great to hear. Anything specific that stood out?"},
+        {"speaker": "User", "text": "Her advice on attendee engagement was particularly helpful."},
+        {"speaker": "AI", "text": "Would you like more resources on that topic?"},
+        {"speaker": "User", "text": "Yes, please."},
+        {"speaker": "AI", "text": "I'll find some resources for you. Thanks for the update!"},
+        {"speaker": "User", "text": "Thank you!"}
+      ],
+      "takeaway": {
+        "insight": "Alice Johnson provided valuable insights on attendee engagement at tech events. Will provide more resources on this topic."
+      }
+    },
+    {
+      "_id": "4",
+      "network_item_category": "contacts",
+      "time": "",
+      "dialogue": [],
+      "takeaway": {
+        "insight": ""
+      }
+    },
+    {
+      "_id": "5",
+      "network_item_category": "devices",
+      "time": "2024-05-03 11:30 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I've been using the AR Glasses at CES."},
+        {"speaker": "AI", "text": "How has your experience been with the device?"},
+        {"speaker": "User", "text": "It's user-friendly and enhanced my experience, but the battery life is short."},
+        {"speaker": "AI", "text": "Would you like some tips on extending the battery life?"},
+        {"speaker": "User", "text": "Yes, that would be very helpful."},
+        {"speaker": "AI", "text": "I'll find some solutions for you and get back."},
+        {"speaker": "User", "text": "Thanks, looking forward to it."}
+      ],
+      "takeaway": {
+        "insight": "User reports short battery life with AR Glasses. AI will provide tips to extend battery life."
+      }
+    },
+    {
+      "_id": "6",
+      "network_item_category": "devices",
+      "time": "",
+      "dialogue": [],
+      "takeaway": {
+        "insight": ""
+      }
+    }
+  ]
+}

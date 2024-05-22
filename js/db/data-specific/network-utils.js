@@ -156,7 +156,7 @@ const entitySchemas = {
 };
 
 // Initialize document ID for the network data
-const networkDocId = 'maxwellai_network';
+const networkDocId = 'network';
 
 // Initialize PouchlocalDb instance with the specified database name for networks
 const localDb = new PouchDB(config.localDbName);

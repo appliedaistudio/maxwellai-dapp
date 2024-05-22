@@ -1,5 +1,5 @@
 {
-  "_id": "maxwellai_network",
+  "_id": "network",
   "network": {
     "metadata": {
       "node_types": ["Websites", "Contacts", "Devices"],

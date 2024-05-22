@@ -1,0 +1,106 @@
+{
+    "_id": "network",
+    "network": {
+      "metadata": {
+        "node_types": ["Websites", "Contacts", "Devices"],
+        "categories": [
+          "Research & Reference",
+          "Conference Events",
+          "Networking",
+          "Utility",
+          "Personal"
+        ],
+        "review_statuses": ["Pending", "Reviewed", "Not Suitable"]
+      },
+      "data": {
+        "websites": {
+          "metadata": {
+            "categories": ["Research & Reference", "Conference Events"],
+            "review_statuses": ["Pending", "Reviewed"]
+          },
+          "data": [
+            {
+              "_id": "1",
+              "url": "https://www.google.com/search?q=CES+2024+keynote+speakers",
+              "description": "CES 2024 Keynote Speakers",
+              "usefulness_description": "Find information on the keynote speakers at CES 2024.",
+              "category": "Conference Events",
+              "review_status": "Pending",
+              "thumbnail_url": "https://picsum.photos/id/445/200"
+            },
+            {
+              "_id": "2",
+              "url": "https://www.google.com/search?q=latest+tech+trends+CES+2024",
+              "description": "Latest Tech Trends at CES 2024",
+              "usefulness_description": "Explore the latest technology trends and innovations showcased at CES 2024.",
+              "category": "Research & Reference",
+              "review_status": "Pending",
+              "thumbnail_url": "https://picsum.photos/id/445/200"
+            }
+          ]
+        },
+        "contacts": {
+          "metadata": {
+            "categories": ["Networking", "Personal"],
+            "review_statuses": ["Reviewed", "Not Suitable"]
+          },
+          "data": [
+            {
+              "_id": "3",
+              "name": "Alice Johnson",
+              "email": "alice.johnson@ces.com",
+              "phone": "123-456-7890",
+              "relationship": "Conference Organizer",
+              "category": "Networking",
+              "review_status": "Reviewed",
+              "thumbnail_url": "https://picsum.photos/id/160/200"
+            },
+            {
+              "_id": "4",
+              "name": "Bob Brown",
+              "email": "bob.brown@startup.com",
+              "phone": "987-654-3210",
+              "relationship": "Startup Founder",
+              "category": "Networking",
+              "review_status": "Reviewed",
+              "thumbnail_url": "https://picsum.photos/id/160/200"
+            }
+          ]
+        },
+        "devices": {
+          "metadata": {
+            "categories": ["Utility"],
+            "review_statuses": ["Pending", "Reviewed"]
+          },
+          "data": [
+            {
+              "_id": "5",
+              "name": "AR Glasses",
+              "type": "Glasses",
+              "location": "CES Exhibit Hall",
+              "api_info": {
+                "url": "https://api.example.com/arglasses",
+                "auth_token": "XXXXXXXXXXXXXXXX"
+              },
+              "category": "Utility",
+              "review_status": "Reviewed",
+              "thumbnail_url": "https://picsum.photos/id/36/200"
+            },
+            {
+              "_id": "6",
+              "name": "Smart Badge",
+              "type": "Badge",
+              "location": "CES Main Entrance",
+              "api_info": {
+                "url": "https://api.example.com/smartbadge",
+                "auth_token": "YYYYYYYYYYYYYYYY"
+              },
+              "category": "Utility",
+              "review_status": "Pending",
+              "thumbnail_url": "https://picsum.photos/id/36/200"
+            }
+          ]
+        }
+      }
+    }
+  }  

@@ -1,0 +1,81 @@
+{
+    "_id": "notification_feedback",
+    "takeaway_types": ["insight", "action"],
+    "feedback": [
+      {
+        "_id": "16",
+        "time": "2024-05-22T09:00:00Z",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "The AI and Robotics Networking Event notification is timely."},
+          {"speaker": "AI", "text": "Great! Do you need any additional information about the event?"}
+        ],
+        "takeaway": {
+          "insight": "Notification was well-timed."
+        }
+      },
+      {
+        "_id": "17",
+        "time": "2024-05-22T10:00:00Z",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "The keynote reminder is perfect. No changes needed."},
+          {"speaker": "AI", "text": "Glad to hear it! Enjoy the keynote."}
+        ],
+        "takeaway": {
+          "insight": "Notification was effective."
+        }
+      },
+      {
+        "_id": "18",
+        "time": "2024-05-22T11:00:00Z",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "The workshop alert is useful. Can you remind me 15 minutes before next time?"},
+          {"speaker": "AI", "text": "Sure, I'll adjust the timing for future notifications."}
+        ],
+        "takeaway": {
+          "action": "Set a reminder 15 minutes before the event."
+        }
+      },
+      {
+        "_id": "19",
+        "time": "2024-05-22T12:00:00Z",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "The Samsung exhibit notification is good. No changes needed."},
+          {"speaker": "AI", "text": "Great! Enjoy the exhibit."}
+        ],
+        "takeaway": {
+          "insight": "Notification was well-received."
+        }
+      },
+      {
+        "_id": "20",
+        "time": "2024-05-22T13:00:00Z",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "The panel discussion reminder is helpful. Thanks!"},
+          {"speaker": "AI", "text": "You're welcome! Have a great time at the panel."}
+        ],
+        "takeaway": {
+          "insight": "Notification was appreciated."
+        }
+      }
+    ]
+  }  

@@ -7,9 +7,9 @@ const localDb = new PouchDB(config.localDbName);
 
 // Mapping icon names to conversation ids
 const iconNameToConversationIdMapping = {
-  'you': 1,
-  'your aspirations': 2,
-  'your environment': 3
+  'you': 'you',
+  'your aspirations': 'your_aspirations',
+  'your environment': 'your_environment'
 };
 
 // This function initializes UI controls after the page has loaded and PouchDB setup is complete.
@@ -64,7 +64,7 @@ function executeControlFunction(iconName) {
 
   // Load conversation data
   const conversationId = iconNameToConversationIdMapping[iconName]
-  loadChatConversation('maxwellai_project_feedback', conversationId)
+  loadChatConversation('general_feedback', conversationId)
 
   openChatModal();
 }

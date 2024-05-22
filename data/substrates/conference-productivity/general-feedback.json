@@ -1,0 +1,40 @@
+{
+    "_id": "general_feedback",
+    "takeaway_types": ["insight", "action"],
+    "feedback": [
+      {
+        "_id": "you",
+        "time": "2024-05-22 10:00 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "This CES conference is overwhelming."},
+          {"speaker": "AI", "text": "I can help you navigate it. What are your primary goals?"},
+          {"speaker": "User", "text": "I want to make professional network connections and find relevant events."},
+          {"speaker": "AI", "text": "Understood. Let's start by identifying key sessions and potential contacts."}
+        ],
+        "takeaway": {"action": "Identify key sessions and potential contacts for networking and relevant events."}
+      },
+      {
+        "_id": "your_aspirations",
+        "time": "2024-05-22 11:30 AM",
+        "dialogue": [
+          {"speaker": "User", "text": "I'm here to find partners for my AI startup."},
+          {"speaker": "AI", "text": "Focus on the AI and startup sessions. Want recommendations?"},
+          {"speaker": "User", "text": "Yes, also interested in investors."},
+          {"speaker": "AI", "text": "I'll compile a list of relevant sessions and networking events for you."}
+        ],
+        "takeaway": {"action": "Compile a list of relevant sessions and networking events focused on AI, startups, and investors."}
+      },
+      {
+        "_id": "your_environment",
+        "time": "2024-05-22 02:00 PM",
+        "dialogue": [
+          {"speaker": "User", "text": "I'm struggling to decide which events to attend."},
+          {"speaker": "AI", "text": "Let's prioritize based on your goals: networking, partnerships, and investment."},
+          {"speaker": "User", "text": "That sounds good. What's first?"},
+          {"speaker": "AI", "text": "Start with the AI in Startups panel at 3 PM, followed by the networking mixer."}
+        ],
+        "takeaway": {"action": "Prioritize events based on networking, partnerships, and investment goals, starting with the AI in Startups panel and networking mixer."}
+      }
+    ]
+  }
+  

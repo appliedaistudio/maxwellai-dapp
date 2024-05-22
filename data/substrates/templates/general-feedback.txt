@@ -1,0 +1,53 @@
+this is the json for general feedback...
+
+{
+  "_id": "general_feedback",
+  "takeaway_types": ["insight", "action"],
+  "feedback": [
+    {
+      "_id": "you",
+      "time": "2024-02-15 10:00 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm using machine learning for threat detection."},
+        {"speaker": "AI", "text": "Great approach. Automation can further enhance response."},
+        {"speaker": "User", "text": "Continuous improvement is key."},
+        {"speaker": "AI", "text": "Agreed. Keep it up!"}
+      ],
+      "takeaway": {"insight": "Exploring ML and automation for threat intelligence is beneficial."}
+    },
+    {
+      "_id": "your_aspirations",
+      "time": "2024-02-20 11:30 AM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm presenting on AI in cybersecurity."},
+        {"speaker": "AI", "text": "Exciting topic. Need any assistance?"},
+        {"speaker": "User", "text": "Case studies on MaxwellAI's impact."},
+        {"speaker": "AI", "text": "I'm here to help. Good luck!"}
+      ],
+      "takeaway": {"insight": "Preparing a keynote on AI's impact is valuable."}
+    },
+    {
+      "_id": "your_environment",
+      "time": "2024-02-25 02:00 PM",
+      "dialogue": [
+        {"speaker": "User", "text": "I'm enhancing network security."},
+        {"speaker": "AI", "text": "Good steps. Vigilance is crucial."},
+        {"speaker": "User", "text": "Absolutely."},
+        {"speaker": "AI", "text": "Keep up the great work!"}
+      ],
+      "takeaway": {"insight": "Improving network security measures is vital."}
+    }
+  ]
+}  
+
+
+the new context is the following...
+
+The user is currently attending the las vegas CES conference. The conference is huge and overwhelming. 
+Help the user make professional network connections. Notify the user of conference events that align with their specific goals. 
+Reduce the vast number of possible activities and actions down to a small number of specific tasks that will help the user get to their goals.
+Connect the user with resources (people, devices, websites) that will help them reach their goals. 
+keep the _ids unchanged
+
+update the general feedback json to fit the new context. update the content with conversations with the user that fit the context.
+adjust the insight to be a directive from the user to the ai. that is, it should be an action that the ai will take based on the conversation so far

@@ -1,0 +1,69 @@
+{
+    "_id": "notifications",
+    "definitions": {
+      "priorities": ["low", "medium", "high"],
+      "statuses": ["pending", "sent", "resolved"]
+    },
+    "notifications": [
+      {
+        "_id": "16",
+        "topic": "Networking Opportunity",
+        "body": "In 10 minutes, the AI and Robotics Networking Event begins at Booth 25. Connect with industry experts.",
+        "priority": "high",
+        "created_at": "2024-05-22T08:50:00Z",
+        "status": "pending",
+        "actions": {
+          "close": ["social media", "entertainment", "news"],
+          "open": ["networking app"]
+        }
+      },
+      {
+        "_id": "17",
+        "topic": "Keynote Reminder",
+        "body": "In 10 minutes, the keynote speech by John Doe on 'Future of AI' starts in Hall B. Don't miss it!",
+        "priority": "high",
+        "created_at": "2024-05-22T09:50:00Z",
+        "status": "pending",
+        "actions": {
+          "close": ["social media", "messaging", "entertainment"],
+          "open": ["conference app", "note-taking app"]
+        }
+      },
+      {
+        "_id": "18",
+        "topic": "Workshop Alert",
+        "body": "In 10 minutes, join the 'AI in Healthcare' workshop at Room 102. Learn from industry leaders.",
+        "priority": "medium",
+        "created_at": "2024-05-22T10:50:00Z",
+        "status": "pending",
+        "actions": {
+          "close": ["social media", "entertainment", "news"],
+          "open": ["conference app", "note-taking app"]
+        }
+      },
+      {
+        "_id": "19",
+        "topic": "Exhibit Visit",
+        "body": "In 10 minutes, explore the latest tech at the Samsung exhibit in Booth 18. See the newest innovations.",
+        "priority": "medium",
+        "created_at": "2024-05-22T11:50:00Z",
+        "status": "pending",
+        "actions": {
+          "close": ["social media", "entertainment", "news"],
+          "open": ["conference app", "camera app"]
+        }
+      },
+      {
+        "_id": "20",
+        "topic": "Panel Discussion",
+        "body": "In 10 minutes, the panel on 'AI Ethics' starts in Room 305. Hear from top experts in the field.",
+        "priority": "medium",
+        "created_at": "2024-05-22T12:50:00Z",
+        "status": "pending",
+        "actions": {
+          "close": ["social media", "entertainment", "news"],
+          "open": ["conference app", "note-taking app"]
+        }
+      }
+    ]
+  }  

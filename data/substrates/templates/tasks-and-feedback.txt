@@ -1,3 +1,67 @@
+this is the json for tasks...
+
+{
+    "_id": "tasks",
+    "categories": ["Research", "Presentation Preparation", "Documentation", "Skill Development"],
+    "priorities": ["High", "Medium", "Low"],
+    "status": ["Not Started", "In Progress", "Completed", "Deferred"],
+    "tasks": [
+      {
+        "_id": "1",
+        "category": "Research",
+        "priority": "High",
+        "date_identified": "2024-07-15",
+        "date_and_time_start": "2024-07-17T09:00:00",
+        "target_date_and_time_completion": "2024-07-22T12:00:00",
+        "status": "Not Started",
+        "description": "Gather data on recent advancements in cybersecurity threat intelligence."
+      },
+      {
+        "_id": "3",
+        "category": "Presentation Preparation",
+        "priority": "High",
+        "date_identified": "2024-07-22",
+        "date_and_time_start": "2024-07-27T13:00:00",
+        "target_date_and_time_completion": "2024-08-02T16:00:00",
+        "status": "Not Started",
+        "description": "Outline the structure and key points of the keynote speech on AI in cybersecurity for the NetSPI event."
+      },
+      {
+        "_id": "5",
+        "category": "Documentation",
+        "priority": "Medium",
+        "date_identified": "2024-08-02",
+        "date_and_time_start": "2024-08-07T09:00:00",
+        "target_date_and_time_completion": "2024-08-12T12:00:00",
+        "status": "Not Started",
+        "description": "Compile a detailed report on the impact of AI, particularly MaxwellAI, on cybersecurity practices."
+      },
+      {
+        "_id": "7",
+        "category": "Skill Development",
+        "priority": "Medium",
+        "date_identified": "2024-08-12",
+        "date_and_time_start": "2024-08-17T17:00:00",
+        "target_date_and_time_completion": "2024-08-22T18:00:00",
+        "status": "Not Started",
+        "description": "Participate in a workshop on cybersecurity trends and AI integration."
+      },
+      {
+        "_id": "9",
+        "category": "Documentation",
+        "priority": "Low",
+        "date_identified": "2024-08-22",
+        "date_and_time_start": "2024-08-27T13:00:00",
+        "target_date_and_time_completion": "2024-09-01T16:00:00",
+        "status": "Not Started",
+        "description": "Document lessons learned and insights gained from preparing and delivering the keynote speech."
+      }
+    ]
+  }
+  
+
+this is the json for user feedback on tasks...
+
 {
   "_id": "task_feedback",
   "takeaway_types": ["insight", "action"],
@@ -95,3 +159,15 @@
     }
   ]
 }
+
+
+the new context is the following...
+
+The user is currently attending the las vegas CES conference. The conference is huge and overwhelming. 
+Help the user make professional network connections. Notify the user of conference events that align with their specific goals. 
+Reduce the vast number of possible activities and actions down to a small number of specific tasks that will help the user get to their goals. 
+keep the _ids of "tasks" and "task_feedback" unchanged.
+
+update the task json and task feedback json to fit the new context. make tasks that refer to specific people, places, or events. 
+make sure that the _ids in the task feedack correspond to _ids in the tasks.
+Create feedback for every task, even if the feedback is blank.

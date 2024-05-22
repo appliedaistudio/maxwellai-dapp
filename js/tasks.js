@@ -40,7 +40,7 @@ navigator.serviceWorker.addEventListener('message', (event) => {
 // Fetch tasks from PouchDB and handle them
 const loadTasks = async () => {
     try {
-        const tasksData = await localDb.get('maxwell_ai_tasks');
+        const tasksData = await localDb.get('tasks');
         renderTasksAsCards(tasksData.tasks); // Render tasks as cards
     } catch (err) {
         console.error('Could not fetch tasks from PouchDB:', err);
@@ -145,7 +145,7 @@ const openChatModal = (_id, category, description) => {
     modalTitle.textContent = `We're talking about ${category}`;
     
     // Load the existing chat conversation
-    loadChatConversation('maxwellai_task_feedback', _id);
+    loadChatConversation('task_feedback', _id);
 
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);

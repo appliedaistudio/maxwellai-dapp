@@ -62,7 +62,7 @@ const listTaskIdsSchema = `
 }`;
 
 // Initialize document ID
-const docId = 'maxwell_ai_tasks';
+const docId = 'tasks';
 
 // Initialize PouchlocalDb instance with the specified database name
 const localDb = new PouchDB(config.localDbName);

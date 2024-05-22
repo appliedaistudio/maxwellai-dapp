@@ -1,0 +1,59 @@
+{
+    "_id": "tasks",
+    "categories": ["Networking", "Event Attendance", "Follow-ups", "Skill Development"],
+    "priorities": ["High", "Medium", "Low"],
+    "status": ["Not Started", "In Progress", "Completed", "Deferred"],
+    "tasks": [
+      {
+        "_id": "1",
+        "category": "Networking",
+        "priority": "High",
+        "date_identified": "2024-05-22",
+        "date_and_time_start": "2024-05-22T09:00:00",
+        "target_date_and_time_completion": "2024-05-24T18:00:00",
+        "status": "Not Started",
+        "description": "Connect with Dr. Lisa Su, CEO of AMD, after her keynote speech on AI and future technologies."
+      },
+      {
+        "_id": "3",
+        "category": "Event Attendance",
+        "priority": "High",
+        "date_identified": "2024-05-22",
+        "date_and_time_start": "2024-05-22T10:00:00",
+        "target_date_and_time_completion": "2024-05-25T12:00:00",
+        "status": "Not Started",
+        "description": "Attend the panel discussion on 'AI in Healthcare' at the Venetian Ballroom and take detailed notes."
+      },
+      {
+        "_id": "5",
+        "category": "Follow-ups",
+        "priority": "Medium",
+        "date_identified": "2024-05-23",
+        "date_and_time_start": "2024-05-26T09:00:00",
+        "target_date_and_time_completion": "2024-05-30T12:00:00",
+        "status": "Not Started",
+        "description": "Follow up with John Doe from Google Cloud about potential collaboration on AI integration projects."
+      },
+      {
+        "_id": "7",
+        "category": "Skill Development",
+        "priority": "Medium",
+        "date_identified": "2024-05-24",
+        "date_and_time_start": "2024-05-24T14:00:00",
+        "target_date_and_time_completion": "2024-05-25T16:00:00",
+        "status": "Not Started",
+        "description": "Attend the workshop 'Building Scalable AI Solutions' by IBM at the Sands Expo Convention Center."
+      },
+      {
+        "_id": "9",
+        "category": "Event Attendance",
+        "priority": "Low",
+        "date_identified": "2024-05-25",
+        "date_and_time_start": "2024-05-25T13:00:00",
+        "target_date_and_time_completion": "2024-05-25T16:00:00",
+        "status": "Not Started",
+        "description": "Document key takeaways and insights from the keynote by Sundar Pichai, CEO of Google, on 'The Future of AI'."
+      }
+    ]
+  }
+  

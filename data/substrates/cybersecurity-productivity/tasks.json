@@ -1,5 +1,5 @@
 {
-    "_id": "maxwell_ai_tasks",
+    "_id": "tasks",
     "categories": ["Research", "Presentation Preparation", "Documentation", "Skill Development"],
     "priorities": ["High", "Medium", "Low"],
     "status": ["Not Started", "In Progress", "Completed", "Deferred"],

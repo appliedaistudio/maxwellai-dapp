@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const loadNetworkData = async () => {
     try {
         // Retrieve network data from the database
-        const networkData = await localDb.get('maxwellai_network');
+        const networkData = await localDb.get('network');
         // Render network items using the retrieved data
         renderNetworkItems(networkData.network.data);
     } catch (err) {
@@ -170,7 +170,7 @@ const openChatModal = (_id, category, description) => {
     modalTitle.textContent = `We're talking about ${category}`;
 
     // Load the existing chat conversation
-    loadChatConversation('maxwellai_network_feedback', _id);
+    loadChatConversation('network_feedback', _id);
 
     // Open the modal using Bootstrap's JavaScript API.
     const chatModalInstance = new bootstrap.Modal(chatModal);

@@ -1,0 +1,191 @@
+this is the json for notifications...
+
+{
+  "_id": "notifications",
+  "definitions": {
+    "priorities": ["low", "medium", "high"],
+    "statuses": ["pending", "sent", "resolved"]
+  },
+  "notifications": [
+    {
+      "_id": "16",
+      "topic": "Digital Environment Update",
+      "body": "In 10 minutes, preparing for research session. Closing social media, entertainment, news. Opening browser.",
+      "priority": "medium",
+      "created_at": "2024-07-17T08:50:00Z",
+      "status": "pending",
+      "actions": {
+        "close": ["social media", "entertainment", "news"],
+        "open": ["browser"]
+      }
+    },
+    {
+      "_id": "17",
+      "topic": "Digital Environment Update",
+      "body": "In 10 minutes, getting ready for presentation preparation. Closing messaging, social media, entertainment. Opening presentation software.",
+      "priority": "medium",
+      "created_at": "2024-07-27T12:50:00Z",
+      "status": "sent",
+      "actions": {
+        "close": ["messaging", "social media", "entertainment"],
+        "open": ["presentation software"]
+      }
+    },
+    {
+      "_id": "18",
+      "topic": "Digital Environment Update",
+      "body": "In 10 minutes, starting documentation task. Closing messaging, social media, entertainment. Opening document editor.",
+      "priority": "medium",
+      "created_at": "2024-08-07T08:50:00Z",
+      "status": "sent",
+      "actions": {
+        "close": ["messaging", "social media", "entertainment"],
+        "open": ["document editor"]
+      }
+    },
+    {
+      "_id": "19",
+      "topic": "Digital Environment Update",
+      "body": "In 10 minutes, initiating skill development session. Closing social media, entertainment, news. Opening online course platform.",
+      "priority": "medium",
+      "created_at": "2024-08-12T12:50:00Z",
+      "status": "sent",
+      "actions": {
+        "close": ["social media", "entertainment", "news"],
+        "open": ["online course platform"]
+      }
+    },
+    {
+      "_id": "20",
+      "topic": "Digital Environment Update",
+      "body": "In 10 minutes, starting research task. Closing messaging, social media, entertainment. Opening research tools.",
+      "priority": "medium",
+      "created_at": "2024-09-26T12:50:00Z",
+      "status": "sent",
+      "actions": {
+        "close": ["messaging", "social media", "entertainment"],
+        "open": ["research tools"]
+      }
+    }
+  ]
+}
+
+  
+
+this is the json for user feedback on notifications...
+
+{
+    "_id": "notification_feedback",
+    "takeaway_types": ["insight", "action"],
+    "feedback": [
+      {
+        "_id": "16",
+        "time": "2024-07-17 08:50 AM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I need to adjust the time for the Digital Environment Update notification."},
+          {"speaker": "AI", "text": "Understood. What time would you like to set for it?"},
+          {"speaker": "User", "text": "Let's move it to 9:00 AM."},
+          {"speaker": "AI", "text": "Got it. I'll update the time to 9:00 AM."},
+          {"speaker": "User", "text": "Great, thanks!"},
+          {"speaker": "AI", "text": "You're welcome!"}
+        ],
+        "takeaway": {
+          "action": "Change the time of the Digital Environment Update notification to 9:00 AM. (conversation id: 16)"
+        }
+      },
+      {
+        "_id": "17",
+        "time": "2024-07-27 12:50 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I think the actions for the Digital Environment Update notification need to be adjusted."},
+          {"speaker": "AI", "text": "Sure, what changes would you like to make?"},
+          {"speaker": "User", "text": "Let's keep messaging open but close social media and entertainment."},
+          {"speaker": "AI", "text": "Okay, I'll update the actions accordingly."},
+          {"speaker": "User", "text": "Perfect, thanks for the adjustment!"},
+          {"speaker": "AI", "text": "You're welcome!"}
+        ],
+        "takeaway": {
+          "action": "Adjust the actions for the Digital Environment Update notification: keep messaging open but close social media and entertainment. (conversation id: 17)"
+        }
+      },
+      {
+        "_id": "18",
+        "time": "2024-08-07 08:50 AM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I think we need to provide more warning before the actions in the Digital Environment Update notification."},
+          {"speaker": "AI", "text": "How much warning would you like to have?"},
+          {"speaker": "User", "text": "Let's give a 15-minute warning."},
+          {"speaker": "AI", "text": "Got it. I'll adjust the notification to provide a 15-minute warning."},
+          {"speaker": "User", "text": "Thanks for accommodating that!"},
+          {"speaker": "AI", "text": "Of course!"}
+        ],
+        "takeaway": {
+          "action": "Increase the warning time for the Digital Environment Update notification to 15 minutes. (conversation id: 18)"
+        }
+      },
+      {
+        "_id": "19",
+        "time": "2024-08-12 12:50 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I think the priority of the Digital Environment Update notification needs to be adjusted."},
+          {"speaker": "AI", "text": "What priority would you suggest?"},
+          {"speaker": "User", "text": "Let's raise it to high priority."},
+          {"speaker": "AI", "text": "Noted. I'll update the priority accordingly."},
+          {"speaker": "User", "text": "Thanks for addressing that!"},
+          {"speaker": "AI", "text": "You're welcome!"}
+        ],
+        "takeaway": {
+          "action": "Change the priority of the Digital Environment Update notification to high. (conversation id: 19)"
+        }
+      },
+      {
+        "_id": "20",
+        "time": "2024-09-26 12:50 PM",
+        "speakers": [
+          {"speaker": "User"},
+          {"speaker": "AI"}
+        ],
+        "dialogue": [
+          {"speaker": "User", "text": "I believe we need to adjust the actions for the Digital Environment Update notification."},
+          {"speaker": "AI", "text": "What changes do you propose?"},
+          {"speaker": "User", "text": "Let's open messaging and research tools, but close social media and entertainment."},
+          {"speaker": "AI", "text": "Okay, I'll make those adjustments."},
+          {"speaker": "User", "text": "Thanks for updating that!"},
+          {"speaker": "AI", "text": "No problem!"}
+        ],
+        "takeaway": {
+          "action": "Modify the actions for the Digital Environment Update notification: open messaging and research tools, but close social media and entertainment. (conversation id: 20)"
+        }
+      }
+    ]
+  }
+
+
+the new context is the following...
+
+The user is currently attending the las vegas CES conference. The conference is huge and overwhelming. 
+Help the user make professional network connections. Notify the user of conference events that align with their specific goals. 
+Reduce the vast number of possible activities and actions down to a small number of specific tasks that will help the user get to their goals. 
+keep the _ids of "notifications" and "notification_feedback" unchanged.
+
+update the notifications json and notifications feedback json to fit the new context. 
+make notifications that refer to specific people, places, or events. 
+make sure that the _ids in the notifications feedack correspond to _ids in the tasks.
+Create feedback for every notification, even if the feedback is blank.
+in the notifications, keep the actions to type open and close. these are the applications that will be opened and closed to help with productivity or remove distraction.

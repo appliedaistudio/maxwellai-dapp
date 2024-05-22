@@ -1,5 +1,5 @@
 {
-  "_id": "maxwellai_task_feedback",
+  "_id": "task_feedback",
   "takeaway_types": ["insight", "action"],
   "feedback": [
     {
