@@ -63,6 +63,7 @@ const listTaskIdsSchema = `
 
 // Initialize document ID
 const docId = 'tasks';
+const feedbackDocId = 'task_feedback';
 
 // Initialize PouchlocalDb instance with the specified database name
 const localDb = new PouchDB(config.localDbName);
@@ -113,14 +114,46 @@ function validateTaskIds(taskIdsString) {
     }
 }
 
+// Function to create a corresponding task feedback conversation
+async function createTaskFeedback(taskId) {
+    const functionName = "createTaskFeedback";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Define the initial task feedback structure
+        const taskFeedback = {
+            "_id": taskId,
+            "takeaway_types": ["insight", "action"],
+            "feedback": []
+        };
+
+        // Get existing task feedback from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Append the new task feedback to the existing feedback
+        existingFeedback.feedback.push(taskFeedback);
+
+        // Update the feedback document in the database
+        const response = await localDb.put(existingFeedback);
+
+        log("Exiting function", config.verbosityLevel, 4, functionName);
+        return "Task feedback created successfully.";
+    } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
+        return "Error creating task feedback: " + error.message;
+    }
+};
+
 // Function to create a new task
 async function createTask(taskString) {
     const functionName = "createTask";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
     try {
+        // Validate the task data
         const validationResult = validateTask(taskString);
 
+        // Parse the task data from the input string
         const taskJson = JSON.parse(taskString);
         if (validationResult.includes("successful")) {
             log("Entering function", config.verbosityLevel, 4, functionName);
@@ -134,12 +167,15 @@ async function createTask(taskString) {
                 return "Error: Task with this ID already exists.";
             }
 
-            // Append the new task to the existing notifications
+            // Append the new task to the existing tasks
             existingTasks.tasks.push(taskJson);
 
             // Update the task document in the database
             const response = await localDb.put(existingTasks);
-            
+
+            // Create corresponding task feedback conversation
+            await createTaskFeedback(taskJson._id);
+
             log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Task created successfully.";
         } else {
@@ -252,7 +288,32 @@ function updateTask(taskString) {
     }
 }
 
-// Function to delete a lsit tasks
+// Function to delete corresponding task feedbacks
+async function deleteTaskFeedbacks(taskIds) {
+    const functionName = "deleteTaskFeedbacks";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Fetch the existing task feedback document from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Remove feedbacks with the specified IDs
+        existingFeedback.feedback = existingFeedback.feedback.filter(feedback =>
+            !taskIds.includes(feedback._id)
+        );
+
+        // Update the feedback document in the database
+        await localDb.put(existingFeedback);
+
+        log("Exiting function", config.verbosityLevel, 4, functionName);
+    } catch (error) {
+        // Log any errors encountered during the process
+        log(error, config.verbosityLevel, 1, functionName);
+        // Ignore the error if the feedback ID does not exist
+    }
+};
+
+// Function to delete a list of tasks
 async function deleteTasks(idsString) {
     const functionName = "deleteTasks";
 
@@ -269,6 +330,7 @@ async function deleteTasks(idsString) {
 
         // Parse the input string to extract IDs
         const idsJson = JSON.parse(idsString);
+
         // Retrieve the tasks document from the database
         const response = await localDb.get(docId);
 
@@ -279,6 +341,10 @@ async function deleteTasks(idsString) {
 
         // Save the updated tasks document to the database
         const saveResponse = await localDb.put(response);
+
+        // Delete the corresponding task feedbacks
+        await deleteTaskFeedbacks(idsJson.taskIds);
+
         log("Exiting function", config.verbosityLevel, 4, functionName);
         return "Tasks deleted successfully.";
     } catch (error) {

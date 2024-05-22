@@ -69,6 +69,7 @@ const listNotificationIdsSchema = `
 
 // Initialize document ID
 const docId = 'notifications';
+const feedbackDocId = 'notification_feedback';
 
 // Initialize PouchlocalDb instance with the specified database name
 const localDb = new PouchDB(config.localDbName);
@@ -119,14 +120,46 @@ function validateNotificationIds(notificationIdsString) {
     }
 }
 
+// Function to create a corresponding notification feedback conversation
+async function createNotificationFeedback(notificationId) {
+    const functionName = "createNotificationFeedback";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Define the initial notification feedback structure
+        const notificationFeedback = {
+            "_id": notificationId,
+            "takeaway_types": ["insight", "action"],
+            "feedback": []
+        };
+
+        // Get existing notification feedback from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Append the new notification feedback to the existing feedback
+        existingFeedback.feedback.push(notificationFeedback);
+
+        // Update the feedback document in the database
+        const response = await localDb.put(existingFeedback);
+
+        log("Exiting function", config.verbosityLevel, 4, functionName);
+        return "Notification feedback created successfully.";
+    } catch (error) {
+        log(error, config.verbosityLevel, 1, functionName);
+        return "Error creating notification feedback: " + error.message;
+    }
+};
+
 // Function to create a new notification
 async function createNotification(notificationString) {
     const functionName = "createNotification";
     log("Entering function", config.verbosityLevel, 4, functionName);
-    
+
     try {
+        // Validate the notification data
         const validationResult = validateNotification(notificationString);
 
+        // Parse the notification data from the input string
         const notificationJson = JSON.parse(notificationString);
         if (validationResult.includes("successful")) {
             log("Entering function", config.verbosityLevel, 4, functionName);
@@ -146,6 +179,10 @@ async function createNotification(notificationString) {
 
             // Update the notifications document in the database
             const response = await localDb.put(existingNotifications);
+
+            // Create corresponding notification feedback conversation
+            await createNotificationFeedback(notificationJson._id);
+
             log("Exiting function", config.verbosityLevel, 4, functionName);
             return "Notification created successfully.";
         } else {
@@ -256,7 +293,32 @@ function updateNotification(notificationString) {
     }
 };
 
-// Function to delete a lsit notifications
+// Function to delete corresponding notification feedbacks
+async function deleteNotificationFeedbacks(notificationIds) {
+    const functionName = "deleteNotificationFeedbacks";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Fetch the existing notification feedback document from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Remove feedbacks with the specified IDs
+        existingFeedback.feedback = existingFeedback.feedback.filter(feedback =>
+            !notificationIds.includes(feedback._id)
+        );
+
+        // Update the feedback document in the database
+        await localDb.put(existingFeedback);
+
+        log("Exiting function", config.verbosityLevel, 4, functionName);
+    } catch (error) {
+        // Log any errors encountered during the process
+        log(error, config.verbosityLevel, 1, functionName);
+        // Ignore the error if the feedback ID does not exist
+    }
+};
+
+// Function to delete a list of notifications
 async function deleteNotifications(idsString) {
     const functionName = "deleteNotifications";
 
@@ -273,6 +335,7 @@ async function deleteNotifications(idsString) {
 
         // Parse the input string to extract IDs
         const idsJson = JSON.parse(idsString);
+
         // Retrieve the notifications document from the database
         const response = await localDb.get(docId);
 
@@ -283,6 +346,10 @@ async function deleteNotifications(idsString) {
 
         // Save the updated notifications document to the database
         const saveResponse = await localDb.put(response);
+
+        // Delete the corresponding notification feedbacks
+        await deleteNotificationFeedbacks(idsJson.notificationIds);
+
         log("Exiting function", config.verbosityLevel, 4, functionName);
         return "Notifications deleted successfully.";
     } catch (error) {

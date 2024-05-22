@@ -157,6 +157,7 @@ const entitySchemas = {
 
 // Initialize document ID for the network data
 const networkDocId = 'network';
+const feedbackDocId = 'network_feedback';
 
 // Initialize PouchlocalDb instance with the specified database name for networks
 const localDb = new PouchDB(config.localDbName);
@@ -314,9 +315,43 @@ function getSchemaForEntityType(entityTypeString) {
     }
 };
 
+// Function to create a corresponding network entity feedback conversation
+async function createNetworkEntityFeedback(networkEntityId, entityTypeString) {
+    const functionName = "createNetworkEntityFeedback";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Define the initial network entity feedback structure
+        const networkEntityFeedback = {
+            "_id": networkEntityId,
+            "network_item_category": entityTypeString,
+            "time": "",
+            "dialogue": [],
+            "takeaway": {
+                "insight": ""
+            }
+        };
+
+        // Fetch the existing network feedback document from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Append the new network entity feedback to the existing feedback
+        existingFeedback.feedback.push(networkEntityFeedback);
+
+        // Update the feedback document in the database
+        const response = await localDb.put(existingFeedback);
+
+        log("Exiting function", config.verbosityLevel, 4, functionName);
+        return "Network entity feedback created successfully.";
+    } catch (error) {
+        // Log any errors encountered during the process
+        log(error, config.verbosityLevel, 1, functionName);
+        return 'Error creating network entity feedback: ' + error.message;
+    }
+};
+
 // Function to create a new network entity
 async function createNetworkEntity(paramsString) {
-
     const functionName = "createNetworkEntity";
     log("Entering function", config.verbosityLevel, 4, functionName);
 
@@ -327,6 +362,7 @@ async function createNetworkEntity(paramsString) {
             throw new Error(validationMessage);
         }
 
+        // Parse the input parameters
         const paramsJson = JSON.parse(paramsString);
         const { entityTypeString, networkEntityJson } = paramsJson;
 
@@ -339,7 +375,7 @@ async function createNetworkEntity(paramsString) {
         if (validationNetworkMessage !== 'Network entity validation successful') {
             // Include schema in the error message for feedback
             const schema = getSchemaForEntityType(entityTypeString);
-            return`${validationNetworkMessage}. Be sure to follow this schema: ${JSON.stringify(schema)}`;
+            return `${validationNetworkMessage}. Be sure to follow this schema: ${JSON.stringify(schema)}`;
         }
 
         // Fetch the network document from the local database
@@ -356,6 +392,9 @@ async function createNetworkEntity(paramsString) {
 
         // Update the network document in the local database
         const response = await localDb.put(networkDoc);
+
+        // Create corresponding network entity feedback conversation
+        await createNetworkEntityFeedback(networkEntityJson._id, entityTypeString);
 
         log("Exiting function", config.verbosityLevel, 4, functionName);
 
@@ -518,6 +557,37 @@ async function updateNetworkEntity(paramsString) {
     }
 };
 
+// Function to delete a corresponding network entity feedback conversation
+async function deleteNetworkEntityFeedback(networkEntityId) {
+    const functionName = "deleteNetworkEntityFeedback";
+    log("Entering function", config.verbosityLevel, 4, functionName);
+
+    try {
+        // Fetch the existing network feedback document from the database
+        const existingFeedback = await localDb.get(feedbackDocId);
+
+        // Find the index of the feedback by ID
+        const feedbackIndex = existingFeedback.feedback.findIndex(feedback => feedback._id === networkEntityId);
+
+        if (feedbackIndex !== -1) {
+            // Remove the feedback from the document
+            existingFeedback.feedback.splice(feedbackIndex, 1);
+
+            // Update the feedback document in the database
+            await localDb.put(existingFeedback);
+
+            log("Exiting function", config.verbosityLevel, 4, functionName);
+        } else {
+            // Log if feedback not found, but do not throw an error
+            log(`Feedback with ID ${networkEntityId} not found`, config.verbosityLevel, 4, functionName);
+        }
+    } catch (error) {
+        // Log any errors encountered during the process
+        log(error, config.verbosityLevel, 1, functionName);
+        // Ignore the error if the feedback ID does not exist
+    }
+};
+
 // Function to delete a network entity
 async function deleteNetworkEntity(paramsString) {
     const functionName = "deleteNetworkEntity";
@@ -529,6 +599,7 @@ async function deleteNetworkEntity(paramsString) {
         throw new Error(validationMessage);
     }
 
+    // Parse the input parameters
     const paramsJson = JSON.parse(paramsString);
     const { entityTypeString, networkEntityJson } = paramsJson;
     const { _id } = networkEntityJson; // Extract _id from networkEntityJson
@@ -555,6 +626,9 @@ async function deleteNetworkEntity(paramsString) {
 
             // Update the network document in the local database
             const response = await localDb.put(networkDoc);
+
+            // Delete the corresponding network entity feedback
+            await deleteNetworkEntityFeedback(_id);
 
             log("Exiting function", config.verbosityLevel, 4, functionName);
 

@@ -103,7 +103,7 @@ const aiUpdateTasks = `
 
 // Configuration details for the AI
 const aiConfig = {
-    aiSubstrateFolder: "cybersecurity-productivity",
+    aiSubstrateFolder: "conference-productivity",
     LLM: 'gpt-4o',
     verbosityLevel: 1,
     aiProfile: maxwellaiProfile,
