@@ -2,16 +2,6 @@
 import { aiConfig } from './physarai-config.js';
 import { log } from '../../utils/logging.js';
 
-// Interacts with the LLM using the provided configuration
-async function interactWithLLM(aiApiKey, aiEndpoint, messages) {
-    return await promptLLM({
-        apiKey: aiApiKey,
-        prompt: JSON.stringify(messages),
-        endpoint: aiEndpoint,
-        model: aiConfig.LLM,
-    });
-};
-
 // Function to interact with the Language Model (LLM)
 async function promptLLM(parameters) {
     const functionName = "promptLLM";
@@ -62,4 +52,4 @@ async function promptLLM(parameters) {
     }
 };
 
-export { interactWithLLM };
+export { promptLLM };

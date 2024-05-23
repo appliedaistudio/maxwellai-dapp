@@ -3,12 +3,13 @@ import '../../../lib/pouchdb/pouchdb.min.js';
 import { aiConfig } from './physarai-config.js';
 
 import { llmApiKey, llmEndpoint } from './physarai-database.js';
-import { interactWithLLM } from './physarai-llm-interactions.js';
+import { promptLLM } from './physarai-llm-interactions.js';
 import { validateLLMResponse } from './physarai-llm-schema.js';
-import { extractActionsAndInputs, prepareContext, prepareMessages, executeAction, stripJsonWrapper } from './physarai-helpers.js';
+import { extractActionsAndInputs, prepareContext, prepareMessages, executeAction } from './physarai-helpers.js';
 
 import { log } from '../../utils/logging.js';
 import { getLocalDateTime } from '../../utils/common.js';
+import { stripJsonWrapper } from '../../utils/string-parse.js';
 
 
 // Creates the prompt that turns a normal LLM into a ReAct agent
@@ -90,7 +91,12 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         const aiEndpoint = await llmEndpoint();
 
         // Attempt interaction with LLM
-        const response = await interactWithLLM(aiApiKey, aiEndpoint, messages);
+        const response = await promptLLM({
+            apiKey: aiApiKey,
+            prompt: JSON.stringify(messages),
+            endpoint: aiEndpoint,
+            model: aiConfig.LLM
+        });
 
         // Validate the LLM response
         const cleanedResponse = stripJsonWrapper(response);

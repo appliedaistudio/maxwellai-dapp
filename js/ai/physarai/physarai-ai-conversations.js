@@ -1,5 +1,8 @@
 import { aiConfig } from './physarai-config.js';
 import { log } from '../../utils/logging.js';
+import {llmApiKey, llmEndpoint} from './physarai-database.js';
+import { promptLLM } from './physarai-llm-interactions.js';
+import { stripJsonWrapper } from '../../utils/string-parse.js';
 
 // Function specifically for handling degraded mode in AI conversation response scenarios
 function degradedModeAIConversationResponse() {
@@ -107,9 +110,8 @@ async function generateDefaultAndSuggestedUserResponses(conversationData) {
         }
 
         // Parse and return the AI response as JSON
-        const aiResponseJson = JSON.parse(aiResponse);
-        console.log("Generating default responses");
-        console.log(aiResponseJson);
+        const cleanedResponse = stripJsonWrapper(aiResponse);
+        const aiResponseJson = JSON.parse(cleanedResponse);
         return aiResponseJson;
     } catch (error) {
         // Log the error encountered during AI response generation

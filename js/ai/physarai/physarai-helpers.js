@@ -70,15 +70,4 @@ async function executeAction(tool, toolInputString) {
     return null;
 };
 
-// Helper function to strip out the ```json wrapper and return the JSON content
-function stripJsonWrapper(response) {
-    if (response === null) {
-        return null;
-    }
-    if (response.startsWith("```json") && response.endsWith("```")) {
-        return response.substring(7, response.length - 3).trim();
-    }
-    return response;
-};
-
-export { extractActionsAndInputs, prepareContext, prepareMessages, executeAction, stripJsonWrapper };
+export { extractActionsAndInputs, prepareContext, prepareMessages, executeAction};

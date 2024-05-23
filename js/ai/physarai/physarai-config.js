@@ -49,34 +49,37 @@ const maxwellaiProfile = `
     2. You strategically mute/unmute applications and update stored data efficiently. 
     3. Accessing external knowledge, you offer informed assistance in concise, simple language.`;
 
+const defaultAndSuggestedUserResponsesSchema = `
+    {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "defaultUserResponses": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "suggestedUserResponses": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "required": [
+            "defaultUserResponses",
+            "suggestedUserResponses"
+        ]
+    }`;
+
 const defaultAndSuggestedUserResponses = `
     Generate default and categorized user responses for the conversation. 
-    Provide the output in the JSON format that follows this example:
-
-    {
-        defaultUserResponses: [
-            "Got new project ideas?",
-            "Let's chat about projects.",
-            "I'm considering new goals for myself."
-        ],
-        suggestedUserResponses: {
-            "current projects": [
-                "I want to update you on my progress.", 
-                "I'd like feedback on my latest work.", 
-                "I want to talk about a challenge I'm facing"
-            ],
-            "inspiration and ideas": [
-                "I'd like to share a new writing prompt.", 
-                "I'd like to explore a creative spark.", 
-                "I want to brainstorm on plot twists and characters."
-            ],
-            "support and feedback": [
-                "I need some encouragement.", 
-                "I need help getting past my writer's block.", 
-                "I need help staying motivated."
-            ]
-        }
-    }
+    Respond only wiht JSON that adheres to this schema: ${defaultAndSuggestedUserResponsesSchema}. 
+    Do not include the schema in the response. Limit responses to at most 3 per category.
     
     The default and categorized responses are the user's (human) most likely reaction to the existing conversation. 
     They should be consisten with someone who has the ${userPersonality()} Meyers-Briggs personality type. 
