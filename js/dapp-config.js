@@ -5,11 +5,20 @@ const config = {
     remoteDbPassword: 'your_couchdb_password',
     applicationSessionId: 'current_session',
     localDbName: 'my_local_database', // Name of your local PouchDB
-    backgroundImage: './images/background.jpg',
+    backgroundImage: './data/substrates/conference-productivity/background.jpg',
     homePage: './index.html',
     notificationCheckInterval: 360000, // X miliseconds
     verbosityLevel: 2,
     encryptionPassword: 'maxwellai'
 };
+
+// Function to set the CSS variable for background image
+function setBackgroundImageVariable() {
+    const root = document.documentElement;
+    root.style.setProperty('--background-image', `url('../../data/substrates/conference-productivity/background.jpg')`);
+}
+
+// Call the function to set the background image variable
+setBackgroundImageVariable();
 
 export default config;

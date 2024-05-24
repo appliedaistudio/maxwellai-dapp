@@ -1,6 +1,6 @@
 /* General styling for the app container */
 #app-container {
-    background: url('../../images/background.jpg') no-repeat center center fixed; /* Sets a fullscreen background image with fixed positioning */
+    background: var(--background-image) no-repeat center center fixed; /* Sets a fullscreen background image with fixed positioning */
     background-size: cover; /* Ensures the background image covers the entire container, cropping if necessary */
     display: flex; /* Enables flexbox layout to easily center the app content vertically and horizontally */
     justify-content: center; /* Center horizontally within the flex container */

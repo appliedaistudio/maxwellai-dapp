@@ -54,7 +54,7 @@ const loadTasksRegularly = () => {
     loadTasks(); // Load tasks immediately
 
     // Set interval to reload tasks every 15 seconds
-    setInterval(loadTasks, 10000); // 10 seconds = 10000 milliseconds
+    setInterval(loadTasks, 1000000); // 10 seconds = 10000 milliseconds TODO: RESET THIS
 };
 
 // Render tasks as cards in the main content area

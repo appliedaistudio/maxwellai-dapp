@@ -6,4 +6,5 @@
     --accent-color: #6c757d;
     --secondary-accent-color: #00f;
     --dark-neutral-color: #0056b3; /* Default fallback color */
+    --background-image: '';
 }
