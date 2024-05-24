@@ -1,34 +1,52 @@
+/* Styles for the close (X) icon */
+.close {
+    color: var(--light-color); /* Use the --light-color variable for the close icon */
+}
+
+/* Hover style for the close (X) icon */
+.close:hover {
+    color: var(--neutral-color); /* Change the color to the neutral color on hover */
+}
+
 /* Configuration form styles */
+
+/* Background color for the modal content */
 .modal-content {
     background-color: var(--light-color);
 }
 
+/* Center the form within the modal body */
 .modal-body form {
     max-width: 400px;
     margin: 0 auto;
 }
 
+/* Styles for the form labels */
 .modal-body form .settings-form-label {
     color: black;
-    float: left; /* Align messages to the left */
+    float: left; /* Align labels to the left */
 }
 
+/* Styles for the form control inputs */
 .modal-body form .settings-form-control {
-    margin-bottom: 15px;
-    width: 100%;
+    margin-bottom: 15px; /* Space between input fields */
+    width: 100%; /* Full width for input fields */
 }
 
+/* Remove the top border from the modal footer */
 .modal-footer {
     border-top: none;
 }
 
+/* Styles for the save settings button */
 #saveSettingsBtn {
-    background-color: var(--neutral-color);
-    color: var(--font-color);
-    border-color: var(--accent-color);
+    background-color: var(--neutral-color); /* Button background color */
+    color: var(--font-color); /* Button text color */
+    border-color: var(--accent-color); /* Button border color */
 }
 
+/* Hover effect for the save settings button */
 #saveSettingsBtn:hover {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
+    background-color: var(--accent-color); /* Hover background color */
+    border-color: var(--accent-color); /* Hover border color */
 }

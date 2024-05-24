@@ -189,14 +189,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="configModalLabel">Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <!-- Configuration form -->
                     <form id="settingsForm">
                         <div class="mb-3">
-                            <label for="apiKey" class="form-label">API Key:</label>
-                            <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
+                            <label for="apiKey" class="form-label settings-form-label">API Key:</label>
+                            <input type="text" class="form-control settings-form-control" id="apiKey" placeholder="Enter your API key">
                         </div>
                         <!-- Add more configuration fields as needed -->
                     </form>
@@ -208,6 +210,7 @@
             </div>
         </div>
     </div>
+
     
     <!-- External libraries and scripts -->
     <script src="./lib/vibrant/vibrant.min.js"></script>
