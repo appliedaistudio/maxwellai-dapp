@@ -5,7 +5,7 @@
 
 /* Hover style for the close (X) icon */
 .close:hover {
-    color: var(--neutral-color); /* Change the color to the neutral color on hover */
+    color: var(--secondary-accent-color); /* Change the color to the neutral color on hover */
 }
 
 /* Configuration form styles */

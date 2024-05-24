@@ -1,3 +1,126 @@
+/* Styles for the close (X) icon */
+.close {
+    color: var(--light-color); /* Use the --light-color variable for the close icon */
+    background-color: var(--neutral-color); /* Neutral background color */
+    border: none; /* No border */
+}
+
+/* Make the close (X) icon larger */
+button.btn-close {
+    font-size: 1.5rem; /* Increase the font size as needed */
+    width: 1.5em; /* Adjust width to match the larger font size */
+    height: 1.5em; /* Adjust height to match the larger font size */
+}
+
+/* Hover style for the close (X) icon */
+.close:hover {
+    color: var(--neutral-color); /* Change the color to the neutral color on hover */
+}
+
+/* Configuration form styles */
+
+/* Background color for the modal content */
+.modal-content {
+    background-color: var(--light-color);
+}
+
+/* Background color for the modal header */
+.modal-header {
+    background-color: var(--dark-color); /* Dark background for the header */
+    color: var(--light-color); /* Light text color for the header */
+}
+
+/* Center the form within the modal body */
+.modal-body form {
+    max-width: 400px;
+    margin: 0 auto; /* Center align the form */
+}
+
+/* Styles for the form labels */
+.modal-body form .settings-form-label {
+    color: black;
+    float: left; /* Align labels to the left */
+}
+
+/* Styles for the form control inputs */
+.modal-body form .settings-form-control {
+    margin-bottom: 15px; /* Space between input fields */
+    width: 100%; /* Full width for input fields */
+}
+
+/* Styles for the modal footer */
+.modal-footer {
+    border-top: 2px solid var(--dark-color); /* Dark border at the top */
+}
+
+/* Styles for the save settings button */
+#saveSettingsBtn {
+    background-color: var(--neutral-color); /* Button background color */
+    color: var(--font-color); /* Button text color */
+    border-color: var(--accent-color); /* Button border color */
+}
+
+/* Hover effect for the save settings button */
+#saveSettingsBtn:hover {
+    background-color: var(--accent-color); /* Hover background color */
+    border-color: var(--accent-color); /* Hover border color */
+}
+
+/* Update the login modal styles to match the settings modal theme */
+
+/* Background color for the login modal content */
+#unsuccessfulLoginModal .modal-content {
+    background-color: var(--light-color);
+}
+
+/* Background color for the login modal header */
+#unsuccessfulLoginModal .modal-header {
+    background-color: var(--neutral-color); /* Dark background for the header */
+    color: var(--light-color); /* Light text color for the header */
+    border-bottom: none; /* Remove the bottom border */
+}
+
+/* Styles for the modal title in the login modal */
+#unsuccessfulLoginModal .modal-title {
+    color: var(--light-color); /* Match the text color to the header */
+}
+
+/* Styles for the modal body in the login modal */
+#unsuccessfulLoginModal .modal-body {
+    color: black; /* Match the text color in the settings modal */
+}
+
+/* Styles for the close button in the login modal */
+#unsuccessfulLoginModal .btn-close {
+    color: var(--light-color); /* Use the --light-color variable for the close icon */
+    background-color: var(--neutral-color); /* Neutral background color */
+    border: none; /* No border */
+}
+
+/* Hover style for the close button in the login modal */
+#unsuccessfulLoginModal .btn-close:hover {
+    color: var(--accent-color); /* Change the color to the neutral color on hover */
+}
+
+/* Styles for the login modal footer */
+#unsuccessfulLoginModal .modal-footer {
+    border-top: 2px solid var(--dark-color); /* Dark border at the top */
+}
+
+/* Styles for the close button in the login modal footer */
+#unsuccessfulLoginModal .btn-secondary {
+    background-color: var(--neutral-color); /* Button background color */
+    color: var(--font-color); /* Button text color */
+    border-color: var(--accent-color); /* Button border color */
+}
+
+/* Hover effect for the close button in the login modal footer */
+#unsuccessfulLoginModal .btn-secondary:hover {
+    background-color: var(--accent-color); /* Hover background color */
+    border-color: var(--accent-color); /* Hover border color */
+}
+
+/* Login form styles */
 .form-signin .form-control, .form-signin .btn {
     width: 100%; /* Ensures full width for both inputs and button */
     max-width: 330px; /* Adjust as needed to match your form width */
