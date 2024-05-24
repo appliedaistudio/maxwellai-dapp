@@ -15,7 +15,7 @@ function hexToRGB(hex) {
     return { r, g, b };
 }
 
-// Calculates the luminance of an RGB color, important for contrast calculations
+// Calculates the luminance of an RGB color
 function getLuminance(rgb) {
     // Convert RGB values to the range [0,1], then apply sRGB luminance formula
     const a = [rgb.r, rgb.g, rgb.b].map(function(v) {
@@ -25,7 +25,7 @@ function getLuminance(rgb) {
     return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
-// Calculates the contrast ratio between two RGB colors for WCAG compliance
+// Calculates the contrast ratio between two RGB colors
 function getContrastRatio(rgb1, rgb2) {
     // Apply formula for contrast ratio calculation
     const luminance1 = getLuminance(rgb1) + 0.05;
@@ -65,10 +65,22 @@ function adjustLightColor(lightRGB) {
     return { r: adjustedR, g: adjustedG, b: adjustedB };
 }
 
+// Darkens an RGB color by a given percentage
+function darkenColor(rgb, percentage) {
+    const factor = 1 - (percentage / 100);
+    return {
+        r: Math.round(rgb.r * factor),
+        g: Math.round(rgb.g * factor),
+        b: Math.round(rgb.b * factor)
+    };
+}
+
 // Extracts and updates theme colors from an image, adjusting for WCAG-compliant contrast
 export function updateThemeColorsBasedOnImage(imagePath) {
     var img = new Image();
     img.src = imagePath;
+
+    // Image load event
     img.onload = function() {
         // Vibrant.js library used to extract key colors from image
         var vibrant = new Vibrant(img);
@@ -90,22 +102,25 @@ export function updateThemeColorsBasedOnImage(imagePath) {
             // Adjust light color to be a variant of off-white
             lightColorRGB = adjustLightColor(lightColorRGB);
             let lightColorAdjusted = `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`;
-
-            // Ensure contrast for accessibility, modifies lightColorRGB for compliance
             lightColorRGB = ensureContrast(lightColorRGB, neutralColorRGB);
 
-            // Apply theme updates to CSS custom properties, with adjustments for contrast
+            // Darken the neutral color by 20%
+            let darkNeutralColorRGB = darkenColor(neutralColorRGB, 20);
+            let darkNeutralColorHex = `rgb(${darkNeutralColorRGB.r}, ${darkNeutralColorRGB.g}, ${darkNeutralColorRGB.b})`;
+
+            // Apply theme updates to CSS custom properties
             const rootStyle = document.documentElement.style;
             rootStyle.setProperty('--neutral-color', `rgb(${neutralColorRGB.r}, ${neutralColorRGB.g}, ${neutralColorRGB.b})`);
             rootStyle.setProperty('--accent-color', `rgb(${accentColorRGB.r}, ${accentColorRGB.g}, ${accentColorRGB.b})`);
             rootStyle.setProperty('--secondary-accent-color', `rgb(${secondaryAccentColorRGB.r}, ${secondaryAccentColorRGB.g}, ${secondaryAccentColorRGB.b})`);
             rootStyle.setProperty('--light-color', `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`);
             rootStyle.setProperty('--font-color', `rgb(${lightColorRGB.r}, ${lightColorRGB.g}, ${lightColorRGB.b})`);
-
-            // Adding semi-transparent background color for more flexible design use
             rootStyle.setProperty('--neutral-color-bg', `rgba(${neutralColorRGB.r}, ${neutralColorRGB.g}, ${neutralColorRGB.b}, 0.8)`);
+            rootStyle.setProperty('--dark-neutral-color', darkNeutralColorHex);
         }
     };
+
+    // Image error event
     img.onerror = function() {
         console.error('Error loading the image:', imagePath);
     };

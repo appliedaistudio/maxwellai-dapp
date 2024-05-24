@@ -2,7 +2,8 @@
     --font-color: #fff;
     --light-color: #fff;
     --neutral-color: #007bff;
-    --neutral-color-bg: #007bff; 
+    --neutral-color-bg: rgba(0, 123, 255, 0.8);
     --accent-color: #6c757d;
     --secondary-accent-color: #00f;
+    --dark-neutral-color: #0056b3; /* Default fallback color */
 }

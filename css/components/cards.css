@@ -9,6 +9,10 @@
     height: 95%; /* Ensures the card stretches to take up all available vertical space */
 }
 
+.card:hover {
+    background-color: var(--dark-neutral-color); /* Change background color on hover */
+}
+
 .card-img-top {
     height: 12vh;
     width: 100%; /* ensures the image is responsive and fits the card */
