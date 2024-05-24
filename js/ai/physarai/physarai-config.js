@@ -85,6 +85,13 @@ const defaultAndSuggestedUserResponses = `
     They should be consisten with someone who has the ${userPersonality()} Meyers-Briggs personality type. 
     Anticipate a range of likely responses. `;
 
+function aiConversationResponse(conversationString){
+    const aiPrompt = `
+        Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?
+        Your response must be in plain text only (not JSON)`;
+    return aiPrompt
+}
+
 function aiKeytakeaway(documentId, conversationId){
     const takeaway = `
     What is the key takeaway from this conversation? 
@@ -113,6 +120,7 @@ const aiConfig = {
     aiCaveats,
     aiKeytakeaway,
     aiUserResponses: defaultAndSuggestedUserResponses,
+    aiConversationResponse,
     aiUpdateNetwork: aiUpdateNetwork,
     aiUpdateNotifications,
     aiUpdateTasks

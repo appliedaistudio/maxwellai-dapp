@@ -19,7 +19,7 @@ async function generateAIResponseToConversation(conversationData) {
         const conversationString = conversationData.dialogue.map(message => `${message.speaker}: ${message.text}`).join('\n');
 
         // Prepare AI prompt based on the conversation history
-        const aiPrompt = `Given the following conversation:\n\n${conversationString}\n\nWhat should the AI respond?`;
+        const aiPrompt = aiConfig.aiConversationResponse(conversationString);
 
         // Retrieve the AI API key from settings
         const aiApiKey = await llmApiKey();

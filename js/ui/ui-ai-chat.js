@@ -1,8 +1,8 @@
 import config from '../dapp-config.js';
 
 import { getKeyTakeaway, generateAIResponseToConversation, generateDefaultAndSuggestedUserResponses } from '../ai/physarai/physarai-ai-conversations.js';
-import { searchWikipedia } from '../ai/knowledge.js';
-import { formatJson } from '../utils/string-parse.js';
+
+import { log } from '../utils/logging.js';
 
 
 // Initialize local PouchDB instance using the provided configuration
@@ -233,6 +233,8 @@ function engageAI() {
 
 // Function to send a message
 window.sendMessage = async function() {
+    const functionName = "sendMessage";
+    
     const messageInput = document.querySelector('.chat-message-input'); // Selecting the chat input field
     const messageText = messageInput.value.trim(); // Get the trimmed value of the input
 
@@ -259,7 +261,8 @@ window.sendMessage = async function() {
         try {
             // Extract the current conversation from the chat window
             const extractedConversation = extractChatConversation();
-            console.log('Extracted conversation:', extractedConversation);
+            const msg = 'Extracted conversation:' + extractedConversation;
+            log(msg, config.verbosityLevel, 4, functionName);
 
             // Wait for 1 seconds before generating an AI response
             setTimeout(async () => {

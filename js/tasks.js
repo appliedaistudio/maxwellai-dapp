@@ -6,6 +6,8 @@ import { loadMainContentControls } from './ui/ui-controls.js';
 
 import { loadChatConversation } from './ui/ui-ai-chat.js';
 
+import { log } from './utils/logging.js';
+
 // Initialize local PouchDB instance using the provided configuration
 const localDb = new PouchDB(config.localDbName);
 
@@ -131,6 +133,10 @@ const renderTasksAsCards = (tasks) => {
 };
 
 const openChatModal = (_id, category, description) => {
+    const functionName = "openChatModal";
+    const msg = "Opening chat for task:" + _id + category + description;
+    log(msg, config.verbosityLevel, 4, functionName);
+
     console.log("Opening chat for task:", _id, category, description); // Example usage of the passed parameters
 
     // Here you can use the _id, category, and description to adjust the modal content or behavior.
