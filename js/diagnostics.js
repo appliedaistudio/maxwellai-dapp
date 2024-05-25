@@ -33,6 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
+// Add an event listener for messages from the service worker to indicate when the AI is thinking
+navigator.serviceWorker.addEventListener('message', (event) => {
+    const appContent = document.getElementById('app-content');
+
+    if (event.data.action === 'startPulsing') {
+        appContent.classList.add('pulsing');
+    } else if (event.data.action === 'stopPulsing') {
+        appContent.classList.remove('pulsing');
+    }
+});
+
 // Run the diagnostics
 await runNotificationUtilsTestSuite();
 testLLMResponses();

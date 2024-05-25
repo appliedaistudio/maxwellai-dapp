@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add an event listener for messages from the service worker
+// Add an event listener for messages from the service worker to indicate when the AI is thinking
 navigator.serviceWorker.addEventListener('message', (event) => {
     const appContent = document.getElementById('app-content');
 
@@ -54,7 +54,7 @@ const loadTasksRegularly = () => {
     loadTasks(); // Load tasks immediately
 
     // Set interval to reload tasks every 15 seconds
-    setInterval(loadTasks, 1000000); // 10 seconds = 10000 milliseconds TODO: RESET THIS
+    setInterval(loadTasks, 10000); // 10 seconds = 10000 milliseconds
 };
 
 // Render tasks as cards in the main content area

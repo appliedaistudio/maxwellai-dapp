@@ -12,7 +12,7 @@
 
 /* Styling for the main app content area */
 #app-content {
-    background-color: var(--neutral-color-bg) !important; /* Sets the background color using a CSS variable, ensuring opacity can be managed via the variable */
+    background-color: var(--neutral-color-bg); /* Sets the background color using a CSS variable, ensuring opacity can be managed via the variable */
     padding: 1rem; /* Provides space around the content inside the box */
     border-radius: 0.5rem; /* Rounds the corners of the app content box */
     color: var(--font-color) !important; /* Sets the text color using a CSS variable */
@@ -51,7 +51,7 @@
         background-color: var(--neutral-color-bg); /* Original color */
     }
     50% {
-        background-color: rgba(0, 0, 0, 0.1); /* Darker color */
+        background-color: var(--neutral-color); /* Darker color */
     }
     100% {
         background-color: var(--neutral-color-bg); /* Original color */
@@ -60,5 +60,5 @@
 
 /* Add the pulse animation to the app content */
 .pulsing {
-    animation: pulse 1s infinite !important;
+    animation: pulse 5s infinite !important;
 }

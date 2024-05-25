@@ -193,12 +193,22 @@ async function updateNetwork(insightTakeaways) {
 }
 
 async function engageAI() {
-  // Notify the main thread to start the pulsing effect
-  self.clients.matchAll().then(clients => {
-      clients.forEach(client => {
+  let pulsing = true;
+
+  // Function to send every second the message to start pulsing
+  const startPulsing = () => {
+    if (pulsing) {
+      self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
           client.postMessage({ action: 'startPulsing' });
+        });
       });
-  });
+      setTimeout(startPulsing, 1000);
+    }
+  };
+
+  // Start the pulsing
+  startPulsing();
 
   // Send out any outstanding notifications
   await sendNotifications();
@@ -215,15 +225,23 @@ async function engageAI() {
   // Update the external resources feed based on insights gained from user interactions
   await updateNetwork(insightTakeaways);
 
-  // Notify the main thread to stop the pulsing effect
-  self.clients.matchAll().then(clients => {
-      clients.forEach(client => {
-          client.postMessage({ action: 'stopPulsing' });
-      });
-  });
+  // Stop the pulsing
+  pulsing = false;
 
-  // Act on the existing action takeaways
-  //actionTakeaways.forEach(action => console.log(action));
+  // Function to send every second for 5 seconds the message to stop pulsing
+  const stopPulsing = (count = 0) => {
+    if (count < 5) {
+      self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({ action: 'stopPulsing' });
+        });
+      });
+      setTimeout(() => stopPulsing(count + 1), 1000);
+    }
+  };
+
+  // Start stopping the pulsing for 5 seconds
+  stopPulsing();
 };
 
 const regularIntervalInMinutes = 3; // Regular interval in minutes
