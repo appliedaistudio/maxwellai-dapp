@@ -13,13 +13,14 @@
 /* Styling for the main app content area */
 #app-content {
     background-color: var(--neutral-color-bg) !important; /* Sets the background color using a CSS variable, ensuring opacity can be managed via the variable */
-    padding: 2rem; /* Provides space around the content inside the box */
+    padding: 1rem; /* Provides space around the content inside the box */
     border-radius: 0.5rem; /* Rounds the corners of the app content box */
     color: var(--font-color) !important; /* Sets the text color using a CSS variable */
     box-sizing: border-box; /* Makes sure padding and border are included in the total width and height */
     
     width: 100%; /* Use 100% of the container width, adjusting to the container's width */
     max-width: 1000px; /* Limits the maximum width to ensure content doesn’t stretch too wide on larger screens */
+    height: 98vh; /* Ensure the container takes full viewport height */
     max-height: 98vh; /* Limits the maximum height to prevent overflow of the screen height */
     overflow: auto; /* Enables scrolling for the content area if the content exceeds the box size */
     
@@ -40,7 +41,7 @@
 /* Main content spacing */
 #main-content {
     margin-bottom: 2rem; /* Adds bottom margin for spacing below the main content area */
-    max-height: 55vh; /* Limits the maximum height to prevent overflow of the screen height */
+    max-height:65vh; /* Limits the maximum height to prevent overflow of the screen height */
     overflow: auto; /* Enables scrolling for the content area if the content exceeds the box size */
 }
 
