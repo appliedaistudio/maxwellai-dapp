@@ -1,9 +1,9 @@
 import { putData, fetchJSONData } from './db-init-common.js';
-import { aiConfig } from '../../js/ai/physarai/physarai-config.js'
+import config from '../dapp-config.js';
 
 async function initializeNotificationFeedback(db) {
   // Fetch the JSON data and await its resolution
-  const notificationFeedbackData = await fetchJSONData(`./data/substrates/${aiConfig.aiSubstrateFolder}/notification-feedback.json`);
+  const notificationFeedbackData = await fetchJSONData(`./data/substrates/${config.substrateFolder}/notification-feedback.json`);
 
   // Put the retreived menu data into the database
   await putData(db, notificationFeedbackData);

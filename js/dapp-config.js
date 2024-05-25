@@ -9,13 +9,17 @@ const config = {
     homePage: './index.html',
     notificationCheckInterval: 360000, // X miliseconds
     verbosityLevel: 2,
-    encryptionPassword: 'maxwellai'
+    encryptionPassword: 'maxwellai',
+    substrateFolder: "conference-productivity",
 };
 
 // Function to set the CSS variable for background image
 function setBackgroundImageVariable() {
-    const root = document.documentElement;
-    root.style.setProperty('--background-image', `url('../../data/substrates/conference-productivity/background.jpg')`);
+    // Check if document is defined (i.e., not called from a service worker)
+    if (typeof document !== 'undefined') {
+        const root = document.documentElement;
+        root.style.setProperty('--background-image', `url('../../data/substrates/${config.substrateFolder}/background.jpg')`);
+    }
 }
 
 // Call the function to set the background image variable
