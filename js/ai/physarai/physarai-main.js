@@ -66,6 +66,9 @@ function generateReActAgentLLMPrompt(tools) {
 async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const functionName = "PhysarAI";
 
+    // Configuration variable for maximum consecutive unsuccessful interactions
+    const maxConsecutiveUnsuccessfulInteractions = 3;
+
     // Log entry into the PhysarAI function
     log("Entering PhysarAI function", aiConfig.verbosityLevel, 1, functionName);
 
@@ -80,7 +83,8 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
     const System_prompt = generateReActAgentLLMPrompt(tools);
     let messages = prepareMessages(System_prompt, promptWithContext);
 
-    const maximum_allowable_ai_reasoning_iterations = 15;
+    const maximum_allowable_ai_reasoning_iterations = 10;
+    let consecutiveUnsuccessfulInteractions = 0; // Counter for consecutive unsuccessful interactions
 
     // Process interactions up to the maximum allowed iterations
     for (let i = 0; i < maximum_allowable_ai_reasoning_iterations; i++) {
@@ -103,19 +107,27 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
         const validation = validateLLMResponse(cleanedResponse);
 
         // Check if the LLM interaction was unsuccessful
-        if (!cleanedResponse) {
-            // Log and handle the case where LLM is unavailable
-            log("LLM response not available, waiting for 20 seconds before retry", aiConfig.verbosityLevel, 1, functionName);
+        if (!cleanedResponse || !validation.isValid) {
+            // Log and handle the case where LLM is unavailable or response is invalid
+            const errorMessage = !cleanedResponse ? "LLM response not available" : `Invalid LLM response: ${validation.message}`;
+            log(errorMessage + ", waiting for 10 seconds before retry", aiConfig.verbosityLevel, 1, functionName);
 
-            // Wait for 20 seconds for the LLM to become available again
-            await new Promise(resolve => setTimeout(resolve, 20000));
+            // Increment the counter for consecutive unsuccessful interactions
+            consecutiveUnsuccessfulInteractions += 1;
+
+            // Exit if there have been maxConsecutiveUnsuccessfulInteractions consecutive unsuccessful interactions
+            if (consecutiveUnsuccessfulInteractions >= maxConsecutiveUnsuccessfulInteractions) {
+                log(`Exiting due to ${maxConsecutiveUnsuccessfulInteractions} consecutive unsuccessful LLM interactions`, aiConfig.verbosityLevel, 1, functionName);
+                return null;
+            }
+
+            // Wait for 10 seconds for the LLM to become available again
+            await new Promise(resolve => setTimeout(resolve, 10000));
             continue;
-        } else if (!validation.isValid) {
-            // Log the invalid LLM response and add it to messages
-            log("Invalid LLM response detected: " + validation.message, aiConfig.verbosityLevel, 1, functionName);
-            messages.push({ "role": "user", "content": "Observation: " + validation.message });
-            continue; // Skip processing and continue to the next iteration
         }
+
+        // Reset the counter for consecutive unsuccessful interactions upon a successful response
+        consecutiveUnsuccessfulInteractions = 0;
 
         // Log the LLM response
         log("LLM response " + String(cleanedResponse), aiConfig.verbosityLevel, 1, functionName);
