@@ -115,13 +115,13 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
             // Increment the counter for consecutive unsuccessful interactions
             consecutiveUnsuccessfulInteractions += 1;
 
-            // Exit if there have been maxConsecutiveUnsuccessfulInteractions consecutive unsuccessful interactions
+            // Enter hibernation if there have been maxConsecutiveUnsuccessfulInteractions consecutive unsuccessful interactions
             if (consecutiveUnsuccessfulInteractions >= maxConsecutiveUnsuccessfulInteractions) {
-                log(`Exiting due to ${maxConsecutiveUnsuccessfulInteractions} consecutive unsuccessful LLM interactions`, aiConfig.verbosityLevel, 1, functionName);
+                log(`Entering hibernation due to ${maxConsecutiveUnsuccessfulInteractions} consecutive unsuccessful LLM interactions`, aiConfig.verbosityLevel, 1, functionName);
                 return null;
             }
 
-            // Wait for 10 seconds for the LLM to become available again
+            // Wait for 10 seconds before retrying
             await new Promise(resolve => setTimeout(resolve, 10000));
             continue;
         }
@@ -151,7 +151,7 @@ async function PhysarAI(tools, insightTakeaways, prompt, outputSchema) {
                 messages.push({ "role": "user", "content": "Observation: " + observation });
             } else if (action === "Response To Human") {
                 // Log response specifically for a human-directed response
-                log("Exiting Physari", aiConfig.verbosityLevel, 1, functionName);
+                log("Exiting PhysarAI", aiConfig.verbosityLevel, 1, functionName);
                 // Exit PhysarAI
                 return null;
             } else {
