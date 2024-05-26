@@ -13,6 +13,20 @@
     overflow: auto;
 }
 
+/* Very large wide screens (1600px and above) */
+@media (min-width: 1600px) {
+    #app-title {
+        font-size: 2.5rem;
+    }
+    #main-content {
+        font-size: 1.2rem;
+    }
+    #app-content {
+        max-width: 55%;
+        padding: 2.5rem;
+    }
+}
+
 /* Medium screens (tablets, 992px and below) */
 @media (max-width: 992px) {
     #app-title {
