@@ -26,7 +26,7 @@
               "usefulness_description": "Find information on the keynote speakers at CES 2024.",
               "category": "Conference Events",
               "review_status": "Pending",
-              "thumbnail_url": "https://picsum.photos/id/445/200"
+              "thumbnail_url": "https://images.pexels.com/photos/326514/pexels-photo-326514.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             },
             {
               "_id": "2",
@@ -35,7 +35,7 @@
               "usefulness_description": "Explore the latest technology trends and innovations showcased at CES 2024.",
               "category": "Research & Reference",
               "review_status": "Pending",
-              "thumbnail_url": "https://picsum.photos/id/445/200"
+              "thumbnail_url": "https://images.pexels.com/photos/326514/pexels-photo-326514.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             }
           ]
         },
@@ -53,7 +53,7 @@
               "relationship": "Conference Organizer",
               "category": "Networking",
               "review_status": "Reviewed",
-              "thumbnail_url": "https://picsum.photos/id/160/200"
+              "thumbnail_url": "https://images.pexels.com/photos/267389/pexels-photo-267389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             },
             {
               "_id": "4",
@@ -63,7 +63,7 @@
               "relationship": "Startup Founder",
               "category": "Networking",
               "review_status": "Reviewed",
-              "thumbnail_url": "https://picsum.photos/id/160/200"
+              "thumbnail_url": "https://images.pexels.com/photos/267389/pexels-photo-267389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             }
           ]
         },
@@ -84,7 +84,7 @@
               },
               "category": "Utility",
               "review_status": "Reviewed",
-              "thumbnail_url": "https://picsum.photos/id/36/200"
+              "thumbnail_url": "https://images.unsplash.com/photo-1605465155444-5f084e5ec10a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             },
             {
               "_id": "6",
@@ -97,7 +97,7 @@
               },
               "category": "Utility",
               "review_status": "Pending",
-              "thumbnail_url": "https://picsum.photos/id/36/200"
+              "thumbnail_url": "https://images.unsplash.com/photo-1605465155444-5f084e5ec10a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }
           ]
         }

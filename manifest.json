@@ -1,6 +1,6 @@
 {
-    "short_name": "App",
-    "name": "My Progressive Web App",
+    "short_name": "PhysarAI",
+    "name": "PhysarAI by appliedAIstudio",
     "icons": [
       {
         "src": "./icon/lowres.webp",

@@ -21,7 +21,7 @@ const websitesSchema = {
         "thumbnail_url": { 
             "type": "string", 
             "format": "uri",
-            "const": "https://picsum.photos/id/445/200" 
+            "const": "https://images.pexels.com/photos/326514/pexels-photo-326514.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
         }
     },
     "required": ["_id", "url", "description", "usefulness_description", "category", "review_status", "thumbnail_url"]
@@ -42,7 +42,7 @@ const contactsSchema = {
         "thumbnail_url": { 
             "type": "string", 
             "format": "uri",
-            "const": "https://picsum.photos/id/160/200" 
+            "const": "https://images.pexels.com/photos/267389/pexels-photo-267389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
         }
     },
     "required": ["_id", "name", "email", "phone", "relationship", "category", "review_status", "thumbnail_url"]
@@ -70,7 +70,7 @@ const devicesSchema = {
         "thumbnail_url": { 
             "type": "string", 
             "format": "uri",
-            "const": "https://picsum.photos/id/36/200" 
+            "const": "https://images.unsplash.com/photo-1605465155444-5f084e5ec10a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
         }
     },
     "required": ["_id", "name", "type", "location", "api_info", "category", "review_status", "thumbnail_url"]

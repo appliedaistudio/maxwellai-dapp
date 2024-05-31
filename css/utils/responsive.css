@@ -1,6 +1,6 @@
 /* General styles for larger screens */
 #app-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 #main-content {
@@ -16,7 +16,7 @@
 /* Very large wide screens (1600px and above) */
 @media (min-width: 1600px) {
     #app-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
     #main-content {
         font-size: 1.2rem;
