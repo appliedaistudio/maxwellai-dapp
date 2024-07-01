@@ -1,0 +1,106 @@
+{
+  "validConnectionStatuses": ["Connected", "Disconnected", "Connecting", "Failed"],
+  "connections": [
+    {
+      "data_source": "Gmail",
+      "name": "User Gmail Account",
+      "credentials": {
+        "client_id": "your_client_id.apps.googleusercontent.com",
+        "project_id": "your_project_id",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "your_client_secret",
+        "redirect_uris": ["https://yourapp.com/oauth2callback"],
+        "scopes": ["https://www.googleapis.com/auth/gmail.readonly"]
+      },
+      "status": "connected"
+    },
+    {
+      "data_source": "LinkedIn",
+      "name": "User LinkedIn Account",
+      "credentials": {
+        "client_id": "your_linkedin_client_id",
+        "client_secret": "your_linkedin_client_secret",
+        "oauth2_access_token_url": "https://www.linkedin.com/oauth/v2/accessToken",
+        "oauth2_authorize_url": "https://www.linkedin.com/oauth/v2/authorization",
+        "redirect_uri": "https://yourapp.com/linkedin/oauth2callback",
+        "scopes": ["r_liteprofile", "r_emailaddress"]
+      },
+      "status": "not_connected"
+    },
+    {
+      "data_source": "Outlook",
+      "name": "User Outlook Account",
+      "credentials": {
+        "client_id": "your_outlook_client_id",
+        "client_secret": "your_outlook_client_secret",
+        "auth_uri": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+        "token_uri": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        "redirect_uri": "https://yourapp.com/outlook/oauth2callback",
+        "scopes": ["https://outlook.office.com/mail.read"]
+      },
+      "status": "connecting"
+    },
+    {
+      "data_source": "Google Calendar",
+      "name": "User Google Calendar Account",
+      "credentials": {
+        "client_id": "your_google_calendar_client_id.apps.googleusercontent.com",
+        "project_id": "your_project_id",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "your_google_calendar_client_secret",
+        "redirect_uris": ["https://yourapp.com/googlecalendar/oauth2callback"],
+        "scopes": ["https://www.googleapis.com/auth/calendar"]
+      },
+      "status": "failed"
+    },
+    {
+      "data_source": "Twilio",
+      "name": "User Twilio Account",
+      "credentials": {
+        "account_sid": "your_twilio_account_sid",
+        "auth_token": "your_twilio_auth_token",
+        "api_key": "your_twilio_api_key",
+        "api_secret": "your_twilio_api_secret"
+      },
+      "status": "connected"
+    },
+    {
+      "data_source": "Bluetooth Microphone/Speaker",
+      "name": "User Bluetooth Microphone/Speaker",
+      "credentials": {
+        "device_id": "your_bluetooth_microphone_speaker_device_id",
+        "pairing_code": "your_pairing_code"
+      },
+      "status": "not_connected"
+    },
+    {
+      "data_source": "Bluetooth Camera",
+      "name": "User Bluetooth Camera",
+      "credentials": {
+        "device_id": "your_bluetooth_camera_device_id",
+        "pairing_code": "your_pairing_code"
+      },
+      "status": "connected"
+    },
+    {
+      "data_source": "RSS Current Events Feed",
+      "name": "Global News RSS Feed",
+      "credentials": {
+        "url": "https://example.com/global-news-rss-feed.xml"
+      },
+      "status": "connected"
+    },
+    {
+      "data_source": "Contacts Picker API",
+      "name": "User Contacts",
+      "credentials": {
+        "description": "No credentials required, uses browser API"
+      },
+      "status": "not_connected"
+    }
+  ]
+}
