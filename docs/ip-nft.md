@@ -6,36 +6,63 @@ In this white paper, we will guide you through building a private, open-source c
 
 ## Motivation
 
-Our strategy is to build a financially sustainable system by starting with pilot projects, also known as early commissions from "Customer Zero," to validate our concepts and refine our technology. These early programs will help us build and release prototypes, creating valuable IP. 
+**Overview: A Private, Open-Source Business Model**
 
-Next, we'll fund our growth by selling tokenized IP through NFTs. These NFTs will be programmed so AppliedAIstudio gets royalties on all sales, providing the capital we need to expand. This funding method also offers investors greater liquidity and faster returns on investment.
+This section explains our plan to build a sustainable, growing business and become leaders in our field. Our strategy combines innovative funding, strategic partnerships, and robust IP (intellectual property) development to ensure long-term growth and success.
 
-With this funding, we'll focus on creating markets through public programs backed by governments. By joining public consortia and being influential within them, we'll secure these programs to establish a stable market for our IP. A core skill will be our ability to position the company effectively in these consortia.
+### **Phase 1: Pilot Projects and IP Development**
 
-We aim to set up a situation where having a strong pedigree matters. Patents, government certifications, and partnerships will be key differentiators for us. Success depends on our ability to execute these pilot projects, sell the tokenized IP, and secure public programs. This approach offers opportunities that aren't available in the open market and provides a stable, long-term path for growth.
+**Goal:** Test our ideas, improve our tech, and create valuable IP.
+
+1. **Early Projects:** We'll start with pilot projects to show that our technology works.
+2. **Building IP:** These projects help us develop and secure valuable IP. Our source code is our IP, protected by patents. We already have three provisional patents and are working to make them permanent.
+
+### **Phase 2: Funding Through Digital Rights (IP-NFTs)**
+
+**Goal:** Get the money we need to grow while giving investors better returns.
+
+1. **Selling Digital Rights:** We'll sell digital rights to our IP as IP-NFTs, using a combination of smart contracts and traditional contracts to handle royalties.
+2. **Seed Investment:** We get initial funding through the sale of these IP-NFTs.
+3. **Revenue Streams:** We get revenue from license agreements and royalties from the resale of NFTs.
+4. **Investor Benefits:** Investors gain returns from license royalties and NFT resales, ensuring their investment is tied to our mission's success.
+
+### **Phase 3: Market Creation and Government Programs**
+
+**Goal:** Build stable markets for our IP through government programs and partnerships.
+
+1. **Certifications:** Our MBSE and 8(a) certifications are crucial. 8(a) helps us work with prime contractors who are mandated to work with certified firms.
+2. **SBIR Grants:** We've been invited to submit an SBIR grant proposal to the NSF, which is a significant opportunity. Winning this grant will help us progress through Phase III.
+3. **Developing Programs:** Using SBIR Phase III, we'll create and lead our own government programs, partnering with prime contractors to implement our IP.
+4. **Strategic Relationships:** We'll form and maintain relationships with government program managers and prime contractors to keep a steady flow of opportunities.
+
+### **Revenue Generation and Market Leadership**
+
+**Goal:** Make money by licensing our IP and leading the market.
+
+1. **Licensing IP:** We will license our IP to prime contractors who fulfill government contracts through the programs we initiate using SBIR Phase III.
+2. **Primary Markets:** The programs we create will serve as the main markets for our IP. We'll negotiate deals with government agencies and prime contractors.
+
+### **Expanding Investment Opportunities**
+
+**Goal:** Invite more investors and participants to join our mission.
+
+1. **Private, Open-Source Model:** We sell access to our source code to curated, private markets, allowing us to monetize while protecting our IP.
+2. **Broader Investment Pool:** Our model invites a wider range of investors, making investments more accessible and potentially more profitable.
+3. **Participation and Benefit:** We enable program managers from both the government and private industry (prime contractors) to join and benefit from our mission. The more we create, the more profitable we become, and the better the returns for investors.
+4. **Mission-Driven ROI:** Our returns are tied to our mission's success, ensuring that achieving our goals directly benefits our investors.
+
+**Conclusion**
+
+Our business model for sustainable growth and market leadership is built on innovation, strategic partnerships, and strong IP protection within a private, open-source community. By inviting more investors and participants to join our mission, we create a pathway to prosperity for everyone involved. Together, we will build a future where our technology thrives, supported by a strong foundation and sustainable growth.
+
 
 ## Technologies
 
-1. **IP-NFTs**: NFTs that represent intellectual property, enabling secure and verifiable access control.
-2. **JavaScript Obfuscator**: A tool for obfuscating JavaScript code to make it difficult for users to read or modify.
-3. **PouchDB**: A JavaScript database that allows you to store data locally in a browser and synchronize it with a CouchDB server.
-4. **Ethers.js**: A library for interacting with the Ethereum blockchain.
-5. **OAuth**: A standard for token-based authentication and authorization.
+1. **IP-NFTs**: NFTs that represent intellectual property, enabling secure and verifiable royalty distribution.
+2. **Ethers.js**: A library for interacting with the Ethereum blockchain.
+3. **Solidity**: A programming language for writing smart contracts on the Ethereum blockchain.
 
-## Step-by-Step Development Process
-
-### 1. Issuing IP-NFTs
-
-**Design and Mint IP-NFTs**:
-- **Choose a Blockchain**: Use a blockchain that supports NFTs, such as Ethereum or another EVM-compatible chain.
-- **Minting NFTs**: Create a smart contract that mints 1,000 NFTs with the following features:
-  - **Royalty Distribution**: Share sales revenue of the underlying IP among all NFT holders.
-  - **Access Control**: Only 100 special tokens grant access to the software through GitHub and allow participation in approving or denying IP license sales through majority voting.
-  - **Domain-Specific Collections**: Each collection represents a different application of the AI technology.
-  - **Image Association**: Each token has an associated image commissioned from an artist.
-  - **Royalties**: AppliedAIStudio receives a percentage of all sales and resales. The artist also receives a percentage of sales and resales.
-
-### Smart Contract and Legal IP Contract Relationship
+## Smart Contract and Legal IP Contract Relationship
 
 The smart contract and the legal IP contract work together to ensure that the digital representation of rights and transactions on the blockchain is legally enforceable.
 
@@ -49,6 +76,17 @@ The smart contract and the legal IP contract work together to ensure that the di
 
 **Enforcement and Dispute Resolution**: The smart contract handles automated enforcement, while the legal IP contract includes provisions for dispute resolution, such as arbitration or court proceedings, in case of disagreements that the smart contract cannot address.
 
+## Simplified Model for IP-NFTs
+
+### Key Features
+
+1. **Royalty Distribution**: The primary function of the IP-NFT is to distribute royalties after the sale of an NFT or the sale of a license deal.
+2. **Off-Chain License Management**: All license purchases and agreements are handled off-chain. This simplifies the system and removes the need for sophisticated access code in the application.
+3. **Smart Contract Management**: The smart contract automates the distribution of royalties to IP-NFT holders.
+4. **Legal IP Contract Reference**: The smart contract includes a URL or IPFS hash of the legal IP contract for reference.
+5. **Associated Images**: Each token has an associated image commissioned from an artist.
+6. **Royalty on Subsequent Sales**: A royalty on all subsequent token sales is distributed to AppliedAIstudio and the artist.
+
 ### Smart Contract Example
 
 ```solidity
@@ -56,21 +94,17 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract IPNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
-    // Maximum supply of tokens
+contract IPNFT is ERC721, ERC721Enumerable, Ownable {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIdTracker;
+
+    // Total number of NFTs
     uint256 public constant MAX_SUPPLY = 1000;
-    // Number of special tokens
-    uint256 public constant SPECIAL_SUPPLY = 100;
-    // Next token ID to be minted
-    uint256 public nextTokenId;
-    // Mapping to track special tokens
-    mapping(uint256 => bool) public isSpecialToken;
 
     // Addresses for royalty distribution
-    address payable public appliedAIStudio;
+    address payable public appliedAIstudio;
     address payable public artist;
     // Royalty percentages
     uint256 public appliedAIRoyalty;
@@ -79,20 +113,20 @@ contract IPNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     // URL or IPFS hash of the legal IP contract
     string public legalContractURL;
 
-    // Event to signal license sale approval
-    event LicenseSaleApproved(uint256 tokenId, bool approved);
+    // Events to signal royalty distribution
+    event RoyaltiesDistributed(uint256 amount, address indexed recipient);
 
     // Constructor to initialize the contract
     constructor(
         string memory name,
         string memory symbol,
-        address payable _appliedAIStudio,
+        address payable _appliedAIstudio,
         address payable _artist,
         uint256 _appliedAIRoyalty,
         uint256 _artistRoyalty,
         string memory _legalContractURL
     ) ERC721(name, symbol) {
-        appliedAIStudio = _appliedAIStudio;
+        appliedAIstudio = _appliedAIstudio;
         artist = _artist;
         appliedAIRoyalty = _appliedAIRoyalty;
         artistRoyalty = _artistRoyalty;
@@ -100,321 +134,79 @@ contract IPNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     // Function to mint a new token
-    function mint(string memory tokenURI) external onlyOwner {
-        require(nextTokenId < MAX_SUPPLY, "Max supply reached");
-        uint256 tokenId = nextTokenId++;
-        _mint(msg.sender, tokenId);
+    function mint(address to, string memory tokenURI) external onlyOwner {
+        require(_tokenIdTracker.current() < MAX_SUPPLY, "Max supply reached");
+        uint256 tokenId = _tokenIdTracker.current();
+        _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
-        if (tokenId < SPECIAL_SUPPLY) {
-            isSpecialToken[tokenId] = true;
+        _tokenIdTracker.increment();
+    }
+
+    // Function to distribute royalties from license deals
+    function distributeLicenseRoyalties(uint256 licenseRevenue) external onlyOwner {
+        uint256 totalNFTs = totalSupply();
+        uint256 royaltyPerToken = (licenseRevenue * appliedAIRoyalty) / (100 * totalNFTs);
+
+        for (uint256 i = 0; i < totalNFTs; i++) {
+            address tokenOwner = ownerOf(i);
+            payable(tokenOwner).transfer(royaltyPerToken);
         }
+
+        uint256 appliedAIShare = (licenseRevenue * appliedAIRoyalty) / 100;
+        appliedAIstudio.transfer(appliedAIShare);
+        emit RoyaltiesDistributed(appliedAIShare, appliedAIstudio);
     }
 
-    // Function for special token holders to approve license sales
-    function approveLicenseSale(uint256 tokenId) external {
-        require(isSpecialToken[tokenId], "Not a special token");
-        // Implement voting logic here
-        emit LicenseSaleApproved(tokenId, true);
+    // Overriding the _transfer function to handle royalty distribution on sales
+    function _transfer(address from, address to, uint256 tokenId) internal override {
+        uint256 appliedAIShare = msg.value * appliedAIRoyalty / 100;
+        uint256 artistShare = msg.value * artistRoyalty / 100;
+        appliedAIstudio.transfer(appliedAIShare);
+        artist.transfer(artistShare);
+        super._transfer(from, to, tokenId);
     }
 
-    // Hook that is called before any token transfer
+    // Hook to handle token transfers
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721, ERC721Enumerable) {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    // Function to burn a token
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    // Function to handle token burning
+    function _burn(uint256 tokenId) internal override(ERC721) {
         super._burn(tokenId);
-    }
-
-    // Function to get the token URI
-    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
-        return super.tokenURI(tokenId);
     }
 
     // Function to check supported interfaces
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
-
-    // Overriding the _transfer function to handle royalty distribution
-    function _transfer(address from, address to, uint256 tokenId) internal override {
-        uint256 appliedAIShare = msg.value * appliedAIRoyalty / 100;
-        uint256 artistShare = msg.value * artistRoyalty / 100;
-        appliedAIStudio.transfer(appliedAIShare);
-        artist.transfer(artistShare);
-        super._transfer(from, to, tokenId);
-    }
 }
 ```
 
-### Explanation of the Smart Contract
+### Workflow
 
-This smart contract, named `IPNFT`, extends the ERC721 standard to create a custom NFT with additional functionalities. The contract mints a maximum of 1,000 tokens, with the first 100 being special tokens that have additional privileges such as voting on IP license sales.
+1. **Initial Purchase and Issuance**:
+    - Users purchase an IP-NFT, granting them a share of future royalties.
+    - The smart contract mints the IP-NFT and tracks ownership.
+    - Each token has an associated image commissioned from an artist, referenced by the tokenURI.
 
-**Key Features**:
+2. **Off-Chain License Management**:
+    - All license purchases and agreements are handled off-chain through traditional legal contracts.
 
-- **Minting and URI Setting**: The `mint` function allows the contract owner to mint new tokens and assign URIs to them. Tokens are marked as special if their ID is less than 100.
+3. **Royalty Distribution from License Deals**:
+    - Whenever a license deal is made, the owner initiates a royalty distribution transaction.
+    - The smart contract automatically calculates and distributes the royalties to all IP-NFT holders and AppliedAIstudio.
 
-- **Approval of License Sales**: The `approveLicenseSale` function lets special token holders vote on license sales. The voting logic is represented by an event for simplicity.
+4. **Subsequent Sales**:
+    - When an IP-NFT is sold on the secondary market, the smart contract handles the royalty distribution from the sale proceeds to AppliedAIstudio and the artist.
 
-- **Royalty Distribution**: When tokens are transferred, the `_transfer` function calculates the royalties for AppliedAIStudio and the artist based on predefined percentages and transfers these amounts to their respective addresses. This ensures automatic and transparent royalty distribution.
+### Example Scenario
 
-- **Integration with Legal IP Contract**: The contract includes a reference to the legal IP contract through the `legalContractURL` variable, which stores a URL or IPFS hash of the legal document. This ensures that users interacting with the smart contract are aware of the binding legal terms.
-
-- **Token Management**: Functions such as `_beforeTokenTransfer`, `_burn`, and `supportsInterface` ensure proper token management and compatibility with the ERC721, ERC721Enumerable
-
-, and ERC721URIStorage standards.
-
-### 2. Setting Up Your Environment
-
-First, ensure you have Node.js and npm installed. Then, create a new project directory and initialize it:
-
-```bash
-mkdir secure-js-app
-cd secure-js-app
-npm init -y
-```
-
-Install the necessary packages:
-
-```bash
-npm install pouchdb ethers javascript-obfuscator
-```
-
-### 3. Implementing IP-NFT Verification
-
-Create a JavaScript file (`index.js`) to handle IP-NFT verification using Ethers.js. This script will interact with the Ethereum blockchain to verify ownership and access rights.
-
-```javascript
-const { ethers } = require('ethers');
-
-// Define your contract details
-const contractAddress = 'YOUR_CONTRACT_ADDRESS';
-const contractAbi = [/* Contract ABI here */];
-
-// Function to check NFT status
-async function checkNFTStatus(userAddress, tokenId) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contract = new ethers.Contract(contractAddress, contractAbi, provider);
-  const owner = await contract.ownerOf(tokenId);
-  const accessDetails = await contract.accessDetails(tokenId);
-  const currentTime = Math.floor(Date.now() / 1000);
-  
-  if (owner.toLowerCase() === userAddress.toLowerCase() && currentTime <= accessDetails.expiration) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-// Example usage
-(async () => {
-  const userAddress = 'USER_WALLET_ADDRESS';
-  const tokenId = 'USER_NFT_TOKEN_ID';
-  const hasAccess = await checkNFTStatus(userAddress, tokenId);
-  
-  if (hasAccess) {
-    console.log('Access granted');
-  } else {
-    console.log('Access denied');
-  }
-})();
-```
-
-### 4. Obfuscating Your Code
-
-To protect your JavaScript code, use the `javascript-obfuscator` package. Create a configuration file (`obfuscator-config.json`):
-
-```json
-{
-  "compact": true,
-  "controlFlowFlattening": true,
-  "deadCodeInjection": true,
-  "debugProtection": true,
-  "debugProtectionInterval": true,
-  "disableConsoleOutput": true,
-  "identifierNamesGenerator": "hexadecimal",
-  "log": false,
-  "numbersToExpressions": true,
-  "renameGlobals": false,
-  "selfDefending": true,
-  "simplify": true,
-  "splitStrings": true,
-  "stringArray": true,
-  "stringArrayEncoding": ["rc4"],
-  "stringArrayThreshold": 0.75,
-  "unicodeEscapeSequence": false
-}
-```
-
-Run the obfuscation process:
-
-```bash
-npx javascript-obfuscator index.js --config obfuscator-config.json --output dist/index.js
-```
-
-Your obfuscated code will be in the `dist` directory. Deploy this version to your application.
-
-### 5. Secure Storage and Access Checks
-
-Ensure sensitive data is stored securely and validate access regularly.
-
-**Encrypt Data**:
-
-```javascript
-function encryptData(data, key) {
-  // Implement encryption logic here (e.g., using CryptoJS)
-  return encryptedData;
-}
-
-const sensitiveData = 'YOUR_SENSITIVE_DATA';
-const encryptionKey = 'YOUR_ENCRYPTION_KEY';
-const encryptedData = encryptData(sensitiveData, encryptionKey);
-```
-
-**Periodic Access Check**:
-
-```javascript
-setInterval(async () => {
-  const userAddress = 'USER_WALLET_ADDRESS';
-  const tokenId = 'USER_NFT_TOKEN_ID';
-  const hasAccess = await checkNFTStatus(userAddress, tokenId);
-  
-  if (!hasAccess) {
-    alert('Access revoked due to expired or invalid IP-NFT.');
-    // Implement additional logic to handle access revocation
-  }
-}, 24 * 60 * 60 * 1000); // Check once a day
-```
-
-### 6. OAuth Integration for GitHub Access
-
-Implement OAuth to manage GitHub repository access without requiring server-side components.
-
-**Redirect to GitHub OAuth**:
-
-```javascript
-function redirectToGitHubOAuth() {
-  const clientId = 'YOUR_GITHUB_CLIENT_ID';
-  const redirectUri = 'YOUR_REDIRECT_URI';
-  const scope = 'repo';
-  const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-  window.location.href = oauthUrl;
-}
-
-// Call this function to start the OAuth flow
-redirectToGitHubOAuth();
-```
-
-**Handle OAuth Callback**:
-
-```javascript
-async function handleOAuthCallback() {
-  const code = new URLSearchParams(window.location.search).get('code');
-  const response = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-      client_id: 'YOUR_GITHUB_CLIENT_ID',
-      client_secret: 'YOUR_GITHUB_CLIENT_SECRET',
-      code: code,
-    }),
-  });
-  
-  const data = await response.json();
-  const accessToken = data.access_token;
-
-  // Store access token securely
-  localStorage.setItem('github_access_token', accessToken);
-}
-
-// Call this function after redirect to handle the OAuth callback
-handleOAuthCallback();
-```
-
-**Grant GitHub Access**:
-
-```javascript
-async function grantGitHubAccess(username) {
-  const accessToken = localStorage.getItem('github_access_token');
-  const response = await fetch(`https://api.github.com/repos/your-username/your-repo/collaborators/${username}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `token ${accessToken}`,
-      'Accept': 'application/vnd.github.v3+json'
-    },
-    body: JSON.stringify({ permission: 'push' })
-  });
-  return response.ok;
-}
-```
-
-### Handling Ongoing Innovations and Contributions
-
-**Version Management**:
-
-Use branches or tags in your GitHub repository to manage different versions of the code. The client application can fetch the appropriate version based on the user's IP-NFT rights.
-
-**Automatic Updates**:
-
-Implement a mechanism in the client application to automatically pull updates from the repository when new versions are released.
-
-**Example**:
-
-```javascript
-async function checkForUpdates() {
-  const response = await fetch('https://api.github.com/repos/your-username/your-repo/releases/latest', {
-    method: 'GET',
-    headers: {
-      'Authorization': `token ${localStorage.getItem('github_access_token')}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    const latestVersion = data.tag_name;
-
-    if (currentVersion !== latestVersion) {
-      // Notify user about the new version and provide update instructions
-      alert(`A new version (${latestVersion}) is available. Please update your application.`);
-    }
-  } else {
-    console.error('Failed to check for updates');
-  }
-}
-
-// Call this function periodically to check for updates
-setInterval(checkForUpdates, 24 * 60 * 60 * 1000); // Check once a day
-```
-
-### Building the Private, Open-Source Community
-
-#### User-Friendly Onboarding and Access Management
-
-**Web-Based Interface**:
-- **User Portal**: Develop a web-based portal where users can sign up using traditional email and password authentication. This portal can handle the backend complexities of wallet creation and management.
-- **Managed Wallets**: Automatically create and manage crypto wallets on behalf of users. This way, users do not need to interact with wallets directly. Store private keys securely and handle transactions via the backend.
-
-**IP-NFT Issuance**:
-- **Simple Purchase Flow**: Allow users to purchase IP-NFTs using traditional payment methods (credit card, bank transfer) through integrated payment gateways (e.g., Stripe, PayPal).
-- **Non-Crypto Options**: Offer the option to receive IP-NFTs in a custodial wallet managed by the platform.
-
-#### Public Verification Tool
-
-**Ownership Dashboard**:
-- **Ownership Overview**: Provide a dashboard where users can see all their IP-NFTs, their ownership details, and expiration dates.
-- **Rights Management**: Include features to view and manage usage rights, such as time-limited access, transferability, and licensing terms.
-
-**Public Verification Tool**:
-- **Verification Service**: Create a public-facing verification tool where anyone can enter an IP-NFT ID to verify its ownership, authenticity, and rights associated with it.
-- **API Access**: Provide an API for external systems to verify ownership and rights programmatically.
+- **Initial Purchase**: A user buys an IP-NFT for $200, granting them a share of future royalties.
+- **License Deal**: A license deal is made off-chain, generating $10,000 in revenue.
+- **Royalty Distribution from License Deal**: The smart contract distributes the royalties according to the predefined percentages to all IP-NFT holders and AppliedAIstudio.
+- **Secondary Sale**: The IP-NFT is sold on the secondary market for $300. The smart contract automatically distributes the royalty percentages from this sale to AppliedAIstudio and the artist.
 
 ### Conclusion
 
-By following this guide, you can implement a secure and user-friendly system to build a private, open-source community using IP-NFTs to control access and manage intellectual property rights. This approach minimizes the risk of unauthorized access, ensures legitimate IP-NFT holders can use your AI technology, and fosters collaboration. While client-side security has its limitations, combining obfuscation with other techniques can significantly enhance the protection of your application.
-```
+By adopting a simplified model that focuses on royalty distribution and off-chain license management, you can ensure a sustainable revenue stream for ongoing software development. This model incentivizes license deals and rewards IP right owners, while the smart contract automates royalty distribution, creating a seamless and transparent system. The inclusion of a reference to the legal IP contract and commissioned artwork for each token adds further value and clarity to the IP-NFTs.
