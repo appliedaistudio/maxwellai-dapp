@@ -100,7 +100,7 @@ The `docs` directory contains documentation files that provide detailed informat
 
 ##### Diagram
 
-![System Architecture Diagram](maxwellai-dapp/images/Architecture.png)
+![System Architecture Diagram](https://github.com/appliedaistudio/maxwellai-dapp/blob/main/images/Architecture.png)
 
 
 ### Directory and File Breakdown
