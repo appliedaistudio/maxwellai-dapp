@@ -5,7 +5,7 @@
 **Contents**: 
 - [`Introduction`](#physarai-dapp): Title and Description
 - [`Getting Started`](#getting-started): Prerequisites, Installing and Running the project
-- [`Quick Usage Guide`](#quick-start-guide): (Coming Soon)
+- [`Quick Usage Guide`](#quick-usage-guide): (Coming Soon)
 - [`Project Structure`](#project-structure): System Design and Architecture
 - [`Development Guide`](#development-guide): (Coming Soon)
 - [`Advanced Topics`](#advanced-topics): (Coming Soon)
@@ -13,9 +13,12 @@
 - [`Contribution Guide`](#contribution-guide): (Coming Soon)
 - [`Appendix`](#appendix)
 
+
+---
 ## PhysarAI DApp
 
 PhysarAI DApp is a decentralized web application integrating AI functionalities. It is designed to run in a web browser with offline capabilities, allowing users to interact with our state of the art Artificial Intelligence program featuring a completely decentralized infrastructure that runs seamlessly on the client machine.
+
 
 ## Getting Started
 
@@ -50,7 +53,7 @@ Clone the repository and navigate to project folder:
 ### System Design
 
 ##### 1. **Architecture Overview**
-The MaxwellAI DApp is designed with a modular architecture that separates concerns across various components, ensuring that each part of the application is well-organized, maintainable, and scalable. The application is built as a decentralized web app (DApp) that integrates artificial intelligence (AI) functionalities and provides robust features such as network management, task management, and notifications.
+The PhysarAI DApp is designed with a modular architecture that separates concerns across various components, ensuring that each part of the application is well-organized, maintainable, and scalable. The application is built as a decentralized web app (DApp) that integrates artificial intelligence (AI) functionalities and provides robust features such as network management, task management, and notifications.
 
 ##### 2. **Core Components**
 The project is structured into several key components, each responsible for different aspects of the application's functionality:
@@ -65,7 +68,7 @@ The project is structured into several key components, each responsible for diff
   - **Service Worker**: The `service-worker.mjs` script provides offline capabilities by caching resources and managing network requests. This component is crucial for maintaining the app's functionality even when the user is offline.
 
 ##### 3. **Data Management**
-The application stores and manages various data states and configurations in the `data` directory. The `substates` folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
+The application stores and manages various data states and configurations in the `data/substrates` directory. The folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
 
 The `prompt-templates` folder contains text files that serve as templates for collecting feedback and other input from users, ensuring that the data collection process is consistent and user-friendly.
 
@@ -97,7 +100,7 @@ The `docs` directory contains documentation files that provide detailed informat
 
 ##### Diagram
 
-![System Architecture Diagram](path/to/diagram.png)
+![System Architecture Diagram](images/Architecture.png)
 
 
 ### Directory and File Breakdown
