@@ -3,7 +3,7 @@
 **Purpose**: Provide an overview and essential information to get started with the project. 
 
 **Contents**: 
-- [`Introduction`](#physarai-dapp): Title and Description
+- [`Introduction`](#introduction): Title and Description
 - [`Getting Started`](#getting-started): Prerequisites, Installing and Running the project
 - [`Quick Usage Guide`](#quick-usage-guide): (Coming Soon)
 - [`Project Structure`](#project-structure): System Design and Architecture
@@ -15,8 +15,10 @@
 
 
 ---
-## PhysarAI DApp
+# PhysarAI DApp
 
+
+## Introduction
 PhysarAI DApp is a decentralized web application integrating AI functionalities. It is designed to run in a web browser with offline capabilities, allowing users to interact with our state of the art Artificial Intelligence program featuring a completely decentralized infrastructure that runs seamlessly on the client machine.
 
 
