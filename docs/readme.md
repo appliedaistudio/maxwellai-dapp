@@ -4,13 +4,19 @@
 
 **Contents**: 
 - [`Introduction`](#introduction): Title and Description
+
 - [`Getting Started`](#getting-started): Prerequisites, Installing and Running the project
-- [`Quick Usage Guide`](#quick-usage-guide): (Coming Soon)
+
 - [`Project Structure`](#project-structure): System Design and Architecture
+
 - [`Development Guide`](#development-guide): (Coming Soon)
+
 - [`Advanced Topics`](#advanced-topics): (Coming Soon)
+
 - [`FAQ and Troubleshooting`](#faq-and-troubleshooting): (Coming Soon)
+
 - [`Contribution Guide`](#contribution-guide): (Coming Soon)
+
 - [`Appendix`](#appendix)
 
 
@@ -24,20 +30,67 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 
 ## Getting Started
 
+### End-User Guide
+
 ##### Prerequisites
-- A local web server setup (e.g., Python's HTTP server)
+- A Web Browser
+
+##### Installation
+- None Required
+
+##### Running the Project
+1. Open your browser and go to `https://appliedaistudio.github.io/maxwellai-dapp/`.
+
+2. Login using the following credentials:
+   - Username: guest
+   - Password: guest123
+
+
+### Developer Guide
+
+##### Prerequisites
+- Visual Studio Code
+- A local web server setup (e.g., Python's HTTP server or Live Preview - A VS Code Extension)
 - Basic knowledge of HTML, CSS, and JavaScript
 
 ##### Installation
 
-Clone the repository and navigate to project folder:
+1. Download and Install Visual Studio Code:
+  `https://code.visualstudio.com/download`
 
-   ```bash
+2. Install Live Preview:
+  Using the Activity Bar on the far left-hand side of VS Code, navigate to the extenstions section and search for "Live Preview". Install the extension of the _**same name**_ that has officially been listed by Microsoft. This extensions allows setting up a local web server within your workspace to preview the app and if required also allows to access the server in an external web browser. 
+
+3. Clone the repository and navigate to project folder:
+    - Open a terminal and navigate using `cd` to the folder where you want to save the project.
+
+    - Enter the following commands (make sure `git` is already installed): 
+
+    ```bash
    git clone https://github.com/appliedaistudio/maxwellai-dapp.git
    cd maxwellai-dapp
-```
+    ```
+   - If you prefer to not use a terminal and commands to carry out this step, you can do the following:
+     - Download and Install GitHub Desktop through the following link: `https://desktop.github.com/download/`
+     - Login using your GitHub account.
+     - Click on `Add` and in the dropdown menu click on `Clone Repository`.
+     - In the popup form click on URL, add the following `https://github.com/appliedaistudio/maxwellai-dapp.git`. 
+     - Choose the Local Path where you want to clone the repository and finally click on clone.
 
 ##### Running the Project
+
+1. Run VS Code and open the newly cloned project repository.
+
+2. In the Explorer pane on the left-hand side, open `index.html`.
+
+3. On the top right-hand corner, click on the second button `Open Preview` which is located beside the `Run Code` button.
+
+4. Login using the following credentials and explore the app as you would on a browser:
+    - Username: guest
+    - Password: guest123
+
+
+If you prefer to run a local web server by yourself instead:
 
 1. Start the local web server:
 
@@ -45,9 +98,6 @@ Clone the repository and navigate to project folder:
    python3 -m http.server
    ```
 2. Open your browser and go to `http://localhost:8000`.
-
-
-## Quick Usage Guide
 
 
 ## Project Structure
@@ -72,7 +122,7 @@ The project is structured into several key components, each responsible for diff
 ##### 3. **Data Management**
 The application stores and manages various data states and configurations in the `data/substrates` directory. The folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
 
-The `prompt-templates` folder contains text files that serve as templates for collecting feedback and other input from users, ensuring that the data collection process is consistent and user-friendly.
+The `substrate-data-templates` folder contains text files that serve as templates that are fed to an LLM like ChatGPT in order to generate seed substrate data for a new substrate.
 
 ##### 4. **User Interface (UI)**
 The UI is highly modular, with specific styles and scripts dedicated to different components of the application. This modularity ensures that the UI is both responsive and adaptable, providing a seamless user experience across different devices.
@@ -102,7 +152,7 @@ The `docs` directory contains documentation files that provide detailed informat
 
 ##### Diagram
 
-![System Architecture Diagram](https://github.com/appliedaistudio/maxwellai-dapp/blob/main/images/Architecture.png)
+![System Architecture Diagram](images/Architecture.png)
 
 
 ### Directory and File Breakdown
@@ -172,7 +222,7 @@ The `docs` directory contains documentation files that provide detailed informat
 - `tasks.js`: Manages task functionalities.
 
 ##### Data Directory (data/)
-- **substates/**: Contains various data states and configurations.
+- **substrates/**: Contains various data states and configurations.
   - **aging-in-place/**: 
     - `appliance_inventory.json`: JSON file containing appliance inventory data.
     - `background.jpg`: Background image used in aging-in-place interfaces.
@@ -209,7 +259,7 @@ The `docs` directory contains documentation files that provide detailed informat
     - `task-feedback.json`: JSON file for storing feedback on tasks.
     - `tasks.json`: JSON file containing task data.
 
-  - **prompt-templates/**: Templates for different prompts.
+  - **substrate-data-templates/**: Example templates utilized to feed LLMs for generating seed substrate data.
     - `general-feedback.txt`: Template for collecting general feedback.
     - `network-and-feedback.txt`: Template for collecting network feedback.
     - `notifications-and-feedback.txt`: Template for collecting notifications feedback.
@@ -275,4 +325,34 @@ The `docs` directory contains documentation files that provide detailed informat
 
 ## Contribution Guide
 
+##### How to Contribute
+- **Forking the Repository**: Fork the repository on GitHub and clone it to your local machine.
+- **Creating Branches**: Create a new branch for your feature or bug fix.
+- **Making Changes**: Implement your changes, following the coding standards.
+- **Committing Changes**: Write clear and concise commit messages.
+
+##### Coding Standards and Guidelines
+
+
+##### Pull Request Process
+- **Submitting a Pull Request**: Push your branch to GitHub and open a pull request.
+- **Review Process**: Your pull request will be reviewed by project maintainers. Make necessary changes based on feedback.
+- **Merging**: Once approved, your changes will be merged into the main branch.
+
 ## Appendix
+
+##### Glossary
+- **AI**: Artificial Intelligence
+- **DApp**: Decentralized Application
+- **Service Worker**: A script that runs in the background and handles caching for offline capabilities
+- **API**: Application Programming Interface  
+
+##### Additional Resources
+- **Official Documentation**:
+  - Bootstrap:
+    - https://getbootstrap.com/docs/4.5/getting-started/introduction/
+    - https://getbootstrap.com/docs/5.1/getting-started/introduction/
+
+  - PouchDB - https://pouchdb.com/guides/
+
+- **Tutorials and Guides**: Recommended tutorials for further learning.
