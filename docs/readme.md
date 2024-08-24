@@ -39,7 +39,7 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 - None Required
 
 ##### Running the Project
-1. Open your browser and go to `https://appliedaistudio.github.io/maxwellai-dapp/`.
+1. Open your browser and go to https://appliedaistudio.github.io/maxwellai-dapp/.
 
 2. Login using the following credentials:
    - Username: guest
@@ -56,7 +56,7 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 ##### Installation
 
 1. Download and Install Visual Studio Code:
-  `https://code.visualstudio.com/download`
+  https://code.visualstudio.com/download
 
 2. Install Live Preview:
   Using the Activity Bar on the far left-hand side of VS Code, navigate to the extenstions section and search for "Live Preview". Install the extension of the _**same name**_ that has officially been listed by Microsoft. This extensions allows setting up a local web server within your workspace to preview the app and if required also allows to access the server in an external web browser. 
@@ -71,10 +71,10 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
    cd maxwellai-dapp
     ```
    - If you prefer to not use a terminal and commands to carry out this step, you can do the following:
-     - Download and Install GitHub Desktop through the following link: `https://desktop.github.com/download/`
+     - Download and Install GitHub Desktop through the following link: https://desktop.github.com/download/
      - Login using your GitHub account.
      - Click on `Add` and in the dropdown menu click on `Clone Repository`.
-     - In the popup form click on URL, add the following `https://github.com/appliedaistudio/maxwellai-dapp.git`. 
+     - In the popup form click on URL, add the following https://github.com/appliedaistudio/maxwellai-dapp.git. 
      - Choose the Local Path where you want to clone the repository and finally click on clone.
 
 ##### Running the Project
@@ -97,7 +97,7 @@ If you prefer to run a local web server by yourself instead:
    ```bash
    python3 -m http.server
    ```
-2. Open your browser and go to `http://localhost:8000`.
+2. Open your browser and go to http://localhost:8000.
 
 
 ## Project Structure
