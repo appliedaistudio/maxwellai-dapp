@@ -15,7 +15,7 @@
 
 - [`FAQ and Troubleshooting`](#faq-and-troubleshooting): (Coming Soon)
 
-- [`Contribution Guide`](#contribution-guide): (Coming Soon)
+- [`Contribution Guide`](#contribution-guide): How to contribute, coding standards and guidelines, pull request process
 
 - [`Appendix`](#appendix)
 
