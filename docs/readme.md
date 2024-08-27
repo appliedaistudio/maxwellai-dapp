@@ -96,7 +96,7 @@ If you prefer to run a local web server by yourself instead:
    ```
 2. Open your browser and go to http://localhost:8000.
 
-##### Contribution Guide
+##### Contribution
 To get started on contributing to the project (fixing a bug or creating a new feature) refer to the [**`Contribution Guide`**](#contribution-guide) Section.
 
 
@@ -133,7 +133,7 @@ The UI is highly modular, with specific styles and scripts dedicated to differen
 - **User Authentication**: The User Authentication processes, managed by `ui-auth.js`, allows login management, session management, and access level checks using PouchDB and bcrypt for a secure login system.
 
 ##### 5. **AI Integration**
-The `ai` directory contains the core AI functionalities, including scripts for managing AI conversations, configuring AI models, and interacting with large language models (LLMs). The PhysarAI module is the main AI component of the application, providing advanced AI capabilities such as natural language processing and knowledge management.
+The `js/ai` directory contains the core AI functionalities, including scripts for managing AI conversations, configuring AI models, and interacting with large language models (LLMs). The PhysarAI module is the main AI component of the application, providing advanced AI capabilities such as natural language processing and knowledge management.
 
 ##### 6. **Security and Performance**
 The application leverages several key components to ensure security and optimal performance:
