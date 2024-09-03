@@ -325,11 +325,43 @@ The `docs` directory contains documentation files that provide detailed informat
 ##### How to Contribute
 - **Forking the Repository**: Fork the repository on GitHub and clone it to your local machine.
 - **Creating Branches**: Create a new branch for your feature or bug fix.
-- **Making Changes**: Implement your changes, following the coding standards.
-- **Committing Changes**: Write clear and concise commit messages.
+- **Making Changes**: Implement your changes, following the coding standards below.
+- **Committing Changes**: Write clear and concise commit messages (e.g., “Add feature: Implement AI chat interface”).
 
 ##### Coding Standards and Guidelines
 
+This section outlines the coding standards and best practices to be followed when contributing to the codebase. The standards are designed to ensure consistency, readability, maintainability, and scalability of the code.
+
+1. **HTML Structure and Best Practices**
+- **External Libraries and Styles**: Load external libraries and stylesheets at the top of the `<head>` section. Ensure that all dependencies are documented and version-controlled.
+- **Custom CSS and Scripts**: Custom CSS and JavaScript files should be linked after external libraries. Follow a clear directory structure (e.g., `/css/`, `/js/`, `/lib/`).
+- **Accessibility**: Use semantic HTML elements like `<nav>`, `<header>`, `<footer>`, `<section>`, and `<article>` to improve accessibility. Always include `aria-labels` and titles where applicable for assistive technologies.
+
+2. **JavaScript Standards**
+- **Modular Code**: Use ES6 modules (`import` and `export`) to organize code into logical, reusable components. This promotes maintainability and separation of concerns.
+- **Error Handling**: Always include error handling (`try-catch`) for asynchronous operations like database access or network requests. Log errors to the console with descriptive messages.
+- **Database Operations**: Use PouchDB for local storage and data management. Ensure that database initialization occurs before any UI operations. Fetch and render data efficiently, utilizing asynchronous functions (`async-await`).
+- **Function Documentation**: Each function should be documented with comments explaining its purpose, parameters, and return values. Use clear and descriptive names for functions and variables.
+
+3. **CSS and Styling Guidelines**
+- **Naming Conventions**: Follow a consistent naming convention for classes, such as `kebab-case` (e.g., `.ai-chat-button`, `.card-container`). Ensure that class names are descriptive and relevant to their function.
+- **Responsive Design**: Use media queries and Bootstrap classes (`d-flex`, `vh-100`, etc.) to create responsive layouts. Test the UI across various devices to ensure compatibility.
+- **Variables and Reusability**: Use CSS variables (`:root { --primary-color: #333; }`) for colors, fonts, and other reusable values. This promotes consistency and makes it easier to update styles globally.
+
+4. **Security Considerations**
+- **Data Encryption**: Use bcrypt or similar libraries for sensitive data encryption. Always encrypt/decrypt data before storing/retrieving from databases.
+- **Input Validation**: Validate all user inputs to prevent security vulnerabilities such as SQL injection or XSS attacks. Sanitize data before processing.
+- **Permissions and Notifications**: Always check and request user permissions for notifications. Provide clear instructions and fallback mechanisms if the browser does not support certain APIs.
+
+5. **Testing and Debugging**
+- **Console Logs**: Use `console.log` for debugging during development, but remove or comment out unnecessary logs in the production code. Use a logging utility if consistent and detailed logging is required.
+- **Browser Compatibility**: Test the application in multiple browsers to ensure consistent behavior. Address any browser-specific issues promptly.
+
+6. **Documentation and Comments**
+- **Code Comments**: Use one-line comments whenever possible, placed on lines by themselves. Comment all code, and ensure each major block of code explains its intent. The reader should understand the intent of the code just by reading the comments.
+- **Documentation**: Maintain up-to-date documentation for the project, including setup instructions, usage guidelines, and development notes. Keep the documentation in the `docs` directory and update it as the project evolves.
+
+By following these coding standards, we ensure that our codebase remains clean, efficient, and easy to maintain. Consistency in coding practices across the team will lead to a more robust and scalable product.
 
 ##### Pull Request Process
 - **Submitting a Pull Request**: Push your branch to GitHub and open a pull request.
