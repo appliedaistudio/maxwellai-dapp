@@ -115,15 +115,21 @@ The project is structured into several key components, each responsible for diff
   - **CSS Styles**: The CSS files, organized into `base`, `components`, `layout`, and `utils` manage the visual styling of the application. The `base` styles define fundamental elements like typography, while `components` handle the styling of specific UI elements like buttons and menus. `layout.css` manages the overall structure of the pages, while `responsive.css` utility implements responsive design techniques ensuring consistency and optimal performance across different devices and screen sizes.
   - **JavaScript (JS) Files**: The JS files are divided into subdirectories for database management (`db`), user interface (`ui`), utilities (`utils`), and AI-specific functionalities (`ai`). These scripts handle dynamic interactions within the application, such as user authentication, AI interactions, and data management. The `ai` folder contains scripts related to PhysarAI, which is the core AI module integrated into the application.
 
+  Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
+
 - **Backend Components**:
   - **OpenAI Interaction**: The only core backend component is the DApp's interaction with OpenAI's LLM. The `dapp-settings.json` script and some of the scripts in the `js/ai` subdirectory specifically cater to this.
-  - **Service Worker**: The `service-worker.mjs` script functions as the brains of the DApp, operating as a middleman between the frontend and the backend. It handles background tasks, ensures offline functionality, engages the AI for continuous processing, and manages essential data like tasks and notifications. This makes the app responsive and functional even in offline or low-connectivity environments. The service worker is installed and activated as soon as the user is logged in. For more information on how to dive deep into the service worker, refer to the [**`Development Guide`**](#development-guide) section.
+  - **Service Worker**: The `service-worker.mjs` script functions as the brains of the DApp, operating as a middleman between the frontend and the backend. It handles background tasks, ensures offline functionality, engages the AI for continuous processing, and manages essential data like tasks and notifications. This makes the app responsive and functional even in offline or low-connectivity environments. The service worker is installed and activated as soon as the user is logged in. 
+  
+  Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
 
 ##### 3. **Data Management**
 - The application stores and manages various data states and configurations in the `data/substrates` directory. The folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
 - The `substrate-data-templates` folder contains text files that serve as templates that are fed to an LLM like ChatGPT in order to generate seed substrate data for a new substrate.
 - **PouchDB**: A client-side database used for storing and synchronizing data. The `js/db` folder contains initialization scripts for various databases like users, tasks, and notifications. These scripts are essential for setting up and managing local data storage, ensuring that the application can operate offline and synchronize data when a connection is available.
+
+Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
 ##### 4. **User Interface (UI)**
 The UI is highly modular, with specific styles and scripts dedicated to different components of the application. 
@@ -133,14 +139,20 @@ The UI is highly modular, with specific styles and scripts dedicated to differen
 - **AI Interaction**: The AI-related interactions, managed by `ui-ai-chat.js`, allow users to interact with the AI models integrated into the application. These interactions are designed to be intuitive and responsive, providing real-time feedback to the user.
 - **User Authentication**: The User Authentication processes, managed by `ui-auth.js`, allows login management, session management, and access level checks using PouchDB and bcrypt for a secure login system.
 
+Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
+
 ##### 5. **AI Integration**
 The `js/ai` directory contains the core AI functionalities, including scripts for managing AI conversations, configuring AI models, and interacting with large language models (LLMs). The PhysarAI module is the main AI component of the application, providing advanced AI capabilities such as natural language processing and knowledge management.
+
+Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
 ##### 6. **Security and Performance**
 The application leverages several key components to ensure security and optimal performance:
 - **bcrypt**: A library used for hashing passwords, ensuring that user credentials are stored securely.
 - **Encryption**: Managed by `encryption.js`, this script is a vital part of the DApp’s security infrastructure. It ensures that sensitive data is encrypted using the AES-GCM algorithm before being stored or transmitted, and can be securely decrypted when needed. The module manages the entire encryption and decryption process, using a static key and a random intialization vector (IV) to produce a unique cipher text, this algorithm combines with robust error handling protects user data and maintains the integrity of the application’s security mechanisms.
 - **Performance Optimization**: The service worker and caching mechanisms improve the app's performance, especially in environments with limited or unreliable network connectivity. 
+
+Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
 ##### 7. **Documentation and Resources**
 The `docs` directory contains documentation files that provide detailed information on the application’s setup, usage, and development. This documentation is crucial for onboarding new developers and ensuring that stakeholders have a clear understanding of the system’s capabilities.
