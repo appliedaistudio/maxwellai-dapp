@@ -117,36 +117,8 @@ The project is structured into several key components, each responsible for diff
 
 - **Backend Components**:
   - **OpenAI Interaction**: The only core backend component is the DApp's interaction with OpenAI's LLM. The `dapp-settings.json` script and some of the scripts in the `js/ai` subdirectory specifically cater to this.
-  - **Service Worker**: The `service-worker.mjs` script functions as the brains of the DApp. It is a critical component that acts as a middleman between the frontend and the backend. It is a background process that manages caching, handles network requests, and continuously engages PhysarAI to update tasks, notifications, and network resources. It ensures the app remains functional and responsive, even offline, by running AI operations at regular intervals and in real-time, processing data insights, and maintaining seamless communication with the main application thread. This allows the application to operate intelligently and autonomously, enhancing the overall user experience.
-    - Overview of responsibilities:
-      - Caching Assets: During the installation phase, the service worker caches essential files such as the index.html, CSS, and JavaScript files to ensure the application can be loaded quickly and work offline.
-      - Handling Fetch Requests: The service worker intercepts network requests and serves them from the cache if available, falling back to network requests if necessary. This improves performance and ensures that the app remains usable even with intermittent connectivity.
-      - Managing Notifications: The service worker periodically checks for pending notifications stored in PouchDB and sends them to the user. It updates the status of notifications from “pending” to “sent” once they are delivered.
-      - Interacting with PhysarAI: The service worker runs iterations of PhysarAI in the background. It collects insights and actions from user interactions, updates tasks, notifications, and network resources based on AI-generated insights, and ensures the AI is engaged regularly at specified intervals.
-      - Regular AI Engagement: The service worker engages the AI at regular intervals (e.g., every 3 minutes) to process data, update notifications, tasks, and networks, and manage other background operations.
-      - Real-time AI Engagement: In addition to regular intervals, the service worker can engage the AI more frequently (e.g., every 10 seconds) for tasks that require immediate attention.
-      - Managing Background Tasks: The service worker continuously runs and schedules tasks in the background, such as updating the UI, sending notifications, and processing data insights, ensuring that the user experience is seamless and responsive.
-      - Communicating with the Main Thread: The service worker listens for messages from the main application thread and can engage the AI or perform other tasks based on these messages. It also communicates back to the main thread by sending messages to update the UI or notify the user.
+  - **Service Worker**: The `service-worker.mjs` script functions as the brains of the DApp, operating as a middleman between the frontend and the backend. It handles background tasks, ensures offline functionality, engages the AI for continuous processing, and manages essential data like tasks and notifications. This makes the app responsive and functional even in offline or low-connectivity environments. The service worker is installed and activated as soon as the user is logged in. For more information on how to dive deep into the service worker, refer to the [**`Development Guide`**](#development-guide) section.
 
-    - Summary: Key Functions and Operations
-      1.	Installation and Activation:
-          - Upon app startup the service worker gets activated to manage background operations and ensure the application remains functional and responsive.
-          - Caches essential files during installation to ensure the application can be loaded quickly and work offline.
-          - Claims control of all clients immediately upon activation.
-      2.	Fetch Handling:
-          - Intercepts network requests and serves them from the cache if available.
-          - Falls back to network requests if the cache is not available.
-          - Serves cached responses for known URLs, improving performance and enabling offline usage.
-      3.	Notification Management:
-          - Periodically checks for pending notifications from PouchDB and displays them to the user.
-          - Updates the status of notifications from “pending” to “sent” once they are delivered.
-      4.	AI Engagement:
-          - Gathers insights from user interactions stored in PouchDB.
-          - Updates tasks, notifications, and network resources based on AI-driven insights.
-          - Engages the AI at regular and real-time intervals, processing and acting on data continuously.
-      5.	Message Handling:
-          - Listens for messages from the main thread and responds accordingly.
-          - Sends messages to the main thread to update the UI or notify the user.
 
 ##### 3. **Data Management**
 - The application stores and manages various data states and configurations in the `data/substrates` directory. The folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
@@ -344,6 +316,34 @@ The `docs` directory contains documentation files that provide detailed informat
 
 
 ## Development Guide
+- **Service Worker**: The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
+  - **Overview of responsibilities**
+    - **Service Worker Lifecycle Events**:
+      - **Installation**: During the install event, the service worker caches essential files such as `index.html`, CSS, and JavaScript. This ensures that the app loads quickly and works offline by caching assets in a versioned cache (`cache-v1`). It uses the `caches.open()` method to store these assets.
+      - **Activation**: During the activate event, the service worker claims control over all active clients and removes outdated caches. It ensures that old caches (e.g., from previous versions of the app) are invalidated by checking the version (e.g., `cache-v1`) and deleting older cache versions to avoid conflicts.
+      - **Fetch Requests Handling**: In the fetch event, the service worker intercepts network requests and serves cached responses when available. It falls back to network requests when the requested resource is not available in the cache. For known URLs (e.g., app assets), the worker prioritizes cache-first, improving performance in offline or low-connectivity situations.
+      - **Message (Event Driven Message Handling)**: The service worker listens for messages sent from the main thread or other worker threads. It uses the **message event** to receive instructions or data (e.g., engaging the AI, updating tasks, or managing notifications) and responds by performing the necessary actions, specifically triggering the **engageAI()** function to initiate AI operations. This allows for two-way communication between the service worker and the main application, facilitating real-time updates and background task execution. Additionally, the event logs the received message for debugging purposes, helping track the communication between the service worker and the main thread. This event allows for dynamic interaction between the frontend and background processes, facilitating real-time AI engagement and other background tasks.
+    - **Caching Assets**: During the installation phase, the service worker caches essential files such as the index.html, CSS, and JavaScript files to ensure the application can be loaded quickly and work offline. The cache is managed using the caches API and named cache-v1. During the activate event, old caches are purged to ensure that only the latest version of assets is stored.
+    - **Managing Notifications**: The service worker regularly checks for pending notifications stored in PouchDB and sends them to the user. It updates the status of notifications from “pending” to “sent” once they are delivered. If a conflict arises during notification status updates (e.g., version conflict in PouchDB), the worker resolves it by fetching the latest version of the document and retrying the update. Notifications contain metadata such as a message, timestamp, and action items. This data is stored in PouchDB and rendered on the UI through the `notifications.js` script. The service worker handles the logic for when and how notifications are fetched, updated, and displayed.
+    - **Interacting with PhysarAI: Regular and Real-time AI Engagement**: The service worker engages PhysarAI in the background, processing user insights stored in PouchDB. The data passed between the service worker and PhysarAI includes task data, notifications, and network resource information. The AI processes this data to generate insights, which are used to update tasks, manage notifications, and keep the app's network operations running efficiently. PhysarAI operates at both regular intervals (e.g., every 3 minutes) to handle general updates and in real-time (every 10 seconds) for more immediate feedback and AI interactions. **Real-time AI engagement** handles tasks that need immediate processing, while **regular intervals** ensure the application stays up-to-date overall.
+    - **Pulsing Mechanism**: To visually indicate when the AI is processing, the service worker uses a "pulsing" mechanism that sends "start pulsing" and "stop pulsing" messages to the main thread. This creates a visual feedback loop for the user, showing that background processes are actively running.
+    - **Managing Background Tasks**: The service worker continuously runs and schedules tasks in the background, such as updating the UI, sending notifications, and processing data insights, ensuring that the user experience is seamless and responsive.
+    - **Communicating with the Main Thread**: The service worker listens for messages from the main application thread and can engage the AI or perform other tasks based on these messages. It also communicates back to the main thread by sending messages to update the UI or notify the user. This two-way communication enables real-time interactions and background operations to enhance the user experience.
+    - **Error Handling & Retry Mechanisms**: The service worker includes error handling mechanisms to catch and log errors that occur during background operations. This ensures that any issues are captured and can be addressed promptly, maintaining the stability and reliability of the application.
+      - **Conflict Resolution**: When updating data in PouchDB (e.g., notification status), the service worker employs a retry mechanism to handle conflicts. If a document conflict occurs, the service worker retrieves the latest revision of the document and retries the update until successful. This ensures data consistency and prevents failures during updates.
+      - **Error Logging**: The service worker logs errors that occur during operations, such as failed fetch requests or database conflicts. These logs are typically sent to the console for debugging purposes, ensuring that developers can quickly identify and resolve issues. The service worker handles errors gracefully, ensuring minimal disruption to the user experience.
+
+- **AI Integration**: Developers can extend the AI capabilities of the DApp by modifying the AI scripts in the `js/ai` directory. These scripts manage AI conversations, interactions with large language models, and knowledge base management.
+
+- **Database Management**:
+  - The PouchDB scripts in the `js/db` directory handle database initialization and data management. Developers can explore these scripts to understand how data is stored and synchronized in the application. By modifying these scripts, developers can customize data storage, retrieval, and synchronization processes to suit specific requirements.
+  - Developers can customize data configurations and states in the `data/substrates` directory to tailor the application to specific use cases or scenarios. By modifying these data files, developers can create new interfaces, functionalities, and interactions within the DApp.
+
+- **UI Customization**: The UI scripts in the `js/ui` directory manage user interface interactions and controls. Developers can customize the UI by modifying these scripts to enhance user experience and functionality.
+
+- **Security Enhancements**: Developers can improve the security of the DApp by enhancing encryption mechanisms, implementing secure authentication processes, and ensuring data privacy and integrity.
+
+- **Performance Optimization**: To optimize the performance of the DApp, developers can explore caching strategies, network configurations, and background operations managed by the service worker. By fine-tuning these components, developers can ensure that the application runs smoothly and efficiently.
 
 ## Advanced Topics
 
