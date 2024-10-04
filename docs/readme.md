@@ -405,6 +405,30 @@ The `docs` directory contains documentation files that provide detailed informat
     - Modular Interaction: Each module—whether it’s for processing conversation responses, fetching knowledge, or managing actions—works independently but communicates with the main PhysarAI function to create a seamless user experience.
     - Real-Time Updates: The system is designed to process real-time inputs and deliver actionable outputs, updating tasks, notifications, and network configurations based on AI insights.
 
+  - **Tool Integration with PhysarAI: Enhancing Capabilities**
+    PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
+      **1. Tools in Utility Files**
+        - Notification Tools (notification-utils.js):
+          - Provides functions for managing notifications (validateNotification, createNotification, updateNotification, etc.).
+          - Interacts with the local database (PouchDB) to store, retrieve, and update notifications.
+        - Task Tools (task-utils.js):
+          - Offers task-related functions (validateTask, createTask, updateTask, etc.).
+          - Facilitates task management by interacting with the database, performing CRUD operations, and validating task data.
+        - Network Tools (network-utils.js):
+          - Manages network configurations and feedback mechanisms, allowing PhysarAI to adapt network-related settings dynamically.
+      **2. Integration via Service Worker**
+        - The service worker imports these utility tools and passes them to functions within physarai-main.js, enabling PhysarAI to execute complex operations.
+        - Within the service worker, the engageAI function gathers sets of tools (taskTools, notificationTools, networkTools, and commonTools) and injects them into PhysarAI’s main processing loop.
+        - For example:
+          - updateNotifications: Uses notificationTools to create, update, or validate notifications based on AI insights.
+          - updateTasks: Employs taskTools to modify tasks in the database, keeping task management responsive and intelligent.
+          - updateNetwork: Utilizes networkTools to adjust network configurations and feedback mechanisms based on real-time analysis.
+      **3. Enhancing AI Capabilities**
+        - This tool integration allows PhysarAI to dynamically manage the app’s core functionalities—notifications, tasks, and network settings.
+        - By leveraging these tools, PhysarAI can respond to real-time inputs, automate routine tasks, and adapt to changing user or system conditions, thus providing a smarter, more interactive experience for users.
+    In summary, the service worker acts as the conductor, calling on the utility tools and passing them into PhysarAI to ensure seamless operation and dynamic interaction with the app’s key components. For new developers, understanding this process is crucial for extending or customizing PhysarAI’s capabilities.
+
+
 
 - **Database Management**:
   - The PouchDB scripts in the `js/db` directory handle database initialization and data management. Developers can explore these scripts to understand how data is stored and synchronized in the application. By modifying these scripts, developers can customize data storage, retrieval, and synchronization processes to suit specific requirements.
