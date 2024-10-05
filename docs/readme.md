@@ -32,7 +32,6 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 ## Getting Started
 
 <details>
-
 <summary> <b> End-User Guide </b> </summary>
 
 ##### Prerequisites
@@ -48,8 +47,10 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
    - Username: guest
    - Password: guest123
 
+</details>
 
-### Developer Guide
+<details>
+<summary> <b> Developer Guide </b> </summary>
 
 ##### Prerequisites
 - Visual Studio Code
