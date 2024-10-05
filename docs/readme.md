@@ -397,7 +397,7 @@ The service worker is a critical component of the DApp, handling background task
 Developers can extend the AI capabilities of the DApp by modifying the AI scripts in the `js/ai` directory. These scripts manage AI conversations, interactions with large language models, and knowledge base management. By customizing these scripts, developers can enhance the AI's functionality, improve response generation, and tailor the AI's behavior to specific use cases.
 
 <details>
-  <summary> <b> Key Elements of PhysarAI </b> </summary>
+<summary> <b> <t> Key Elements of PhysarAI </t> </b> </summary>
 
 **1. Configuration and Initialization**
   - File: physarai-config.js ￼
@@ -406,6 +406,7 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
     - Personality: maxwellaiPersonality() and userPersonality() functions fetch the AI and user’s personality from the local database (PouchDB).
     - Caveats: The file defines strict instructions that the AI must follow, ensuring certain guidelines are observed.      - LLM Configuration: The configuration specifies the Large Language Model (LLM) being used, such as GPT-4, and includes response generation rules and task handling.
   - Integration: This configuration integrates with every part of the AI operations, as it shapes the behavior of the AI and defines the interaction parameters.
+
 **2. Conversation Management**
   - File: physarai-ai-conversations.js ￼
   - Purpose: Manages AI responses in conversation scenarios. This file is responsible for generating the AI’s response based on user conversations.
@@ -413,6 +414,7 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
     - AI Response Generation: generateAIResponseToConversation() prepares and sends a conversation prompt to the LLM, then parses and returns the AI’s response.
     - Degraded Mode: The system has a fallback in place to handle cases when the AI is unavailable or an error occurs, returning default responses.
   - Integration: This is critical for real-time user interactions, as it governs how the AI responds to user inputs during conversations. The conversation module integrates tightly with the LLM and the core application logic to provide coherent interactions.
+
 **3. Main AI Function**
   - File: physarai-main.js ￼
   - Purpose: This is the central function of PhysarAI. It manages all interactions between the tools, AI, and user inputs.
@@ -421,18 +423,21 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
     - Main AI Loop: The PhysarAI() function runs a loop that processes user inputs, engages the LLM, and executes actions.
     - Error Handling: The function also handles retries and error conditions, such as when the LLM is unavailable.
   - Integration: This file is the centerpiece of the AI system, where all other modules converge. It coordinates tool use, manages interactions with the LLM, and logs actions, ensuring smooth AI operation.
+
 **4. Database Interactions**
   - File: physarai-database.js
   - Purpose: This file manages the interactions between the PhysarAI and the local/remote databases. It retrieves sensitive data like API keys and endpoints for interacting with the LLM.
   - Key Elements:
     - LLM API Key and Endpoint: The functions llmApiKey() and llmEndpoint() fetch and decrypt sensitive data stored in PouchDB, such as API keys and endpoint URLs for the LLM.
 	- Integration: This file is critical for securely accessing necessary resources, such as API keys, that PhysarAI needs to function. It integrates by feeding this information to other modules like the LLM interaction handlers.
+
 **5. LLM Interactions**
   - File: physarai-llm-interactions.js ￼
   - Purpose: This file manages the interactions between PhysarAI and the language model (LLM). It sends user prompts to the LLM and processes the response.
   - Key Elements:
     - promptLLM(): This function sends prompts to the LLM via a POST request, passing the API key, endpoint, prompt, and model as parameters.
   - Integration: It plays a key role by ensuring that user interactions with the AI are processed through the LLM, enabling dynamic response generation based on real-time inputs. This module is central to executing the AI logic within the system.
+
 - **6. AI Helpers and Actions**
   - File: physarai-helpers.js ￼
   - Purpose: Provides utility functions to process AI outputs and prepare interaction contexts.
@@ -440,6 +445,7 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
     - Action Extraction: extractActionsAndInputs() parses the LLM’s JSON response, extracting and logging the intended actions.
     - Context Preparation: Functions like prepareContext() build a contextual prompt based on user insights, while prepareMessages() creates structured messages for interaction.
   - Integration: This module works as a pre-processor and post-processor for AI interactions. It builds a proper context and ensures that the AI’s responses are meaningful and aligned with user needs, feeding this back into the main application.
+
 **7. Schema Validation**
   - File: physarai-llm-schema.js ￼
   - Purpose: Defines and validates the structure of the JSON responses received from the LLM.
@@ -450,7 +456,7 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
 </details>
 
 <details>
-  <summary> <b> Integration into the Overall App Architecture </b> </summary>
+<summary> <b> Integration into the Overall App Architecture </b> </summary>
 
 AI Core: PhysarAI is the mind of the application. It handles dynamic user interactions, processes data, and generates responses based on real-time inputs using advanced language models like GPT-4.
 
@@ -463,7 +469,7 @@ Real-Time Updates: The system is designed to process real-time inputs and delive
 </details>
 
 <details>
-  <summary> <b> Tool Integration with PhysarAI: Enhancing Capabilities </b> </summary>
+<summary> <b> <t> Tool Integration with PhysarAI: Enhancing Capabilities </t> </b> </summary>
 
 PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
 **1. Tools in Utility Files**
