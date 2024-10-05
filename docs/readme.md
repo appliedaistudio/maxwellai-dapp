@@ -33,7 +33,7 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 
 <details>
 
-<summary> ### End-User Guide </summary>
+<summary> <b> End-User Guide </b> </summary>
 
 ##### Prerequisites
 - A Web Browser
