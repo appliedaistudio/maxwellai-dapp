@@ -9,7 +9,7 @@
 
 - [`Project Structure`](#project-structure): System Design and Architecture
 
-- [`Development Guide`](#development-guide): (Coming Soon)
+- [`Development Guide`](#development-guide): Guide to developing and extending the project
 
 - [`Advanced Topics`](#advanced-topics): (Coming Soon)
 
@@ -17,7 +17,7 @@
 
 - [`Contribution Guide`](#contribution-guide): How to contribute, coding standards and guidelines, pull request process
 
-- [`Appendix`](#appendix)
+- [`Appendix`](#appendix): Glossary and Additional Resources
 
 
 ---
