@@ -397,7 +397,7 @@ The service worker is a critical component of the DApp, handling background task
 Developers can extend the AI capabilities of the DApp by modifying the AI scripts in the `js/ai` directory. These scripts manage AI conversations, interactions with large language models, and knowledge base management. By customizing these scripts, developers can enhance the AI's functionality, improve response generation, and tailor the AI's behavior to specific use cases.
 
 <details>
-<summary> <b> Key Elements of PhysarAI </b> </summary>
+  <summary> <b> Key Elements of PhysarAI </b> </summary>
 
 **1. Configuration and Initialization**
   - File: physarai-config.js ￼
@@ -450,7 +450,7 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
 </details>
 
 <details>
-<summary> <b> Integration into the Overall App Architecture </b> </summary>
+  <summary> <b> Integration into the Overall App Architecture </b> </summary>
 
 AI Core: PhysarAI is the mind of the application. It handles dynamic user interactions, processes data, and generates responses based on real-time inputs using advanced language models like GPT-4.
 
@@ -463,7 +463,7 @@ Real-Time Updates: The system is designed to process real-time inputs and delive
 </details>
 
 <details>
-<summary> <b> Tool Integration with PhysarAI: Enhancing Capabilities </b> </summary>
+  <summary> <b> Tool Integration with PhysarAI: Enhancing Capabilities </b> </summary>
 
 PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
 **1. Tools in Utility Files**
