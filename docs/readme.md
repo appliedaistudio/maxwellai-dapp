@@ -188,6 +188,8 @@ The `docs` directory contains documentation files that provide detailed informat
 - `service-worker.mjs`: Interface for managing background operations, interacting with physarai, and ensuring that the application remains functional and responsive even in offline conditions.
 - `tasks.html`: Interface for task management. Focuses on managing tasks, particularly breaking down goals into actionable items.
 
+</details>
+
 <details>
 <summary> <b> JavaScript Directory (js/) </b> </summary>
 
@@ -241,7 +243,11 @@ The `docs` directory contains documentation files that provide detailed informat
 - `notifications.js`: Manages notifications.
 - `tasks.js`: Manages task functionalities.
 
-##### Data Directory (data/)
+</details>
+
+<details>
+<summary> <b> Data Directory (data/) </b> </summary>
+
 - **substrates/**: Contains various data states and configurations.
   - **aging-in-place/**: 
     - `appliance_inventory.json`: JSON file containing appliance inventory data.
@@ -285,7 +291,11 @@ The `docs` directory contains documentation files that provide detailed informat
     - `notifications-and-feedback.txt`: Template for collecting notifications feedback.
     - `tasks-and-feedback.txt`: Template for collecting tasks feedback.
 
-##### CSS Directory (css/)
+</details>
+
+<details>
+<summary> <b> CSS Directory (css/) </b> </summary>
+
 - **base/**: Contains base styling for the application.
   - `base.css`: Base stylesheet defining fundamental styles for the application.
   - `typography.css`: Stylesheet specifically for managing typography (fonts, headings, etc.).
@@ -308,7 +318,11 @@ The `docs` directory contains documentation files that provide detailed informat
 - **utils/**: Contains utility styles.
   - `responsive.css`: Stylesheet for managing responsive design, ensuring the application adapts to different screen sizes.
 
-##### Libraries Directory (lib/)
+</details>
+
+<details>
+<summary> <b> Libraries Directory (lib/) </b> </summary>
+
 - **bcrypt/**: Library for password hashing.
   - `bcrypt.min.js`: Minified JavaScript file for the bcrypt library, used for secure password hashing.
 
@@ -327,6 +341,8 @@ The `docs` directory contains documentation files that provide detailed informat
 - **vibrant/**: Vibrant library for color extraction from images.
   - `vibrant.min.js`: Minified JavaScript file for the Vibrant library, used to extract dominant colors from images for dynamic theming.
 
+</details>
+
 ##### Documentation Directory (docs/)
 - Contains documentation files.
 
@@ -337,11 +353,13 @@ The `docs` directory contains documentation files that provide detailed informat
 - Contains image files used in the application.
 
 </details>
-</details>
-</details>
 
 ## Development Guide
-- **Service Worker**: The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
+
+<details>
+<summary> <b> Service Worker </b> </summary>
+
+The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
   - **Overview of responsibilities**
     - **Service Worker Lifecycle Events**:
       - **Installation**: During the `install event`, the service worker caches essential files such as `index.html`, CSS, and JavaScript. This ensures that the app loads quickly and works offline by caching assets in a versioned cache (`cache-v1`). It uses the `caches.open()` method to store these assets.
@@ -357,10 +375,16 @@ The `docs` directory contains documentation files that provide detailed informat
     - **Error Handling & Retry Mechanisms**: The service worker includes error handling mechanisms to catch and log errors that occur during background operations. This ensures that any issues are captured and can be addressed promptly, maintaining the stability and reliability of the application.
       - **Conflict Resolution**: When updating data in PouchDB (e.g., notification status), the service worker employs a retry mechanism to handle conflicts. If a document conflict occurs, the service worker retrieves the latest revision of the document and retries the update until successful. This ensures data consistency and prevents failures during updates.
       - **Error Logging**: The service worker logs errors that occur during operations, such as failed fetch requests or database conflicts. These logs are typically sent to the console for debugging purposes, ensuring that developers can quickly identify and resolve issues. The service worker handles errors gracefully, ensuring minimal disruption to the user experience.
+</details>
 
-- **AI Integration**: Developers can extend the AI capabilities of the DApp by modifying the AI scripts in the `js/ai` directory. These scripts manage AI conversations, interactions with large language models, and knowledge base management.
+<details>
+<summary> <b> AI Integration </b> </summary>
 
-  - **Key Elements of PhysarAI**
+Developers can extend the AI capabilities of the DApp by modifying the AI scripts in the `js/ai` directory. These scripts manage AI conversations, interactions with large language models, and knowledge base management. By customizing these scripts, developers can enhance the AI's functionality, improve response generation, and tailor the AI's behavior to specific use cases.
+
+<details>
+<summary> <b> Key Elements of PhysarAI </b> </summary>
+
     - **1. Configuration and Initialization**
     	- File: physarai-config.js ￼
       - Purpose: This file is responsible for the configuration of the AI system, setting important parameters such as the AI profile, caveats, user personality, and the AI’s personality.
@@ -412,13 +436,21 @@ The `docs` directory contains documentation files that provide detailed informat
         - Response Validation: The validateLLMResponse() function checks if the AI’s response adheres to the predefined schema, ensuring that the output is well-formed and actionable.
       - Integration: This file ensures that all responses generated by the LLM are structurally valid before being acted upon. This is crucial for maintaining stability and reliability in the system.
   
-  - **Integration into the Overall App Architecture**
+</details>
+
+<details>
+<summary> <b> Integration into the Overall App Architecture </b> </summary>
+
     - AI Core: PhysarAI is the mind of the application. It handles dynamic user interactions, processes data, and generates responses based on real-time inputs using advanced language models like GPT-4.
     - Data Management: It relies on PouchDB for managing settings and configuration data securely and efficiently, ensuring offline capability and fast data retrieval.
     - Modular Interaction: Each module—whether it’s for processing conversation responses, fetching knowledge, or managing actions—works independently but communicates with the main PhysarAI function to create a seamless user experience.
     - Real-Time Updates: The system is designed to process real-time inputs and deliver actionable outputs, updating tasks, notifications, and network configurations based on AI insights.
 
-  - **Tool Integration with PhysarAI: Enhancing Capabilities**
+</details>
+
+<details>
+<summary> <b> Tool Integration with PhysarAI: Enhancing Capabilities </b> </summary>
+
     PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
       - **1. Tools in Utility Files**
         - Notification Tools (notification-utils.js):
@@ -440,6 +472,9 @@ The `docs` directory contains documentation files that provide detailed informat
         - This tool integration allows PhysarAI to dynamically manage the app’s core functionalities—notifications, tasks, and network settings.
         - By leveraging these tools, PhysarAI can respond to real-time inputs, automate routine tasks, and adapt to changing user or system conditions, thus providing a smarter, more interactive experience for users.
     In summary, the service worker acts as the conductor, calling on the utility tools and passing them into PhysarAI to ensure seamless operation and dynamic interaction with the app’s key components. For new developers, understanding this process is crucial for extending or customizing PhysarAI’s capabilities.
+
+</details>
+</details>
 
 
 
@@ -465,7 +500,8 @@ The `docs` directory contains documentation files that provide detailed informat
 - **Making Changes**: Implement your changes, following the coding standards below.
 - **Committing Changes**: Write clear and concise commit messages (e.g., “Add feature: Implement AI chat interface”).
 
-##### Coding Standards and Guidelines
+<details>
+<summary> <b> Coding Standards and Guidelines </b> </summary>
 
 This section outlines the coding standards and best practices to be followed when contributing to the codebase. The standards are designed to ensure consistency, readability, maintainability, and scalability of the code.
 
