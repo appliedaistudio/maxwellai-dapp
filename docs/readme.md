@@ -360,21 +360,22 @@ The `docs` directory contains documentation files that provide detailed informat
 <summary> <b> Service Worker </b> </summary>
 
 The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
-  - **Overview of responsibilities**
-    - **Service Worker Lifecycle Events**:
-      - **Installation**: During the `install event`, the service worker caches essential files such as `index.html`, CSS, and JavaScript. This ensures that the app loads quickly and works offline by caching assets in a versioned cache (`cache-v1`). It uses the `caches.open()` method to store these assets.
-      - **Activation**: During the `activate event`, the service worker claims control over all active clients and removes outdated caches. It ensures that old caches (e.g., from previous versions of the app) are invalidated by checking the version (e.g., `cache-v1`) and deleting older cache versions to avoid conflicts.
-      - **Fetch Requests Handling**: In the `fetch event`, the service worker intercepts network requests and serves cached responses when available. It falls back to network requests when the requested resource is not available in the cache. For known URLs (e.g., app assets), the worker prioritizes cache-first, improving performance in offline or low-connectivity situations.
-      - **Message (Event Driven Message Handling)**: The service worker listens for messages sent from the main thread or other worker threads. It uses the `message event` to receive instructions or data (e.g., engaging the AI, updating tasks, or managing notifications) and responds by performing the necessary actions, specifically triggering the ***engageAI()*** function to initiate AI operations. This allows for two-way communication between the service worker and the main application, facilitating real-time updates and background task execution. Additionally, the event logs the received message for debugging purposes, helping track the communication between the service worker and the main thread. This event allows for dynamic interaction between the frontend and background processes, facilitating real-time AI engagement and other background tasks.
-    - **Caching Assets**: During the installation phase, the service worker caches essential files such as the index.html, CSS, and JavaScript files to ensure the application can be loaded quickly and work offline. The cache is managed using the caches API and named `cache-v1`. During the activate event, old caches are purged to ensure that only the latest version of assets is stored.
-    - **Managing Notifications**: The service worker regularly checks for pending notifications stored in PouchDB and sends them to the user. It updates the status of notifications from `pending` to `sent` once they are delivered. If a conflict arises during notification status updates (e.g., version conflict in PouchDB), the worker resolves it by fetching the latest version of the document and retrying the update. Notifications contain metadata such as a message, timestamp, and action items. This data is stored in PouchDB and rendered on the UI through the `notifications.js` script. The service worker handles the logic for when and how notifications are fetched, updated, and displayed.
-    - **Interacting with PhysarAI: Regular and Real-time AI Engagement**: The service worker engages PhysarAI in the background, processing user insights stored in PouchDB. The data passed between the service worker and PhysarAI includes task data, notifications, and network resource information. The AI processes this data to generate insights, which are used to update tasks, manage notifications, and keep the app's network operations running efficiently. PhysarAI operates at both regular intervals (e.g., every 3 minutes) to handle general updates and in real-time (every 10 seconds) for more immediate feedback and AI interactions. ***Real-time AI engagement*** handles tasks that need immediate processing, while ***regular intervals*** ensure the application stays up-to-date overall.
-    - **Pulsing Mechanism**: To visually indicate when the AI is processing, the service worker uses a `pulsing` mechanism that sends `start pulsing` and `stop pulsing` messages to the main thread. This creates a visual feedback loop for the user, showing that background processes are actively running.
-    - **Managing Background Tasks**: The service worker continuously runs and schedules tasks in the background, such as updating the UI, sending notifications, and processing data insights, ensuring that the user experience is seamless and responsive.
-    - **Communicating with the Main Thread**: The service worker listens for messages from the main application thread and can engage the AI or perform other tasks based on these messages. It also communicates back to the main thread by sending messages to update the UI or notify the user. This two-way communication enables real-time interactions and background operations to enhance the user experience.
-    - **Error Handling & Retry Mechanisms**: The service worker includes error handling mechanisms to catch and log errors that occur during background operations. This ensures that any issues are captured and can be addressed promptly, maintaining the stability and reliability of the application.
-      - **Conflict Resolution**: When updating data in PouchDB (e.g., notification status), the service worker employs a retry mechanism to handle conflicts. If a document conflict occurs, the service worker retrieves the latest revision of the document and retries the update until successful. This ensures data consistency and prevents failures during updates.
-      - **Error Logging**: The service worker logs errors that occur during operations, such as failed fetch requests or database conflicts. These logs are typically sent to the console for debugging purposes, ensuring that developers can quickly identify and resolve issues. The service worker handles errors gracefully, ensuring minimal disruption to the user experience.
+
+**Overview of responsibilities**
+- **Service Worker Lifecycle Events**:
+  - **Installation**: During the `install event`, the service worker caches essential files such as `index.html`, CSS, and JavaScript. This ensures that the app loads quickly and works offline by caching assets in a versioned cache (`cache-v1`). It uses the `caches.open()` method to store these assets.
+  - **Activation**: During the `activate event`, the service worker claims control over all active clients and removes outdated caches. It ensures that old caches (e.g., from previous versions of the app) are invalidated by checking the version (e.g., `cache-v1`) and deleting older cache versions to avoid conflicts.
+  - **Fetch Requests Handling**: In the `fetch event`, the service worker intercepts network requests and serves cached responses when available. It falls back to network requests when the requested resource is not available in the cache. For known URLs (e.g., app assets), the worker prioritizes cache-first, improving performance in offline or low-connectivity situations.
+  - **Message (Event Driven Message Handling)**: The service worker listens for messages sent from the main thread or other worker threads. It uses the `message event` to receive instructions or data (e.g., engaging the AI, updating tasks, or managing notifications) and responds by performing the necessary actions, specifically triggering the ***engageAI()*** function to initiate AI operations. This allows for two-way communication between the service worker and the main application, facilitating real-time updates and background task execution. Additionally, the event logs the received message for debugging purposes, helping track the communication between the service worker and the main thread. This event allows for dynamic interaction between the frontend and background processes, facilitating real-time AI engagement and other background tasks.
+- **Caching Assets**: During the installation phase, the service worker caches essential files such as the index.html, CSS, and JavaScript files to ensure the application can be loaded quickly and work offline. The cache is managed using the caches API and named `cache-v1`. During the activate event, old caches are purged to ensure that only the latest version of assets is stored.
+- **Managing Notifications**: The service worker regularly checks for pending notifications stored in PouchDB and sends them to the user. It updates the status of notifications from `pending` to `sent` once they are delivered. If a conflict arises during notification status updates (e.g., version conflict in PouchDB), the worker resolves it by fetching the latest version of the document and retrying the update. Notifications contain metadata such as a message, timestamp, and action items. This data is stored in PouchDB and rendered on the UI through the `notifications.js` script. The service worker handles the logic for when and how notifications are fetched, updated, and displayed.
+- **Interacting with PhysarAI: Regular and Real-time AI Engagement**: The service worker engages PhysarAI in the background, processing user insights stored in PouchDB. The data passed between the service worker and PhysarAI includes task data, notifications, and network resource information. The AI processes this data to generate insights, which are used to update tasks, manage notifications, and keep the app's network operations running efficiently. PhysarAI operates at both regular intervals (e.g., every 3 minutes) to handle general updates and in real-time (every 10 seconds) for more immediate feedback and AI interactions. ***Real-time AI engagement*** handles tasks that need immediate processing, while ***regular intervals*** ensure the application stays up-to-date overall.
+- **Pulsing Mechanism**: To visually indicate when the AI is processing, the service worker uses a `pulsing` mechanism that sends `start pulsing` and `stop pulsing` messages to the main thread. This creates a visual feedback loop for the user, showing that background processes are actively running.
+- **Managing Background Tasks**: The service worker continuously runs and schedules tasks in the background, such as updating the UI, sending notifications, and processing data insights, ensuring that the user experience is seamless and responsive.
+- **Communicating with the Main Thread**: The service worker listens for messages from the main application thread and can engage the AI or perform other tasks based on these messages. It also communicates back to the main thread by sending messages to update the UI or notify the user. This two-way communication enables real-time interactions and background operations to enhance the user experience.
+- **Error Handling & Retry Mechanisms**: The service worker includes error handling mechanisms to catch and log errors that occur during background operations. This ensures that any issues are captured and can be addressed promptly, maintaining the stability and reliability of the application.
+  - **Conflict Resolution**: When updating data in PouchDB (e.g., notification status), the service worker employs a retry mechanism to handle conflicts. If a document conflict occurs, the service worker retrieves the latest revision of the document and retries the update until successful. This ensures data consistency and prevents failures during updates.
+  - **Error Logging**: The service worker logs errors that occur during operations, such as failed fetch requests or database conflicts. These logs are typically sent to the console for debugging purposes, ensuring that developers can quickly identify and resolve issues. The service worker handles errors gracefully, ensuring minimal disruption to the user experience.
 </details>
 
 <details>
@@ -385,57 +386,53 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
 <details>
 <summary> <b> Key Elements of PhysarAI </b> </summary>
 
-    - **1. Configuration and Initialization**
-    	- File: physarai-config.js ￼
-      - Purpose: This file is responsible for the configuration of the AI system, setting important parameters such as the AI profile, caveats, user personality, and the AI’s personality.
-      - Key Elements:
-        - Personality: maxwellaiPersonality() and userPersonality() functions fetch the AI and user’s personality from the local database (PouchDB).
-        - Caveats: The file defines strict instructions that the AI must follow, ensuring certain guidelines are observed.
-        - LLM Configuration: The configuration specifies the Large Language Model (LLM) being used, such as GPT-4, and includes response generation rules and task handling.
-      - Integration: This configuration integrates with every part of the AI operations, as it shapes the behavior of the AI and defines the interaction parameters.
-    - **2. Conversation Management**
-      - File: physarai-ai-conversations.js ￼
-      - Purpose: Manages AI responses in conversation scenarios. This file is responsible for generating the AI’s response based on user conversations.
-      - Key Elements:
-        - AI Response Generation: generateAIResponseToConversation() prepares and sends a conversation prompt to the LLM, then parses and returns the AI’s response.
-        - Degraded Mode: The system has a fallback in place to handle cases when the AI is unavailable or an error occurs, returning default responses.
-      - Integration: This is critical for real-time user interactions, as it governs how the AI responds to user inputs during conversations. The conversation module integrates tightly with the LLM and the core application logic to provide coherent interactions.
-    - **3. Main AI Function**
-      - File: physarai-main.js ￼
-      - Purpose: This is the central function of PhysarAI. It manages all interactions between the tools, AI, and user inputs.
-      - Key Elements:
-        - LLM Prompt Generation: generateReActAgentLLMPrompt() creates a structured prompt for the LLM, outlining tools the AI can use and defining how it should interact.
-        - Main AI Loop: The PhysarAI() function runs a loop that processes user inputs, engages the LLM, and executes actions.
-        - Error Handling: The function also handles retries and error conditions, such as when the LLM is unavailable.
-      - Integration: This file is the centerpiece of the AI system, where all other modules converge. It coordinates tool use, manages interactions with the LLM, and logs actions, ensuring smooth AI operation.
-    - **4. Database Interactions**
-    	- File: physarai-database.js
-      - Purpose: This file manages the interactions between the PhysarAI and the local/remote databases. It retrieves sensitive data like API keys and endpoints for interacting with the LLM.
-      - Key Elements:
-        - LLM API Key and Endpoint: The functions llmApiKey() and llmEndpoint() fetch and decrypt sensitive data stored in PouchDB, such as API keys and endpoint URLs for the LLM.
-	    - Integration: This file is critical for securely accessing necessary resources, such as API keys, that PhysarAI needs to function. It integrates by feeding this information to other modules like the LLM interaction handlers.
-    - **5. LLM Interactions**
-      - File: physarai-llm-interactions.js ￼
-      - Purpose: This file manages the interactions between PhysarAI and the language model (LLM). It sends user prompts to the LLM and processes the response.
-      - Key Elements:
-        - promptLLM(): This function sends prompts to the LLM via a POST request, passing the API key, endpoint, prompt, and model as parameters.
-      - Integration: It plays a key role by ensuring that user interactions with the AI are processed through the LLM, enabling dynamic response generation based on real-time inputs. This module is central to executing the AI logic within the system.
-
-    - **6. AI Helpers and Actions**
-      - File: physarai-helpers.js ￼
-      - Purpose: Provides utility functions to process AI outputs and prepare interaction contexts.
-      - Key Elements:
-        - Action Extraction: extractActionsAndInputs() parses the LLM’s JSON response, extracting and logging the intended actions.
-        - Context Preparation: Functions like prepareContext() build a contextual prompt based on user insights, while prepareMessages() creates structured messages for interaction.
-      - Integration: This module works as a pre-processor and post-processor for AI interactions. It builds a proper context and ensures that the AI’s responses are meaningful and aligned with user needs, feeding this back into the main application.
-
-    - **7. Schema Validation**
-      - File: physarai-llm-schema.js ￼
-      - Purpose: Defines and validates the structure of the JSON responses received from the LLM.
-      - Key Elements:
-        - Response Validation: The validateLLMResponse() function checks if the AI’s response adheres to the predefined schema, ensuring that the output is well-formed and actionable.
-      - Integration: This file ensures that all responses generated by the LLM are structurally valid before being acted upon. This is crucial for maintaining stability and reliability in the system.
-  
+**1. Configuration and Initialization**
+  - File: physarai-config.js ￼
+  - Purpose: This file is responsible for the configuration of the AI system, setting important parameters such as the AI profile, caveats, user personality, and the AI’s personality.
+  - Key Elements:
+    - Personality: maxwellaiPersonality() and userPersonality() functions fetch the AI and user’s personality from the local database (PouchDB).
+    - Caveats: The file defines strict instructions that the AI must follow, ensuring certain guidelines are observed.      - LLM Configuration: The configuration specifies the Large Language Model (LLM) being used, such as GPT-4, and includes response generation rules and task handling.
+  - Integration: This configuration integrates with every part of the AI operations, as it shapes the behavior of the AI and defines the interaction parameters.
+**2. Conversation Management**
+  - File: physarai-ai-conversations.js ￼
+  - Purpose: Manages AI responses in conversation scenarios. This file is responsible for generating the AI’s response based on user conversations.
+  - Key Elements:
+    - AI Response Generation: generateAIResponseToConversation() prepares and sends a conversation prompt to the LLM, then parses and returns the AI’s response.
+    - Degraded Mode: The system has a fallback in place to handle cases when the AI is unavailable or an error occurs, returning default responses.
+  - Integration: This is critical for real-time user interactions, as it governs how the AI responds to user inputs during conversations. The conversation module integrates tightly with the LLM and the core application logic to provide coherent interactions.
+**3. Main AI Function**
+  - File: physarai-main.js ￼
+  - Purpose: This is the central function of PhysarAI. It manages all interactions between the tools, AI, and user inputs.
+  - Key Elements:
+    - LLM Prompt Generation: generateReActAgentLLMPrompt() creates a structured prompt for the LLM, outlining tools the AI can use and defining how it should interact.
+    - Main AI Loop: The PhysarAI() function runs a loop that processes user inputs, engages the LLM, and executes actions.
+    - Error Handling: The function also handles retries and error conditions, such as when the LLM is unavailable.
+  - Integration: This file is the centerpiece of the AI system, where all other modules converge. It coordinates tool use, manages interactions with the LLM, and logs actions, ensuring smooth AI operation.
+**4. Database Interactions**
+  - File: physarai-database.js
+  - Purpose: This file manages the interactions between the PhysarAI and the local/remote databases. It retrieves sensitive data like API keys and endpoints for interacting with the LLM.
+  - Key Elements:
+    - LLM API Key and Endpoint: The functions llmApiKey() and llmEndpoint() fetch and decrypt sensitive data stored in PouchDB, such as API keys and endpoint URLs for the LLM.
+	- Integration: This file is critical for securely accessing necessary resources, such as API keys, that PhysarAI needs to function. It integrates by feeding this information to other modules like the LLM interaction handlers.
+**5. LLM Interactions**
+  - File: physarai-llm-interactions.js ￼
+  - Purpose: This file manages the interactions between PhysarAI and the language model (LLM). It sends user prompts to the LLM and processes the response.
+  - Key Elements:
+    - promptLLM(): This function sends prompts to the LLM via a POST request, passing the API key, endpoint, prompt, and model as parameters.
+  - Integration: It plays a key role by ensuring that user interactions with the AI are processed through the LLM, enabling dynamic response generation based on real-time inputs. This module is central to executing the AI logic within the system.
+- **6. AI Helpers and Actions**
+  - File: physarai-helpers.js ￼
+  - Purpose: Provides utility functions to process AI outputs and prepare interaction contexts.
+  - Key Elements:
+    - Action Extraction: extractActionsAndInputs() parses the LLM’s JSON response, extracting and logging the intended actions.
+    - Context Preparation: Functions like prepareContext() build a contextual prompt based on user insights, while prepareMessages() creates structured messages for interaction.
+  - Integration: This module works as a pre-processor and post-processor for AI interactions. It builds a proper context and ensures that the AI’s responses are meaningful and aligned with user needs, feeding this back into the main application.
+**7. Schema Validation**
+  - File: physarai-llm-schema.js ￼
+  - Purpose: Defines and validates the structure of the JSON responses received from the LLM.
+  - Key Elements:
+    - Response Validation: The validateLLMResponse() function checks if the AI’s response adheres to the predefined schema, ensuring that the output is well-formed and actionable.
+  - Integration: This file ensures that all responses generated by the LLM are structurally valid before being acted upon. This is crucial for maintaining stability and reliability in the system. 
 </details>
 
 <details>
@@ -535,6 +532,8 @@ This section outlines the coding standards and best practices to be followed whe
 - **Documentation**: Maintain up-to-date documentation for the project, including setup instructions, usage guidelines, and development notes. Keep the documentation in the `docs` directory and update it as the project evolves.
 
 By following these coding standards, we ensure that our codebase remains clean, efficient, and easy to maintain. Consistency in coding practices across the team will lead to a more robust and scalable product.
+
+</details>
 
 ##### Pull Request Process
 - **Submitting a Pull Request**: Push your branch to GitHub and open a pull request.
