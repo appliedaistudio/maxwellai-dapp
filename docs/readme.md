@@ -578,6 +578,8 @@ By following these coding standards, we ensure that our codebase remains clean, 
 - **Review Process**: Your pull request will be reviewed by project maintainers. Make necessary changes based on feedback.
 - **Merging**: Once approved, your changes will be merged into the main branch.
 
+</details>
+
 ## Appendix
 
 ### Glossary
