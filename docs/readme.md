@@ -34,13 +34,13 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 <details>
 <summary> <b> End-User Guide </b> </summary>
 
-##### Prerequisites
+### Prerequisites
 - A Web Browser
 
-##### Installation
+### Installation
 - None Required
 
-##### Running the Project
+### Running the Project
 1. Open your browser and go to https://appliedaistudio.github.io/maxwellai-dapp/.
 
 2. Login using the following credentials:
@@ -52,12 +52,12 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
 <details>
 <summary> <b> Developer Guide </b> </summary>
 
-##### Prerequisites
+### Prerequisites
 - Visual Studio Code
 - A local web server setup (e.g., Python's HTTP server or Live Preview - A VS Code Extension)
 - Basic knowledge of HTML, CSS, and JavaScript
 
-##### Installation
+### Installation
 1. Download and Install Visual Studio Code:
   https://code.visualstudio.com/download
 
@@ -80,7 +80,7 @@ PhysarAI DApp is a decentralized web application integrating AI functionalities.
      - In the popup form click on URL, add the following https://github.com/appliedaistudio/maxwellai-dapp.git. 
      - Choose the Local Path where you want to clone the repository and finally click on clone.
 
-##### Running the Project
+### Running the Project
 1. Run VS Code and open the newly cloned project repository.
 
 2. In the Explorer pane on the left-hand side, open `index.html`.
@@ -100,7 +100,7 @@ If you prefer to run a local web server by yourself instead:
    ```
 2. Open your browser and go to http://localhost:8000.
 
-##### Contribution
+### Contribution
 To get started on contributing to the project (fixing a bug or creating a new feature) refer to the [**`Contribution Guide`**](#contribution-guide) Section.
 
 </details>
@@ -110,10 +110,10 @@ To get started on contributing to the project (fixing a bug or creating a new fe
 <details>
 <summary> <b> System Design </b> </summary>
 
-##### 1. **Architecture Overview**
+### 1. **Architecture Overview**
 The PhysarAI DApp is designed with a modular architecture that separates concerns across various components, ensuring that each part of the application is well-organized, maintainable, and scalable.
 
-##### 2. **Core Components**
+### 2. **Core Components**
 The project is structured into several key components, each responsible for different aspects of the application's functionality:
 
 - **Frontend Components**:
@@ -130,14 +130,14 @@ The project is structured into several key components, each responsible for diff
   Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
 
-##### 3. **Data Management**
+### 3. **Data Management**
 - The application stores and manages various data states and configurations in the `data/substrates` directory. The folder contains specific data configurations for different aspects of the application, such as aging-in-place, conference productivity, and cybersecurity productivity. Each subfolder contains JSON files that hold structured data used by the application to manage tasks, network configurations, user feedback, and more.
 - The `substrate-data-templates` folder contains text files that serve as templates that are fed to an LLM like ChatGPT in order to generate seed substrate data for a new substrate.
 - **PouchDB**: A client-side database used for storing and synchronizing data. The `js/db` folder contains initialization scripts for various databases like users, tasks, and notifications. These scripts are essential for setting up and managing local data storage, ensuring that the application can operate offline and synchronize data when a connection is available.
 
 Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
-##### 4. **User Interface (UI)**
+### 4. **User Interface (UI)**
 The UI is highly modular, with specific styles and scripts dedicated to different components of the application. 
 
 - **Bootstrap**: A popular front-end framework. It has been utilized mainly to compliment the DApp's CSS and JS based design efforts in HTML files and to enable the usage of the design template of a `modal` interface component specifically for the AI chat, notifications and login alerts.
@@ -147,12 +147,12 @@ The UI is highly modular, with specific styles and scripts dedicated to differen
 
 Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
-##### 5. **AI Integration**
+### 5. **AI Integration**
 The `js/ai` directory contains the core AI functionalities, including scripts for managing AI conversations, configuring AI models, and interacting with large language models (LLMs). The PhysarAI module is the main AI component of the application, providing advanced AI capabilities such as natural language processing and knowledge management.
 
 Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
-##### 6. **Security and Performance**
+### 6. **Security and Performance**
 The application leverages several key components to ensure security and optimal performance:
 - **bcrypt**: A library used for hashing passwords, ensuring that user credentials are stored securely.
 - **Encryption**: Managed by `encryption.js`, this script is a vital part of the DApp’s security infrastructure. It ensures that sensitive data is encrypted using the AES-GCM algorithm before being stored or transmitted, and can be securely decrypted when needed. The module manages the entire encryption and decryption process, using a static key and a random intialization vector (IV) to produce a unique cipher text, this algorithm combines with robust error handling protects user data and maintains the integrity of the application’s security mechanisms.
@@ -160,7 +160,7 @@ The application leverages several key components to ensure security and optimal 
 
 Refer to the [**`Development Guide`**](#development-guide) section to dive deeper.
 
-##### 7. **Documentation and Resources**
+### 7. **Documentation and Resources**
 The `docs` directory contains documentation files that provide detailed information on the application’s setup, usage, and development. This documentation is crucial for onboarding new developers and ensuring that stakeholders have a clear understanding of the system’s capabilities.
 
 </details>
@@ -168,7 +168,7 @@ The `docs` directory contains documentation files that provide detailed informat
 <details> 
 <summary> <b> System Architecture </b> </summary>
 
-##### Diagram
+### Diagram
 
 ![System Architecture Diagram](images/Architecture.png)
 
@@ -344,15 +344,26 @@ The `docs` directory contains documentation files that provide detailed informat
 
 </details>
 
-##### Documentation Directory (docs/)
+<details>
+<summary> <b> Documentation Directory (docs/) </b> </summary>
+
 - Contains documentation files.
 
-##### Fonts Directory (fonts/)
+</details>
+
+<details>
+<summary> <b> Fonts Directory (fonts/) </b> </summary>
+
 - Contains font files used in the application.
 
-##### Images Directory (images/)
+</details>
+
+<details>
+<summary> <b> Images Directory (images/) </b> </summary>
+
 - Contains image files used in the application.
 
+</details>
 </details>
 
 ## Development Guide
@@ -362,7 +373,7 @@ The `docs` directory contains documentation files that provide detailed informat
 
 The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
 
-**Overview of responsibilities**
+### **Overview of responsibilities**
 - **Service Worker Lifecycle Events**:
   - **Installation**: During the `install event`, the service worker caches essential files such as `index.html`, CSS, and JavaScript. This ensures that the app loads quickly and works offline by caching assets in a versioned cache (`cache-v1`). It uses the `caches.open()` method to store these assets.
   - **Activation**: During the `activate event`, the service worker claims control over all active clients and removes outdated caches. It ensures that old caches (e.g., from previous versions of the app) are invalidated by checking the version (e.g., `cache-v1`) and deleting older cache versions to avoid conflicts.
@@ -377,6 +388,7 @@ The service worker is a critical component of the DApp, handling background task
 - **Error Handling & Retry Mechanisms**: The service worker includes error handling mechanisms to catch and log errors that occur during background operations. This ensures that any issues are captured and can be addressed promptly, maintaining the stability and reliability of the application.
   - **Conflict Resolution**: When updating data in PouchDB (e.g., notification status), the service worker employs a retry mechanism to handle conflicts. If a document conflict occurs, the service worker retrieves the latest revision of the document and retries the update until successful. This ensures data consistency and prevents failures during updates.
   - **Error Logging**: The service worker logs errors that occur during operations, such as failed fetch requests or database conflicts. These logs are typically sent to the console for debugging purposes, ensuring that developers can quickly identify and resolve issues. The service worker handles errors gracefully, ensuring minimal disruption to the user experience.
+
 </details>
 
 <details>
@@ -434,57 +446,76 @@ Developers can extend the AI capabilities of the DApp by modifying the AI script
   - Key Elements:
     - Response Validation: The validateLLMResponse() function checks if the AI’s response adheres to the predefined schema, ensuring that the output is well-formed and actionable.
   - Integration: This file ensures that all responses generated by the LLM are structurally valid before being acted upon. This is crucial for maintaining stability and reliability in the system. 
+
 </details>
 
 <details>
 <summary> <b> Integration into the Overall App Architecture </b> </summary>
 
-    - AI Core: PhysarAI is the mind of the application. It handles dynamic user interactions, processes data, and generates responses based on real-time inputs using advanced language models like GPT-4.
-    - Data Management: It relies on PouchDB for managing settings and configuration data securely and efficiently, ensuring offline capability and fast data retrieval.
-    - Modular Interaction: Each module—whether it’s for processing conversation responses, fetching knowledge, or managing actions—works independently but communicates with the main PhysarAI function to create a seamless user experience.
-    - Real-Time Updates: The system is designed to process real-time inputs and deliver actionable outputs, updating tasks, notifications, and network configurations based on AI insights.
+AI Core: PhysarAI is the mind of the application. It handles dynamic user interactions, processes data, and generates responses based on real-time inputs using advanced language models like GPT-4.
+
+Data Management: It relies on PouchDB for managing settings and configuration data securely and efficiently, ensuring offline capability and fast data retrieval.
+
+Modular Interaction: Each module—whether it’s for processing conversation responses, fetching knowledge, or managing actions—works independently but communicates with the main PhysarAI function to create a seamless user experience.
+
+Real-Time Updates: The system is designed to process real-time inputs and deliver actionable outputs, updating tasks, notifications, and network configurations based on AI insights.
 
 </details>
 
 <details>
 <summary> <b> Tool Integration with PhysarAI: Enhancing Capabilities </b> </summary>
 
-    PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
-      - **1. Tools in Utility Files**
-        - Notification Tools (notification-utils.js):
-          - Provides functions for managing notifications (validateNotification, createNotification, updateNotification, etc.).
-          - Interacts with the local database (PouchDB) to store, retrieve, and update notifications.
-        - Task Tools (task-utils.js):
-          - Offers task-related functions (validateTask, createTask, updateTask, etc.).
-          - Facilitates task management by interacting with the database, performing CRUD operations, and validating task data.
-        - Network Tools (network-utils.js):
-          - Manages network configurations and feedback mechanisms, allowing PhysarAI to adapt network-related settings dynamically.
-      - **2. Integration via Service Worker**
-        - The service worker imports these utility tools and passes them to functions within physarai-main.js, enabling PhysarAI to execute complex operations.
-        - Within the service worker, the engageAI function gathers sets of tools (taskTools, notificationTools, networkTools, and commonTools) and injects them into PhysarAI’s main processing loop.
-        - For example:
-          - updateNotifications: Uses notificationTools to create, update, or validate notifications based on AI insights.
-          - updateTasks: Employs taskTools to modify tasks in the database, keeping task management responsive and intelligent.
-          - updateNetwork: Utilizes networkTools to adjust network configurations and feedback mechanisms based on real-time analysis.
-      - **3. Enhancing AI Capabilities**
-        - This tool integration allows PhysarAI to dynamically manage the app’s core functionalities—notifications, tasks, and network settings.
-        - By leveraging these tools, PhysarAI can respond to real-time inputs, automate routine tasks, and adapt to changing user or system conditions, thus providing a smarter, more interactive experience for users.
-    In summary, the service worker acts as the conductor, calling on the utility tools and passing them into PhysarAI to ensure seamless operation and dynamic interaction with the app’s key components. For new developers, understanding this process is crucial for extending or customizing PhysarAI’s capabilities.
+PhysarAI’s intelligence and automation capabilities are enhanced through various tools provided by utility files: notification-utils.js, task-utils.js, and network-utils.js. These tools enable PhysarAI to handle notifications, tasks, and network interactions efficiently. The service worker (service-worker.mjs) plays a critical role in orchestrating these tools and integrating them into PhysarAI’s workflow.
+**1. Tools in Utility Files**
+  - Notification Tools (notification-utils.js):
+    - Provides functions for managing notifications (validateNotification, createNotification, updateNotification, etc.).
+    - Interacts with the local database (PouchDB) to store, retrieve, and update notifications.
+  - Task Tools (task-utils.js):
+    - Offers task-related functions (validateTask, createTask, updateTask, etc.).
+    - Facilitates task management by interacting with the database, performing CRUD operations, and validating task data.
+  - Network Tools (network-utils.js):
+    - Manages network configurations and feedback mechanisms, allowing PhysarAI to adapt network-related settings dynamically.
+**2. Integration via Service Worker**
+  - The service worker imports these utility tools and passes them to functions within physarai-main.js, enabling PhysarAI to execute complex operations.
+  - Within the service worker, the engageAI function gathers sets of tools (taskTools, notificationTools, networkTools, and commonTools) and injects them into PhysarAI’s main processing loop.
+  - For example:
+    - updateNotifications: Uses notificationTools to create, update, or validate notifications based on AI insights.
+    - updateTasks: Employs taskTools to modify tasks in the database, keeping task management responsive and intelligent.
+    - updateNetwork: Utilizes networkTools to adjust network configurations and feedback mechanisms based on real-time analysis.
+**3. Enhancing AI Capabilities**
+  - This tool integration allows PhysarAI to dynamically manage the app’s core functionalities—notifications, tasks, and network settings.
+  - By leveraging these tools, PhysarAI can respond to real-time inputs, automate routine tasks, and adapt to changing user or system conditions, thus providing a smarter, more interactive experience for users.
+In summary, the service worker acts as the conductor, calling on the utility tools and passing them into PhysarAI to ensure seamless operation and dynamic interaction with the app’s key components. For new developers, understanding this process is crucial for extending or customizing PhysarAI’s capabilities.
 
 </details>
 </details>
 
 
+<details>
+<summary> <b> Database Management </b> </summary>
 
-- **Database Management**:
-  - The PouchDB scripts in the `js/db` directory handle database initialization and data management. Developers can explore these scripts to understand how data is stored and synchronized in the application. By modifying these scripts, developers can customize data storage, retrieval, and synchronization processes to suit specific requirements.
-  - Developers can customize data configurations and states in the `data/substrates` directory to tailor the application to specific use cases or scenarios. By modifying these data files, developers can create new interfaces, functionalities, and interactions within the DApp.
+- The PouchDB scripts in the `js/db` directory handle database initialization and data management. Developers can explore these scripts to understand how data is stored and synchronized in the application. By modifying these scripts, developers can customize data storage, retrieval, and synchronization processes to suit specific requirements.
+- Developers can customize data configurations and states in the `data/substrates` directory to tailor the application to specific use cases or scenarios. By modifying these data files, developers can create new interfaces, functionalities, and interactions within the DApp.
 
-- **UI Customization**: The UI scripts in the `js/ui` directory manage user interface interactions and controls. Developers can customize the UI by modifying these scripts to enhance user experience and functionality.
+</details>
 
-- **Security Enhancements**: Developers can improve the security of the DApp by enhancing encryption mechanisms, implementing secure authentication processes, and ensuring data privacy and integrity.
+<details>
+<summary> <b> UI Customization </b> </summary>
+The UI scripts in the `js/ui` directory manage user interface interactions and controls. Developers can customize the UI by modifying these scripts to enhance user experience and functionality.
 
-- **Performance Optimization**: To optimize the performance of the DApp, developers can explore caching strategies, network configurations, and background operations managed by the service worker. By fine-tuning these components, developers can ensure that the application runs smoothly and efficiently.
+</details>
+
+<details>
+<summary> <b> Security Enhancements </b> </summary>
+Developers can improve the security of the DApp by enhancing encryption mechanisms, implementing secure authentication processes, and ensuring data privacy and integrity.
+
+</details>
+
+<details>
+<summary> <b> Performance Optimization </b> </summary>
+To optimize the performance of the DApp, developers can explore caching strategies, network configurations, and background operations managed by the service worker. By fine-tuning these components, developers can ensure that the application runs smoothly and efficiently.
+
+</details>
 
 ## Advanced Topics
 
