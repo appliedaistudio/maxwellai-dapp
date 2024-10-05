@@ -26,11 +26,7 @@
 
 ## Introduction
 
-<details>
-
-PhysarAI DApp is a decentralized web application integrating AI functionalities. It is designed to run in a web browser with offline capabilities, allowing users to interact with our state of the art Artificial Intelligence program featuring a completely decentralized infrastructure that runs seamlessly on the client machine.
-
-</details>
+PhysarAI DApp is a decentralized web application integrating AI functionalities. It is designed to run in a web browser with offline capabilities, allowing users to interact with our state of the art Artificial Intelligence program featuring a completely decentralized infrastructure that runs seamlessly on the client machine. The application is built using HTML, CSS, and JavaScript, with PouchDB for local data storage and synchronization. The application has been designed to have minimal technical debt. The AI module, PhysarAI, is integrated into the application to provide advanced AI capabilities such as natural language processing, knowledge management, and real-time interactions.
 
 
 ## Getting Started
@@ -111,8 +107,7 @@ To get started on contributing to the project (fixing a bug or creating a new fe
 ## Project Structure
 
 <details>
-
-<summary> ### System Design </summary>
+<summary> <b> System Design </b> </summary>
 
 ##### 1. **Architecture Overview**
 The PhysarAI DApp is designed with a modular architecture that separates concerns across various components, ensuring that each part of the application is well-organized, maintainable, and scalable.
@@ -169,19 +164,18 @@ The `docs` directory contains documentation files that provide detailed informat
 
 </details>
 
-</detail>
-<summary>
-### System Architecture
-</summary>
+<details> 
+<summary> <b> System Architecture </b> </summary>
 
 ##### Diagram
 
 ![System Architecture Diagram](images/Architecture.png)
 
-
 ### Directory and File Breakdown
 
-##### Root Directory
+<details>
+<summary> <b> Root Directory </b> </summary>
+
 - `aiTest.html`: Interface for testing AI functionalities in a contained environment. [Not an active part of the DApp]
 - `dapp.html`: A previous (initial) iteration of the DApp. [Not an active part of the DApp]
 - `diagnostics.html`: Interface for diagnostics features.
@@ -194,7 +188,9 @@ The `docs` directory contains documentation files that provide detailed informat
 - `service-worker.mjs`: Interface for managing background operations, interacting with physarai, and ensuring that the application remains functional and responsive even in offline conditions.
 - `tasks.html`: Interface for task management. Focuses on managing tasks, particularly breaking down goals into actionable items.
 
-##### JavaScript Directory (js/)
+<details>
+<summary> <b> JavaScript Directory (js/) </b> </summary>
+
 - **db/**: Contains database initialization scripts.
   - **data-specific/**:
     - `network-utils.js`: Utility functions for network-related operations.
@@ -340,6 +336,9 @@ The `docs` directory contains documentation files that provide detailed informat
 ##### Images Directory (images/)
 - Contains image files used in the application.
 
+</details>
+</details>
+</details>
 
 ## Development Guide
 - **Service Worker**: The service worker is a critical component of the DApp, handling background tasks, caching, and offline functionality. Developers can explore the service worker script (`service-worker.mjs`) to understand its operations and customize its behavior.
