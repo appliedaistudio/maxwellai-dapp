@@ -523,11 +523,15 @@ To optimize the performance of the DApp, developers can explore caching strategi
 
 ## Contribution Guide
 
-##### How to Contribute
+<details>
+<summary> <b> How to Contribute </b> </summary>
+
 - **Forking the Repository**: Fork the repository on GitHub and clone it to your local machine.
 - **Creating Branches**: Create a new branch for your feature or bug fix.
 - **Making Changes**: Implement your changes, following the coding standards below.
 - **Committing Changes**: Write clear and concise commit messages (e.g., “Add feature: Implement AI chat interface”).
+
+</details>
 
 <details>
 <summary> <b> Coding Standards and Guidelines </b> </summary>
@@ -567,20 +571,22 @@ By following these coding standards, we ensure that our codebase remains clean, 
 
 </details>
 
-##### Pull Request Process
+<details>
+<summary> <b> Pull Request Process </b> </summary>
+
 - **Submitting a Pull Request**: Push your branch to GitHub and open a pull request.
 - **Review Process**: Your pull request will be reviewed by project maintainers. Make necessary changes based on feedback.
 - **Merging**: Once approved, your changes will be merged into the main branch.
 
 ## Appendix
 
-##### Glossary
+### Glossary
 - **AI**: Artificial Intelligence
 - **DApp**: Decentralized Application
 - **Service Worker**: A script that runs in the background and handles caching and other network related operations for offline capabilities
 - **API**: Application Programming Interface  
 
-##### Additional Resources
+### Additional Resources
 - **Official Documentation**:
   - Bootstrap:
     - https://getbootstrap.com/docs/4.5/getting-started/introduction/
